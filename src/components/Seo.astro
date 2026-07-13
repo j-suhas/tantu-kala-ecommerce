@@ -1,0 +1,47 @@
+---
+import { SITE } from '../config/site.mjs';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative path to a JPG/PNG OG image. */
+  ogImage?: string;
+  /** JSON-LD object (e.g. Product schema). */
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = SITE.description,
+  ogImage = '/og/default.jpg',
+  jsonLd,
+} = Astro.props;
+
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+// OG images MUST be absolute URLs for WhatsApp/Facebook to render them.
+const ogAbs = new URL(ogImage, SITE.url).href;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph (IG / WhatsApp / Facebook link previews) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogAbs} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogAbs} />
+
+{jsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}

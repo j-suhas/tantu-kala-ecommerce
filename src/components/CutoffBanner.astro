@@ -1,0 +1,16 @@
+---
+import { SITE } from '../config/site.mjs';
+
+const cutoff = new Date(SITE.orderCutoffISO);
+const now = new Date();
+const days = Math.ceil((cutoff.getTime() - now.getTime()) / 86_400_000);
+const label = cutoff.toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+const show = days > 0;
+---
+
+{show && (
+  <div class="bg-maroon text-cream text-center text-sm py-2 px-4">
+    🪢 Raksha Bandhan is near — order by <strong>{label}</strong> to ship in time
+    {days <= 21 && <span> · just {days} day{days === 1 ? '' : 's'} left</span>}
+  </div>
+)}

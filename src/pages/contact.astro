@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config/site.mjs';
+---
+<Base title="Contact" description="Reach Tantu Kala on WhatsApp, Instagram, or email.">
+  <div class="wrap py-10 max-w-xl">
+    <h1 class="text-4xl">Contact us</h1>
+    <p class="mt-3 text-ink/80">
+      We're a small handmade studio — the fastest way to reach us is WhatsApp or Instagram DM.
+    </p>
+
+    <div class="mt-6 grid gap-3">
+      <a href={`https://wa.me/${SITE.whatsapp}`} class="card p-4 flex items-center justify-between hover:bg-sand">
+        <span class="font-medium">WhatsApp</span><span class="text-henna">Message us →</span>
+      </a>
+      <a href={SITE.instagram} class="card p-4 flex items-center justify-between hover:bg-sand">
+        <span class="font-medium">Instagram</span><span class="text-henna">@tantukala →</span>
+      </a>
+      <a href={SITE.facebook} class="card p-4 flex items-center justify-between hover:bg-sand">
+        <span class="font-medium">Facebook</span><span class="text-henna">Visit page →</span>
+      </a>
+      <a href={`mailto:${SITE.email}`} class="card p-4 flex items-center justify-between hover:bg-sand">
+        <span class="font-medium">Email</span><span class="text-henna">{SITE.email} →</span>
+      </a>
+    </div>
+
+    <p class="mt-6 text-sm text-ink/60">
+      Ordering? Just add items to your cart and check out — you don't need to message us first.
+    </p>
+  </div>
+</Base>

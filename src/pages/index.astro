@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import { products } from '../data/products';
+import { SITE } from '../config/site.mjs';
+---
+<Base>
+  <!-- Hero -->
+  <section class="wrap pt-10 pb-6 sm:pt-16 sm:pb-10 text-center">
+    <p class="text-saffron font-semibold tracking-wide uppercase text-sm">Raksha Bandhan 2026</p>
+    <h1 class="mt-2 text-4xl sm:text-5xl leading-tight">Handmade crochet rakhis,<br class="hidden sm:block" /> knotted with love</h1>
+    <p class="mt-4 max-w-xl mx-auto text-ink/70">
+      Each rakhi at {SITE.name} is crocheted by hand — no factory, no two alike.
+      Browse, book, and pay securely by UPI, all on this page.
+    </p>
+    <div class="mt-6 flex justify-center gap-3">
+      <a href="#catalog" class="btn-primary">Shop rakhis</a>
+      <a href="/about" class="btn-outline">Our story</a>
+    </div>
+  </section>
+
+  <!-- Catalog -->
+  <section id="catalog" class="wrap py-8">
+    <h2 class="text-2xl sm:text-3xl mb-6">This season's rakhis</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {products.map((p) => <ProductCard product={p} />)}
+    </div>
+  </section>
+
+  <HowItWorks />
+
+  <!-- Trust footer strip -->
+  <section class="wrap pb-8">
+    <div class="card p-6 text-center bg-sand">
+      <p class="font-display text-xl text-maroon">Handmade to order · Secure UPI · Made in India</p>
+      <p class="mt-2 text-sm text-ink/70">
+        Questions before you order? Message us on
+        <a href={`https://wa.me/${SITE.whatsapp}`} class="text-henna font-semibold underline">WhatsApp</a>.
+      </p>
+    </div>
+  </section>
+</Base>

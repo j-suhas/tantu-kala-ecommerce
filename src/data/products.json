@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "marigold-rakhi-red",
+    "name": "Marigold Rakhi — Red",
+    "price": 149,
+    "image": "marigold-rakhi-red.jpg",
+    "shortDescription": "A hand-crocheted marigold in festive red, on a soft cotton band.",
+    "description": "Each marigold is crocheted petal by petal in pure cotton yarn, finished with a comfortable adjustable band. No two are exactly alike — that's the handmade charm.",
+    "status": "available",
+    "stock": 40,
+    "tags": ["marigold", "floral", "cotton"]
+  },
+  {
+    "slug": "bhaiya-bhabhi-set",
+    "name": "Bhaiya-Bhabhi Set",
+    "price": 399,
+    "image": "bhaiya-bhabhi-set.jpg",
+    "shortDescription": "A matching pair — a lumba for bhabhi and a rakhi for bhaiya.",
+    "description": "A coordinated set: an ornate lumba rakhi for bhabhi and a classic wrist rakhi for bhaiya, crocheted in matching festive tones. Comes gift-ready.",
+    "status": "available",
+    "stock": 25,
+    "tags": ["set", "lumba", "premium"]
+  },
+  {
+    "slug": "peacock-rakhi",
+    "name": "Peacock Rakhi",
+    "price": 199,
+    "image": "peacock-rakhi.jpg",
+    "shortDescription": "A crocheted peacock motif in teal and gold thread.",
+    "description": "A detailed peacock crocheted in teal, blue and metallic-gold accent yarn. A statement piece for someone who loves something a little different.",
+    "status": "made_to_order",
+    "leadTimeDays": 4,
+    "tags": ["peacock", "statement"]
+  },
+  {
+    "slug": "mini-flower-rakhi-kids",
+    "name": "Mini Flower Rakhi (Kids)",
+    "price": 99,
+    "image": "mini-flower-rakhi-kids.jpg",
+    "shortDescription": "A small, light flower rakhi sized for little wrists.",
+    "description": "A tiny, lightweight flower rakhi in cheerful colours, sized and softened for children. Sold singly.",
+    "status": "available",
+    "stock": 60,
+    "tags": ["kids", "floral", "mini"]
+  },
+  {
+    "slug": "pearl-cluster-rakhi",
+    "name": "Pearl Cluster Rakhi",
+    "price": 179,
+    "image": "pearl-cluster-rakhi.jpg",
+    "shortDescription": "Crochet rosettes with a cluster of faux pearls.",
+    "description": "Soft crochet rosettes gathered around a cluster of faux pearls on a cream band — understated and elegant.",
+    "status": "available",
+    "stock": 30,
+    "tags": ["pearl", "elegant"]
+  },
+  {
+    "slug": "traditional-red-gold-rakhi",
+    "name": "Traditional Red & Gold Rakhi",
+    "price": 159,
+    "image": "traditional-red-gold-rakhi.jpg",
+    "shortDescription": "Classic red-and-gold crochet rakhi with a central bead.",
+    "description": "The timeless one: red and gold crochet work around a central decorative bead, on a sturdy braided band.",
+    "status": "sold_out",
+    "stock": 0,
+    "tags": ["traditional", "classic"]
+  }
+]
