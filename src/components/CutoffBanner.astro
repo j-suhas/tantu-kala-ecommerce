@@ -2,15 +2,20 @@
 import { SITE } from '../config/site.mjs';
 
 const cutoff = new Date(SITE.orderCutoffISO);
-const now = new Date();
-const days = Math.ceil((cutoff.getTime() - now.getTime()) / 86_400_000);
 const label = cutoff.toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
-const show = days > 0;
 ---
 
-{show && (
-  <div class="bg-maroon text-cream text-center text-sm py-2 px-4">
-    🪢 Raksha Bandhan is near — order by <strong>{label}</strong> to ship in time
-    {days <= 21 && <span> · just {days} day{days === 1 ? '' : 's'} left</span>}
-  </div>
-)}
+<div id="cutoff-banner" class="hidden bg-maroon text-cream text-center text-sm py-2 px-4">
+  🪢 Raksha Bandhan is near — order by <strong>{label}</strong> to ship in time<span id="cutoff-days"></span>
+</div>
+
+<script define:vars={{ cutoffISO: SITE.orderCutoffISO }}>
+  // Computed per-visitor at runtime so "X days left" is never stale.
+  const banner = document.getElementById('cutoff-banner');
+  const daysEl = document.getElementById('cutoff-days');
+  const days = Math.ceil((new Date(cutoffISO).getTime() - Date.now()) / 86400000);
+  if (banner && days > 0) {
+    banner.classList.remove('hidden');
+    if (days <= 21 && daysEl) daysEl.textContent = ` · just ${days} day${days === 1 ? '' : 's'} left`;
+  }
+</script>

@@ -41,6 +41,7 @@ Add one object, drop one image in `public/images/products/`. That's it.
   "status": "available",                    // available | made_to_order | sold_out
   "stock": 20,                               // optional
   "leadTimeDays": 4,                         // optional, for made_to_order
+  "discountPercent": 15,                     // optional, % off price (shown discounted, rounded up)
   "tags": ["floral"]                         // optional
 }
 ```
@@ -60,7 +61,12 @@ Drop a JPG/PNG named exactly like the product's `image` into
 - `upi.vpa` + `upi.payeeName`: your UPI ID and display name.
 - `orderCutoffISO` / `rakhiDateISO`: drives the countdown banner.
 - `shipping.flat` / `shipping.freeAbove`: set flat shipping, or leave `0` to confirm it yourself.
+- `shipping.strikethroughFrom`: the "was" shipping price shown struck-through on the cart to signal free shipping (e.g. `49` → "₹49 FREE"); `0` hides it.
+- `delivery.dispatchDays` / `transitDaysMin` / `transitDaysMax`: drives the "Delivery in ~X–Y days" estimate shown on product, cart and pay screens.
+- `coupons.autoOrderValue`: auto-applied order-value discounts (e.g. `{ minSubtotal: 500, percentOff: 20 }` = 20% off orders over ₹500). Stacks on top of per-product `discountPercent`; highest matching tier wins. These rules are also served at `/pricing.json` and re-checked server-side by the Apps Script to catch tampering — so keep the rule here as the single source of truth.
 - `url`: set to your live domain before deploying (used for social previews & sitemap).
+
+Security headers (incl. a Content-Security-Policy) ship in **`public/_headers`** and apply automatically on Cloudflare Pages / Netlify. If you add a new external script/style/font/API domain, add it to the matching CSP directive there.
 
 ### 4. Turn on order recording (Sheet + email)
 Follow `apps-script/README.md` (5 min), then paste the Web App URL into

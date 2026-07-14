@@ -1,0 +1,13 @@
+---
+import { deliveryEstimate } from '../lib/delivery';
+
+interface Props { class?: string; }
+const { class: cls = '' } = Astro.props;
+const d = deliveryEstimate();
+---
+<p class={`text-sm text-ink/75 ${cls}`}>
+  🚚 Delivery in ~{d.minDays}–{d.maxDays} days across India
+  {d.beforeRakhi && (
+    <span class="text-leaf font-semibold"> · Arrives before Raksha Bandhan 🎉</span>
+  )}
+</p>

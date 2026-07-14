@@ -12,6 +12,8 @@ export interface Product {
   status: ProductStatus;
   stock?: number;
   leadTimeDays?: number;
+  /** Optional discount off `price`, in percent (e.g. 15 = 15% off). */
+  discountPercent?: number;
   tags?: string[];
 }
 

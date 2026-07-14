@@ -1,7 +1,8 @@
 ---
 import type { Product } from '../data/products';
 import { productImage, productImageWebp, isBuyable } from '../data/products';
-import { inr } from '../lib/format';
+import { payablePrice } from '../lib/pricing';
+import PriceTag from './PriceTag.astro';
 import StockBadge from './StockBadge.astro';
 
 interface Props { product: Product; }
@@ -29,14 +30,14 @@ const buyable = isBuyable(product);
       <a href={href} class="hover:text-henna">{product.name}</a>
     </h3>
     <p class="mt-1 text-sm text-ink/70 line-clamp-2">{product.shortDescription}</p>
-    <div class="mt-3 flex items-center justify-between">
-      <span class="font-semibold text-maroon text-lg">{inr(product.price)}</span>
+    <div class="mt-3 flex items-center justify-between gap-2">
+      <PriceTag product={product} />
       {buyable ? (
         <button
-          class="btn-accent !px-4 !py-2 text-sm add-to-cart"
+          class="btn-accent !px-4 !py-2 text-sm add-to-cart shrink-0"
           data-slug={product.slug}
           data-name={product.name}
-          data-price={product.price}
+          data-price={payablePrice(product)}
         >Add</button>
       ) : (
         <span class="text-sm text-ink/50 font-medium">Sold out</span>

@@ -1,0 +1,25 @@
+---
+import type { Product } from '../data/products';
+import { priceInfo } from '../lib/pricing';
+import { inr } from '../lib/format';
+
+interface Props {
+  product: Product;
+  /** 'lg' for the product detail page, default for cards. */
+  size?: 'md' | 'lg';
+}
+const { product, size = 'md' } = Astro.props;
+const p = priceInfo(product);
+const finalCls = size === 'lg' ? 'text-2xl' : 'text-lg';
+---
+<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+  <span class={`font-semibold text-maroon ${finalCls}`}>{inr(p.final)}</span>
+  {p.hasDiscount && (
+    <>
+      <span class="text-sm text-ink/50 line-through">{inr(p.original)}</span>
+      <span class="rounded-full bg-leaf px-2 py-0.5 text-xs font-semibold text-white">
+        {p.discountPercent}% off
+      </span>
+    </>
+  )}
+</div>
