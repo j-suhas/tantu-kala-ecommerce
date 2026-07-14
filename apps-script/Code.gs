@@ -34,7 +34,8 @@ function validateOrder(o) {
   if (!o.items || !o.items.length) return 'no items';
   if (!(Number(o.subtotal) > 0)) return 'bad subtotal';
   var c = o.customer || {};
-  if (!/^[A-Za-z][A-Za-z .]{1,39}$/.test(String(c.name || ''))) return 'bad name';
+  // Any letter (Unicode) + space/dot/apostrophe/hyphen; blocks digits/@/<> junk.
+  if (!/^[\p{L}][\p{L}\s.'-]{1,49}$/u.test(String(c.name || ''))) return 'bad name';
   var phone = String(c.phone || '').replace(/\D/g, '');
   if (phone.length === 12 && phone.indexOf('91') === 0) phone = phone.slice(2);
   if (!/^[6-9]\d{9}$/.test(phone)) return 'bad phone';
@@ -138,6 +139,13 @@ function fetchPricing_() {
 /**
  * Re-derive the payable total from slug + qty using the AUTHORITATIVE price list,
  * ignoring the prices/coupon the browser sent. This is what catches tampering.
+ *
+ * The pricing RULES (prices, discountPercent, coupon tiers, shipping) are a single
+ * source of truth: they live in src/config/site.mjs + products.json and are served
+ * to BOTH sides via /pricing.json — so a rule change propagates here automatically.
+ * Only the arithmetic below is intentionally re-implemented (it must NOT import the
+ * client code, or the verification wouldn't be independent). Keep the ceil-discount +
+ * highest-tier-coupon math in sync with src/lib/pricing.ts and src/lib/coupon.ts.
  */
 function expectedTotal_(order) {
   var cfg = fetchPricing_();

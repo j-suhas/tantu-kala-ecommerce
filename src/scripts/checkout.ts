@@ -18,6 +18,10 @@ const money = (n: number) => sym + n.toLocaleString('en-IN');
 const $ = (id: string) => document.getElementById(id)!;
 const LAST_ORDER_KEY = 'tk_last_order_v1';
 
+// Names: any letter (Unicode, so Indian names in any script), plus space, dot,
+// apostrophe and hyphen (D'Souza, Rai-Kumar). Blocks digits/@/<> and junk.
+const NAME_RE = /^[\p{L}][\p{L}\s.'-]{1,49}$/u;
+
 const emptyEl = $('empty');
 const cartSection = $('cart-section');
 const paySection = $('pay-section');
@@ -43,6 +47,63 @@ function computeTotals(): Totals {
   return { sub, coupon, ship, payable };
 }
 
+/** Build one cart row with the DOM API (no innerHTML). */
+function cartRow(it: { slug: string; name: string; price: number; qty: number }): HTMLLIElement {
+  const cap = stockOf[it.slug];
+  const li = document.createElement('li');
+  li.className = 'card p-3 flex items-center gap-3';
+
+  const info = document.createElement('div');
+  info.className = 'flex-1';
+  const nameP = document.createElement('p');
+  nameP.className = 'font-medium';
+  nameP.textContent = it.name;
+  const priceP = document.createElement('p');
+  priceP.className = 'text-sm text-ink/60';
+  priceP.textContent = `${money(it.price)} each`;
+  info.append(nameP, priceP);
+
+  const qty = document.createElement('input');
+  qty.type = 'number';
+  qty.min = '1';
+  if (cap) qty.max = String(cap);
+  qty.value = String(it.qty);
+  qty.dataset.slug = it.slug;
+  qty.className = 'qty w-16 rounded-lg border border-ink/20 px-2 py-1.5 text-center';
+
+  const remove = document.createElement('button');
+  remove.dataset.slug = it.slug;
+  remove.className = 'remove text-henna text-sm';
+  remove.textContent = 'Remove';
+
+  li.append(info, qty, remove);
+  return li;
+}
+
+function renderShipping(sub: number, ship: number) {
+  const el = $('shipping');
+  el.replaceChildren();
+  const strike = SITE.shipping.strikethroughFrom;
+  if (ship === 0) {
+    $('free-ship-badge').classList.remove('hidden');
+    const overNote =
+      SITE.shipping.freeAbove && sub >= SITE.shipping.freeAbove ? ` over ${money(SITE.shipping.freeAbove)}` : '';
+    if (strike) {
+      const was = document.createElement('span');
+      was.className = 'line-through text-ink/40 mr-1';
+      was.textContent = money(strike);
+      el.appendChild(was);
+    }
+    const free = document.createElement('span');
+    free.className = 'text-leaf font-semibold';
+    free.textContent = `FREE${overNote}`;
+    el.appendChild(free);
+  } else {
+    $('free-ship-badge').classList.add('hidden');
+    el.textContent = money(ship);
+  }
+}
+
 function renderCart() {
   if (paid) return;
   const items = getCart();
@@ -54,26 +115,11 @@ function renderCart() {
   emptyEl.classList.add('hidden');
   cartSection.classList.remove('hidden');
 
-  itemsEl.innerHTML = '';
-  for (const it of items) {
-    const cap = stockOf[it.slug];
-    const li = document.createElement('li');
-    li.className = 'card p-3 flex items-center gap-3';
-    li.innerHTML = `
-      <div class="flex-1">
-        <p class="font-medium">${it.name}</p>
-        <p class="text-sm text-ink/60">${money(it.price)} each</p>
-      </div>
-      <input type="number" min="1" ${cap ? `max="${cap}"` : ''} value="${it.qty}" data-slug="${it.slug}"
-             class="qty w-16 rounded-lg border border-ink/20 px-2 py-1.5 text-center" />
-      <button data-slug="${it.slug}" class="remove text-henna text-sm">Remove</button>`;
-    itemsEl.appendChild(li);
-  }
+  itemsEl.replaceChildren(...items.map(cartRow));
 
   const { sub, coupon, ship } = computeTotals();
   $('subtotal').textContent = money(sub);
 
-  // coupon line
   if (coupon) {
     $('coupon-row').classList.remove('hidden');
     $('coupon-label').textContent = coupon.label;
@@ -82,20 +128,7 @@ function renderCart() {
     $('coupon-row').classList.add('hidden');
   }
 
-  // shipping (free by default; distinguish threshold vs default)
-  const strike = SITE.shipping.strikethroughFrom;
-  if (ship === 0) {
-    $('free-ship-badge').classList.remove('hidden');
-    const overNote =
-      SITE.shipping.freeAbove && sub >= SITE.shipping.freeAbove ? ` over ${money(SITE.shipping.freeAbove)}` : '';
-    $('shipping').innerHTML = strike
-      ? `<span class="line-through text-ink/40 mr-1">${money(strike)}</span><span class="text-leaf font-semibold">FREE${overNote}</span>`
-      : `<span class="text-leaf font-semibold">FREE${overNote}</span>`;
-  } else {
-    $('free-ship-badge').classList.add('hidden');
-    $('shipping').textContent = money(ship);
-  }
-
+  renderShipping(sub, ship);
   $('total').textContent = money(sub - (coupon ? coupon.discount : 0) + ship);
 }
 
@@ -144,7 +177,7 @@ $('checkout-form').addEventListener('submit', async (e) => {
   const city = get('city');
   let ok = true;
 
-  if (!/^[A-Za-z][A-Za-z .]{1,39}$/.test(name)) { showErr('name', 'Enter your name (letters only, 2–40 chars).'); ok = false; }
+  if (!NAME_RE.test(name)) { showErr('name', 'Enter your name (2–50 letters).'); ok = false; }
   if (!/^[6-9]\d{9}$/.test(phone)) { showErr('phone', 'Enter a valid 10-digit Indian mobile number.'); ok = false; }
   if (address.length < 10) { showErr('address', 'Please enter your full delivery address.'); ok = false; }
   if (!/^[1-9]\d{5}$/.test(pincode)) { showErr('pincode', 'Enter a valid 6-digit pincode.'); ok = false; }
@@ -174,36 +207,38 @@ $('checkout-form').addEventListener('submit', async (e) => {
   try {
     await recordOrder(payload);
   } finally {
-    showPayment(payload, payable);
+    completeOrder(payload, payable);
   }
 });
 
-function saveLastOrder(o: OrderPayload, total: number) {
-  try { localStorage.setItem(LAST_ORDER_KEY, JSON.stringify({ o, total, ts: Date.now() })); } catch {}
+// ---- Payment screen ----
+// Persist only the minimum needed to re-open the pay screen — NO customer PII.
+interface StoredOrder { ref: string; payable: number; ts: number; }
+function saveLastOrder(ref: string, payable: number) {
+  try { localStorage.setItem(LAST_ORDER_KEY, JSON.stringify({ ref, payable, ts: Date.now() } as StoredOrder)); } catch {}
 }
-function loadLastOrder(): { o: OrderPayload; total: number } | null {
+function loadLastOrder(): StoredOrder | null {
   try {
     const raw = localStorage.getItem(LAST_ORDER_KEY);
     if (!raw) return null;
-    const v = JSON.parse(raw);
-    if (Date.now() - (v.ts || 0) > 24 * 3600_000) return null;
-    return { o: v.o, total: v.total };
+    const v = JSON.parse(raw) as StoredOrder;
+    if (!v.ref || Date.now() - (v.ts || 0) > 24 * 3600_000) return null;
+    return v;
   } catch { return null; }
 }
 
-function showPayment(o: OrderPayload, total: number, restoring = false) {
+function renderPayScreen(ref: string, total: number, waText: string) {
   paid = true;
   cartSection.classList.add('hidden');
   emptyEl.classList.add('hidden');
   paySection.classList.remove('hidden');
-  if (!restoring) window.scrollTo({ top: 0, behavior: 'smooth' });
 
   $('pay-amount').textContent = money(total);
   $('pay-amount-2').textContent = money(total);
-  $('pay-ref').textContent = '#' + o.ref;
-  document.querySelectorAll('.pay-ref-inline').forEach((el) => (el.textContent = '#' + o.ref));
+  $('pay-ref').textContent = '#' + ref;
+  document.querySelectorAll('.pay-ref-inline').forEach((el) => (el.textContent = '#' + ref));
 
-  const uri = upiLink(total, o.ref);
+  const uri = upiLink(total, ref);
   if (isMobile()) {
     const b = $('upi-btn') as HTMLAnchorElement;
     b.href = uri;
@@ -214,14 +249,24 @@ function showPayment(o: OrderPayload, total: number, restoring = false) {
   }
 
   const wa = $('wa-confirm') as HTMLAnchorElement;
-  wa.href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(
-    orderText(o) + `\nI'm paying / have paid via UPI.`
-  )}`;
+  wa.href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(waText)}`;
+}
 
-  if (!restoring) {
-    saveLastOrder(o, total);
-    clearCart();
-  }
+/** Fresh order: full WhatsApp message, then persist (ref+amount only) and clear cart. */
+function completeOrder(o: OrderPayload, total: number) {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderPayScreen(o.ref, total, orderText(o) + `\nI'm paying / have paid via UPI.`);
+  saveLastOrder(o.ref, total);
+  clearCart();
+}
+
+/** Restored order (page refresh): only ref + amount survive, so use a generic message. */
+function restoreOrder(s: StoredOrder) {
+  renderPayScreen(
+    s.ref,
+    s.payable,
+    `Hi, I'd like to confirm my Tantu Kala order #${s.ref} (${money(s.payable)}). I'm paying via UPI.`
+  );
 }
 
 $('copy-vpa').addEventListener('click', async () => {
@@ -276,5 +321,5 @@ async function fetchPinLocation(pin: string) {
 
 // ---- Init ----
 const last = loadLastOrder();
-if (getCart().length === 0 && last) showPayment(last.o, last.total, true);
+if (getCart().length === 0 && last) restoreOrder(last);
 else renderCart();
