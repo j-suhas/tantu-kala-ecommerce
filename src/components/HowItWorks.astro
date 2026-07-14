@@ -1,0 +1,26 @@
+---
+// Trust strip — makes the browse → book → pay-on-UPI → we-ship flow obvious.
+const steps = [
+  { n: '1', t: 'Browse & add to cart', d: 'Pick your rakhis — no account, no login.' },
+  { n: '2', t: 'Book on our site', d: 'Share your delivery details. You get an order number instantly.' },
+  { n: '3', t: 'Pay securely via UPI', d: 'Tap to pay (mobile) or scan the QR (desktop). Goes straight to us.' },
+  { n: '4', t: 'We confirm & ship', d: 'We verify payment, confirm shipping, and post your handmade order.' },
+];
+---
+<section class="wrap py-12">
+  <h2 class="text-2xl sm:text-3xl text-center">How ordering works</h2>
+  <p class="text-center text-ink/70 mt-2 max-w-xl mx-auto">
+    Everything happens right here on our site — book and pay securely, no back-and-forth needed.
+  </p>
+  <ol class="mt-8 grid gap-4 sm:grid-cols-4">
+    {steps.map((s) => (
+      <li class="card p-5">
+        <div class="h-9 w-9 rounded-full bg-maroon text-cream grid place-items-center font-display font-semibold">
+          {s.n}
+        </div>
+        <p class="mt-3 font-semibold text-maroon">{s.t}</p>
+        <p class="mt-1 text-sm text-ink/70">{s.d}</p>
+      </li>
+    ))}
+  </ol>
+</section>

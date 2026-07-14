@@ -1,0 +1,19 @@
+---
+import type { Product } from '../data/products';
+interface Props { product: Product; }
+const { product } = Astro.props;
+
+const map = {
+  available: { text: 'Available', cls: 'bg-leaf text-white' },
+  made_to_order: {
+    text: product.leadTimeDays ? `Made to order · ~${product.leadTimeDays} days` : 'Made to order',
+    cls: 'bg-saffron text-white',
+  },
+  sold_out: { text: 'Sold out', cls: 'bg-ink/60 text-white' },
+} as const;
+
+const b = map[product.status];
+---
+<span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${b.cls}`}>
+  {b.text}
+</span>

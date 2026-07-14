@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config/site.mjs';
+---
+<Base title="Shipping & Returns" description="How Tantu Kala ships handmade orders, and our returns & refund policy.">
+  <div class="wrap py-10 max-w-2xl prose-tk">
+    <h1 class="text-4xl">Shipping & Returns</h1>
+    <p class="mt-2 text-sm text-ink/60">
+      Please review this before ordering. <em>Edit the bracketed parts to match your real policy.</em>
+    </p>
+
+    <h2 class="text-2xl mt-8">Payment</h2>
+    <p class="mt-2 text-ink/80">
+      We accept secure <strong>UPI</strong> payment on this website. After you place an order you'll
+      get an order number and a UPI payment option (tap-to-pay on mobile, scan-QR on desktop).
+      We verify your payment against your order number before we dispatch.
+    </p>
+
+    <h2 class="text-2xl mt-8">Shipping</h2>
+    <p class="mt-2 text-ink/80">
+      We ship across India. <em>[State your courier, dispatch time, and delivery estimate — e.g.
+      "Orders are dispatched within 2–4 days; delivery in 3–7 days depending on location."]</em>
+      For Raksha Bandhan, order by <strong>{new Date(SITE.orderCutoffISO).toLocaleDateString('en-IN', { day: 'numeric', month: 'long' })}</strong>
+      to receive in time.
+    </p>
+
+    <h2 class="text-2xl mt-8">Returns & Refunds</h2>
+    <p class="mt-2 text-ink/80">
+      Every piece is <strong>handmade to order</strong>, so we're unable to accept returns for
+      change of mind. If your order arrives <strong>damaged or incorrect</strong>, message us within
+      <em>[48 hours]</em> with a photo and we'll replace it or refund you. <em>[State how refunds are
+      issued and the timeline.]</em>
+    </p>
+
+    <h2 class="text-2xl mt-8">Handmade note</h2>
+    <p class="mt-2 text-ink/80">
+      Because each rakhi is crocheted by hand, small variations in colour and size are natural and
+      not considered defects.
+    </p>
+
+    <h2 class="text-2xl mt-8">Privacy</h2>
+    <p class="mt-2 text-ink/80">
+      This site takes no payment data and stores nothing on your device except your cart. The
+      delivery details you enter at checkout are used only to process and ship your order.
+    </p>
+
+    <div class="mt-8 card p-5 bg-sand">
+      <p class="text-sm text-ink/70">
+        Questions? Message us on
+        <a href={`https://wa.me/${SITE.whatsapp}`} class="text-henna font-semibold underline">WhatsApp</a>.
+      </p>
+    </div>
+  </div>
+</Base>

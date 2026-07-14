@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config/site.mjs';
+---
+<Base title="Our story" description="The story behind Tantu Kala — handmade crochet, one knot at a time.">
+  <div class="wrap py-10 max-w-2xl">
+    <h1 class="text-4xl">Our story</h1>
+    <p class="mt-2 text-saffron font-semibold">Tantu Kala — "the art of thread"</p>
+
+    <div class="mt-6 space-y-4 text-ink/80 leading-relaxed">
+      <p>
+        Tantu Kala began at a kitchen table, with a ball of cotton yarn and a hook.
+        <em>[Replace this with your real story — where it started, who makes the pieces,
+        why crochet. Handmade buyers connect with the maker as much as the make.]</em>
+      </p>
+      <p>
+        Every rakhi is crocheted by hand, one knot at a time. That means no two are
+        identical — small variations aren't flaws, they're the fingerprint of something
+        made by a person, for a person.
+      </p>
+      <p>
+        This Raksha Bandhan, we're making a limited number of rakhis. When a design says
+        "made to order," it's being crocheted especially for you — so it takes a few days,
+        and it's worth the wait.
+      </p>
+    </div>
+
+    <div class="mt-8 card p-6 bg-sand">
+      <p class="font-display text-xl text-maroon">Made by hand · Made in India</p>
+      <p class="mt-2 text-sm text-ink/70">
+        Have a custom request or a bulk order? Message us on
+        <a href={`https://wa.me/${SITE.whatsapp}`} class="text-henna font-semibold underline">WhatsApp</a>
+        or <a href={SITE.instagram} class="text-henna font-semibold underline">Instagram</a>.
+      </p>
+    </div>
+
+    <a href="/" class="btn-primary mt-8">Shop this season's rakhis</a>
+  </div>
+</Base>

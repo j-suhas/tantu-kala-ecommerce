@@ -1,0 +1,50 @@
+---
+import { SITE, NAV } from '../config/site.mjs';
+import CutoffBanner from './CutoffBanner.astro';
+---
+
+<CutoffBanner />
+
+<header class="sticky top-0 z-40 bg-cream/90 backdrop-blur ring-1 ring-ink/5">
+  <div class="wrap flex items-center justify-between h-16">
+    <a href="/" class="font-display text-2xl text-maroon font-semibold">
+      {SITE.name}
+    </a>
+
+    <nav class="hidden sm:flex items-center gap-6 text-sm font-medium">
+      {NAV.map((n) => (
+        <a href={n.href} class="text-ink hover:text-henna">{n.label}</a>
+      ))}
+    </nav>
+
+    <a href="/cart" class="relative btn-outline !px-4 !py-2 text-sm" aria-label="Cart">
+      Cart
+      <span
+        id="cart-count"
+        class="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-saffron px-1.5 text-xs text-white"
+        hidden
+      >0</span>
+    </a>
+  </div>
+
+  <!-- mobile nav -->
+  <nav class="sm:hidden wrap flex gap-5 overflow-x-auto pb-2 text-sm font-medium">
+    {NAV.map((n) => (
+      <a href={n.href} class="text-ink hover:text-henna whitespace-nowrap">{n.label}</a>
+    ))}
+  </nav>
+</header>
+
+<script>
+  import { itemCount, CART_EVENT } from '../lib/cart';
+  const badge = document.getElementById('cart-count');
+  function render() {
+    if (!badge) return;
+    const n = itemCount();
+    badge.textContent = String(n);
+    badge.hidden = n === 0;
+  }
+  render();
+  window.addEventListener(CART_EVENT, render);
+  window.addEventListener('pageshow', render);
+</script>

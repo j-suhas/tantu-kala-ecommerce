@@ -1,0 +1,81 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site.mjs';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>;
+}
+const { title, description, ogImage, jsonLd } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#7A1F2B" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Mukta:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <Seo title={title} description={description} ogImage={ogImage} jsonLd={jsonLd} />
+
+    {SITE.cfAnalyticsToken && (
+      <script
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={`{"token": "${SITE.cfAnalyticsToken}"}`}
+      ></script>
+    )}
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <div
+      id="toast"
+      class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 rounded-full bg-maroon text-cream px-5 py-2.5 text-sm shadow-lg transition-all duration-300 opacity-0 translate-y-3 pointer-events-none"
+    >Added to cart ✓</div>
+
+    <script>
+      import { addItem } from '../lib/cart';
+      const toast = document.getElementById('toast');
+      let t: ReturnType<typeof setTimeout>;
+      function showToast(msg: string) {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.classList.remove('opacity-0', 'translate-y-3');
+        clearTimeout(t);
+        t = setTimeout(() => toast.classList.add('opacity-0', 'translate-y-3'), 1600);
+      }
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as HTMLElement).closest('.add-to-cart') as HTMLElement | null;
+        if (!btn) return;
+        addItem(
+          {
+            slug: btn.dataset.slug!,
+            name: btn.dataset.name!,
+            price: Number(btn.dataset.price),
+          },
+          Number(btn.dataset.qty) || 1
+        );
+        showToast(`${btn.dataset.name} added ✓`);
+      });
+    </script>
+  </body>
+</html>
