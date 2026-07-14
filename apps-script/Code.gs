@@ -77,9 +77,14 @@ function appendToSheet(order, expected) {
     order.payable || '',
     expected == null ? '' : expected,
     match,
-    c.name || '', c.phone || '', c.address || '', c.pincode || '', c.note || '',
+    c.name || '', c.phone || '', fullAddress_(c), c.pincode || '', c.note || '',
     'NEW'
   ]);
+}
+
+/** Compose address + city + state for display/records. */
+function fullAddress_(c) {
+  return [c.address, c.city, c.state].filter(function (x) { return x; }).join(', ');
 }
 
 function sendEmail(order, expected) {
@@ -109,7 +114,7 @@ function sendEmail(order, expected) {
     warn +
     '\nName: ' + c.name + '\n' +
     'Phone: ' + c.phone + '\n' +
-    'Address: ' + c.address + '\n' +
+    'Address: ' + fullAddress_(c) + '\n' +
     'Pincode: ' + c.pincode + '\n' +
     (c.note ? 'Note: ' + c.note + '\n' : '') +
     '\nVerify the UPI payment (amount + ref #' + order.ref + ') before dispatch.';

@@ -119,7 +119,7 @@ function showErr(field: string, msg: string) {
   if (el) { el.textContent = msg; el.classList.remove('hidden'); }
 }
 function clearErrs() {
-  ['name', 'phone', 'address', 'pincode'].forEach((f) => document.getElementById('err-' + f)?.classList.add('hidden'));
+  ['name', 'phone', 'address', 'pincode', 'city'].forEach((f) => document.getElementById('err-' + f)?.classList.add('hidden'));
 }
 function normPhone(raw: string): string {
   let d = (raw || '').replace(/\D/g, '');
@@ -141,12 +141,14 @@ $('checkout-form').addEventListener('submit', async (e) => {
   const phone = normPhone(get('phone'));
   const address = get('address');
   const pincode = get('pincode');
+  const city = get('city');
   let ok = true;
 
   if (!/^[A-Za-z][A-Za-z .]{1,39}$/.test(name)) { showErr('name', 'Enter your name (letters only, 2–40 chars).'); ok = false; }
   if (!/^[6-9]\d{9}$/.test(phone)) { showErr('phone', 'Enter a valid 10-digit Indian mobile number.'); ok = false; }
   if (address.length < 10) { showErr('address', 'Please enter your full delivery address.'); ok = false; }
   if (!/^[1-9]\d{5}$/.test(pincode)) { showErr('pincode', 'Enter a valid 6-digit pincode.'); ok = false; }
+  if (city.length < 2) { showErr('city', 'Enter your city / district.'); ok = false; }
   if (!ok) return;
 
   const items = getCart();
@@ -163,7 +165,7 @@ $('checkout-form').addEventListener('submit', async (e) => {
     coupon: coupon ? { percentOff: coupon.percentOff, label: coupon.label, discount: coupon.discount } : null,
     shipping: ship,
     payable,
-    customer: { name, phone: '+91' + phone, address, pincode, note: get('note') },
+    customer: { name, phone: '+91' + phone, address, pincode, city, state: get('state'), note: get('note') },
   };
 
   const btn = $('submit-btn') as HTMLButtonElement;
@@ -234,6 +236,43 @@ $('new-order').addEventListener('click', () => {
   try { localStorage.removeItem(LAST_ORDER_KEY); } catch {}
   window.location.href = '/';
 });
+
+// ---- Pincode -> city/state (progressive enhancement; never blocks checkout) ----
+const pinInput = document.getElementById('pincode') as HTMLInputElement | null;
+const cityInput = document.getElementById('city') as HTMLInputElement | null;
+const stateInput = document.getElementById('state') as HTMLInputElement | null;
+const pinHint = document.getElementById('pin-hint');
+let lastPin = '';
+
+pinInput?.addEventListener('input', () => {
+  const pin = (pinInput.value || '').replace(/\D/g, '').slice(0, 6);
+  if (pin.length !== 6 || pin === lastPin) return;
+  lastPin = pin;
+  void fetchPinLocation(pin);
+});
+
+async function fetchPinLocation(pin: string) {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 5000);
+    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, { signal: ctrl.signal });
+    clearTimeout(timer);
+    const data = await res.json();
+    const rec = Array.isArray(data) ? data[0] : null;
+    const po = rec && rec.Status === 'Success' && rec.PostOffice && rec.PostOffice[0];
+    if (!po) { pinHint?.classList.add('hidden'); return; }
+    // don't clobber a city the user already typed; always sync the read-only state
+    if (cityInput && !cityInput.value.trim()) cityInput.value = po.District || '';
+    if (stateInput) stateInput.value = po.State || '';
+    if (pinHint) {
+      pinHint.textContent = `📍 ${po.District}, ${po.State}`;
+      pinHint.classList.remove('hidden');
+    }
+  } catch {
+    // API slow / unavailable / offline — user just fills City manually. Never block.
+    pinHint?.classList.add('hidden');
+  }
+}
 
 // ---- Init ----
 const last = loadLastOrder();

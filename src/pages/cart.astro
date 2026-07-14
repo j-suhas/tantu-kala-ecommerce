@@ -67,9 +67,25 @@ import { SITE } from '../config/site.mjs';
         <div class="grid gap-4 sm:grid-cols-2">
           <label class="block">
             <span class="text-sm font-medium">Pincode *</span>
-            <input name="pincode" required inputmode="numeric" maxlength="6" autocomplete="postal-code"
+            <input id="pincode" name="pincode" required inputmode="numeric" maxlength="6" autocomplete="postal-code"
                    class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
             <p id="err-pincode" role="alert" class="mt-1 text-sm text-henna hidden"></p>
+            <p id="pin-hint" class="mt-1 text-xs text-leaf hidden"></p>
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium">City / District *</span>
+            <input id="city" name="city" required autocomplete="address-level2"
+                   class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+            <p id="err-city" role="alert" class="mt-1 text-sm text-henna hidden"></p>
+          </label>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block">
+            <span class="text-sm font-medium">State</span>
+            <input id="state" name="state" readonly autocomplete="address-level1"
+                   placeholder="auto-filled from pincode"
+                   class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2 bg-sand/40" />
           </label>
           <label class="block">
             <span class="text-sm font-medium">Note (optional)</span>
