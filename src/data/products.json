@@ -8,6 +8,7 @@
     "description": "Each marigold is crocheted petal by petal in pure cotton yarn, finished with a comfortable adjustable band. No two are exactly alike — that's the handmade charm.",
     "status": "available",
     "stock": 40,
+    "discountPercent": 15,
     "tags": ["marigold", "floral", "cotton"]
   },
   {
@@ -19,6 +20,7 @@
     "description": "A coordinated set: an ornate lumba rakhi for bhabhi and a classic wrist rakhi for bhaiya, crocheted in matching festive tones. Comes gift-ready.",
     "status": "available",
     "stock": 25,
+    "discountPercent": 20,
     "tags": ["set", "lumba", "premium"]
   },
   {
@@ -52,6 +54,7 @@
     "description": "Soft crochet rosettes gathered around a cluster of faux pearls on a cream band — understated and elegant.",
     "status": "available",
     "stock": 30,
+    "discountPercent": 10,
     "tags": ["pearl", "elegant"]
   },
   {

@@ -23,7 +23,12 @@ function read(): CartItem[] {
 }
 
 function write(items: CartItem[]): void {
-  localStorage.setItem(KEY, JSON.stringify(items));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(items));
+  } catch {
+    // Storage can throw in private mode / when full — don't let add-to-cart break.
+    // The event below still fires so the current page reflects the change in-memory.
+  }
   window.dispatchEvent(new CustomEvent(EVENT, { detail: items }));
 }
 

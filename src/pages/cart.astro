@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import DeliveryEstimate from '../components/DeliveryEstimate.astro';
 import { SITE } from '../config/site.mjs';
 ---
 <Base title="Your cart & checkout" description="Review your rakhis, share delivery details, and pay securely via UPI.">
@@ -18,40 +19,70 @@ import { SITE } from '../config/site.mjs';
 
       <div class="mt-4 card p-4 space-y-1 text-sm">
         <div class="flex justify-between"><span>Subtotal</span><span id="subtotal"></span></div>
-        <div class="flex justify-between"><span id="ship-label">Shipping</span><span id="shipping"></span></div>
+        <div id="coupon-row" class="hidden flex justify-between text-leaf font-medium">
+          <span id="coupon-label"></span><span id="coupon-amount"></span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="flex items-center gap-2">
+            Shipping
+            <span id="free-ship-badge" class="hidden rounded-full bg-leaf/15 text-leaf px-2 py-0.5 text-xs font-semibold">Free shipping 🎉</span>
+          </span>
+          <span id="shipping"></span>
+        </div>
         <div class="flex justify-between font-semibold text-maroon text-base pt-1 border-t border-ink/10 mt-1">
           <span>To pay via UPI</span><span id="total"></span>
         </div>
+        <DeliveryEstimate class="pt-2" />
       </div>
 
-      <form id="checkout-form" class="mt-6 card p-5 space-y-4" novalidate>
+      <form id="checkout-form" class="mt-6 card p-5 space-y-4" novalidate autocomplete="on">
         <h2 class="text-xl">Delivery details</h2>
+
         <div class="grid gap-4 sm:grid-cols-2">
           <label class="block">
             <span class="text-sm font-medium">Full name *</span>
-            <input name="name" required class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+            <input name="name" required autocomplete="name"
+                   class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+            <p id="err-name" role="alert" class="mt-1 text-sm text-henna hidden"></p>
           </label>
           <label class="block">
             <span class="text-sm font-medium">Phone (WhatsApp) *</span>
-            <input name="phone" required inputmode="tel" class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+            <div class="mt-1 flex rounded-lg border border-ink/20 overflow-hidden focus-within:ring-2 focus-within:ring-saffron">
+              <span class="px-3 py-2 bg-sand text-ink/70 select-none">+91</span>
+              <input name="phone" required inputmode="numeric" maxlength="10" autocomplete="tel-national"
+                     placeholder="10-digit mobile" class="flex-1 px-3 py-2 outline-none bg-transparent" />
+            </div>
+            <p id="err-phone" role="alert" class="mt-1 text-sm text-henna hidden"></p>
           </label>
         </div>
+
         <label class="block">
           <span class="text-sm font-medium">Delivery address *</span>
-          <textarea name="address" required rows="3" class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2"></textarea>
+          <textarea name="address" required rows="3" autocomplete="street-address"
+                    placeholder="Flat/house, street, area, city, state"
+                    class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2"></textarea>
+          <p id="err-address" role="alert" class="mt-1 text-sm text-henna hidden"></p>
         </label>
+
         <div class="grid gap-4 sm:grid-cols-2">
           <label class="block">
             <span class="text-sm font-medium">Pincode *</span>
-            <input name="pincode" required inputmode="numeric" class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+            <input name="pincode" required inputmode="numeric" maxlength="6" autocomplete="postal-code"
+                   class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+            <p id="err-pincode" role="alert" class="mt-1 text-sm text-henna hidden"></p>
           </label>
           <label class="block">
             <span class="text-sm font-medium">Note (optional)</span>
             <input name="note" class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
           </label>
         </div>
-        <p id="form-error" class="hidden text-sm text-henna"></p>
-        <button type="submit" class="btn-primary w-full">Place order & pay via UPI</button>
+
+        <!-- honeypot: humans never see or fill this; bots do -->
+        <div class="hidden" aria-hidden="true">
+          <label>Company <input name="company" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <button id="submit-btn" type="submit" class="btn-primary w-full">Place order & pay via UPI</button>
         <p class="text-xs text-ink/60 text-center">
           You'll get an order number, then pay securely by UPI. We verify payment and confirm shipping before dispatch.
         </p>
@@ -64,11 +95,11 @@ import { SITE } from '../config/site.mjs';
         <p class="text-leaf font-semibold">✓ Order placed</p>
         <h2 class="text-2xl mt-1">Pay <span id="pay-amount"></span> via UPI</h2>
         <p class="text-sm text-ink/60 mt-1">Order <span id="pay-ref" class="font-semibold text-ink"></span></p>
+        <p class="text-sm text-ink/70 mt-1">Paying to <span class="font-semibold text-ink">{SITE.upi.payeeName}</span> — please confirm this name shows in your UPI app before paying.</p>
+        <p class="mt-1 text-sm font-medium text-maroon">Please pay exactly <span id="pay-amount-2"></span></p>
 
-        <!-- Mobile: tap to pay -->
         <a id="upi-btn" class="btn-accent w-full mt-5 hidden" href="#">Pay with any UPI app</a>
 
-        <!-- Desktop: scan QR -->
         <div id="upi-qr-wrap" class="mt-5 hidden">
           <p class="text-sm text-ink/70 mb-3">Scan with GPay / PhonePe / Paytm / any UPI app</p>
           <canvas id="upi-qr" class="mx-auto rounded-lg bg-white p-2"></canvas>
@@ -80,167 +111,28 @@ import { SITE } from '../config/site.mjs';
           <span id="copied" class="ml-2 text-leaf hidden">copied ✓</span>
         </div>
 
-        <div class="mt-6 rounded-xl bg-sand p-4 text-sm text-ink/80 text-left space-y-2">
+        <DeliveryEstimate class="mt-4 justify-center text-center" />
+
+        <div class="mt-5 rounded-xl bg-sand p-4 text-sm text-ink/80 text-left space-y-2">
           <p class="font-semibold text-maroon">After you pay:</p>
           <p>1. Keep the payment reference — we match it to order <span class="pay-ref-inline font-semibold"></span>.</p>
           <p>2. We verify the amount, confirm shipping, and dispatch your handmade order.</p>
-          <p>Want a confirmation on WhatsApp? Tap below — your order is pre-filled.</p>
         </div>
 
-        <a id="wa-confirm" class="btn-outline w-full mt-4" href="#" target="_blank" rel="noopener">
-          Send order confirmation on WhatsApp
-        </a>
-        <a href="/" class="block mt-3 text-sm text-henna hover:underline">Continue shopping</a>
+        <div class="mt-4 rounded-xl border border-leaf/30 bg-leaf/5 p-4 text-sm text-left">
+          <p class="font-semibold text-ink">Optional — faster confirmation</p>
+          <p class="text-ink/70 mt-1">Send your order on WhatsApp so we confirm and start processing right away. Not required — you can just pay above.</p>
+          <a id="wa-confirm" class="btn-outline w-full mt-3" href="#" target="_blank" rel="noopener">
+            Send order on WhatsApp
+          </a>
+        </div>
+
+        <button id="new-order" class="block w-full mt-3 text-sm text-henna hover:underline">Start a new order</button>
       </div>
     </div>
   </div>
 
   <script>
-    import { getCart, setQty, removeItem, subtotal as calcSubtotal, itemCount, clearCart, CART_EVENT } from '../lib/cart';
-    import { makeOrderRef, orderText, recordOrder, type OrderPayload } from '../lib/order';
-    import { upiLink, isMobile } from '../lib/upi';
-    import { SITE } from '../config/site.mjs';
-    import QRCode from 'qrcode';
-
-    const sym = SITE.currencySymbol;
-    const money = (n: number) => sym + n.toLocaleString('en-IN');
-
-    const $ = (id: string) => document.getElementById(id)!;
-    const emptyEl = $('empty');
-    const cartSection = $('cart-section');
-    const paySection = $('pay-section');
-    const itemsEl = $('cart-items');
-
-    function shippingFor(sub: number): number {
-      const { flat, freeAbove } = SITE.shipping;
-      if (freeAbove && sub >= freeAbove) return 0;
-      return flat || 0;
-    }
-
-    let paid = false; // once an order is placed we stay on the pay screen
-
-    function renderCart() {
-      if (paid) return;
-      const items = getCart();
-      if (items.length === 0) {
-        emptyEl.classList.remove('hidden');
-        cartSection.classList.add('hidden');
-        return;
-      }
-      emptyEl.classList.add('hidden');
-      cartSection.classList.remove('hidden');
-
-      itemsEl.innerHTML = '';
-      for (const it of items) {
-        const li = document.createElement('li');
-        li.className = 'card p-3 flex items-center gap-3';
-        li.innerHTML = `
-          <div class="flex-1">
-            <p class="font-medium">${it.name}</p>
-            <p class="text-sm text-ink/60">${money(it.price)} each</p>
-          </div>
-          <input type="number" min="1" value="${it.qty}" data-slug="${it.slug}"
-                 class="qty w-16 rounded-lg border border-ink/20 px-2 py-1.5 text-center" />
-          <button data-slug="${it.slug}" class="remove text-henna text-sm">Remove</button>`;
-        itemsEl.appendChild(li);
-      }
-
-      const sub = calcSubtotal(items);
-      const ship = shippingFor(sub);
-      $('subtotal').textContent = money(sub);
-      $('shipping').textContent = ship === 0 ? (SITE.shipping.flat ? 'Free' : 'Confirmed by us') : money(ship);
-      $('total').textContent = money(sub + ship);
-    }
-
-    itemsEl.addEventListener('input', (e) => {
-      const el = e.target as HTMLInputElement;
-      if (el.classList.contains('qty')) setQty(el.dataset.slug!, Math.max(1, Number(el.value) || 1));
-    });
-    itemsEl.addEventListener('click', (e) => {
-      const el = (e.target as HTMLElement).closest('.remove') as HTMLElement | null;
-      if (el) removeItem(el.dataset.slug!);
-    });
-    window.addEventListener(CART_EVENT, renderCart);
-    renderCart();
-
-    // ---- Checkout ----
-    $('checkout-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target as HTMLFormElement;
-      const data = new FormData(form);
-      const get = (k: string) => String(data.get(k) || '').trim();
-      const err = $('form-error');
-
-      const name = get('name'), phone = get('phone'), address = get('address'), pincode = get('pincode');
-      if (!name || !phone || !address || !pincode) {
-        err.textContent = 'Please fill name, phone, address and pincode.';
-        err.classList.remove('hidden');
-        return;
-      }
-      if (!/^\d{6}$/.test(pincode)) {
-        err.textContent = 'Please enter a valid 6-digit pincode.';
-        err.classList.remove('hidden');
-        return;
-      }
-      err.classList.add('hidden');
-
-      const items = getCart();
-      if (items.length === 0) return;
-      const sub = calcSubtotal(items);
-      const total = sub + shippingFor(sub);
-      const ref = makeOrderRef();
-
-      const payload: OrderPayload = {
-        ref,
-        createdAt: new Date().toISOString(),
-        items,
-        itemCount: itemCount(items),
-        subtotal: sub,
-        customer: { name, phone, address, pincode, note: get('note') },
-      };
-
-      await recordOrder(payload); // sheet + email (best-effort)
-      showPayment(payload, total);
-    });
-
-    function showPayment(o: OrderPayload, total: number) {
-      paid = true;
-      cartSection.classList.add('hidden');
-      emptyEl.classList.add('hidden');
-      paySection.classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      $('pay-amount').textContent = money(total);
-      $('pay-ref').textContent = '#' + o.ref;
-      document.querySelectorAll('.pay-ref-inline').forEach((el) => (el.textContent = '#' + o.ref));
-
-      const uri = upiLink(total, o.ref);
-
-      if (isMobile()) {
-        const btn = $('upi-btn') as HTMLAnchorElement;
-        btn.href = uri;
-        btn.classList.remove('hidden');
-      } else {
-        $('upi-qr-wrap').classList.remove('hidden');
-        QRCode.toCanvas($('upi-qr'), uri, { width: 220, margin: 1 }, () => {});
-      }
-
-      // WhatsApp confirmation (optional) — pre-filled with the order
-      const wa = $('wa-confirm') as HTMLAnchorElement;
-      wa.href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(
-        orderText(o) + `\n\nTotal to pay: ${money(total)}\nI'm paying / have paid via UPI.`
-      )}`;
-
-      clearCart(); // order is captured; free the cart for a fresh session
-    }
-
-    // copy VPA
-    $('copy-vpa').addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(SITE.upi.vpa);
-        $('copied').classList.remove('hidden');
-        setTimeout(() => $('copied').classList.add('hidden'), 1500);
-      } catch {}
-    });
+    import '../scripts/checkout';
   </script>
 </Base>

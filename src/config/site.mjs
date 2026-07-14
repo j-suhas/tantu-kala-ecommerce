@@ -30,9 +30,25 @@ export const SITE = {
   },
 
   // ---- SHIPPING ----
-  // flat: rupees added to every order (0 = you confirm shipping separately).
+  // flat: rupees added to every order (0 = free / you confirm separately).
   // freeAbove: subtotal at/above which shipping is free (0 = never auto-free).
-  shipping: { flat: 0, freeAbove: 0 },
+  // strikethroughFrom: the "was" shipping price shown crossed out to signal the
+  //   free-shipping perk on the cart (e.g. 49 -> "₹49  FREE"). Set 0 to hide it.
+  shipping: { flat: 0, freeAbove: 0, strikethroughFrom: 49 },
+
+  // ---- DELIVERY ESTIMATE (location-independent) ----
+  // Shown as "Delivery in ~(dispatch+min)–(dispatch+max) days".
+  delivery: { dispatchDays: 2, transitDaysMin: 3, transitDaysMax: 7 },
+
+  // ---- AUTO-APPLIED COUPONS ----
+  // Applied automatically on the order value (AFTER per-product discounts).
+  // Stacks on top of product discounts. Highest matching tier wins.
+  // Add/adjust tiers freely; leave the array empty to disable.
+  coupons: {
+    autoOrderValue: [
+      { minSubtotal: 500, percentOff: 20, label: 'Festive 20% off (orders over ₹500)' },
+    ],
+  },
 
   // ---- ORDER RECORDING ----
   // Paste the Google Apps Script Web App URL here after deploying it

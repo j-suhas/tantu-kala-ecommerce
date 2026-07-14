@@ -9,12 +9,21 @@ export interface CustomerDetails {
   note?: string;
 }
 
+export interface OrderCoupon {
+  percentOff: number;
+  label: string;
+  discount: number;
+}
+
 export interface OrderPayload {
   ref: string;
   createdAt: string; // ISO
   items: CartItem[];
   itemCount: number;
-  subtotal: number;
+  subtotal: number;          // after per-product discounts, before coupon/shipping
+  coupon?: OrderCoupon | null;
+  shipping: number;
+  payable: number;           // what the customer is asked to pay via UPI
   customer: CustomerDetails;
 }
 
@@ -37,13 +46,16 @@ export function orderText(o: OrderPayload): string {
   const lines = o.items
     .map((i) => `${i.qty}x  ${i.name}  @ ${SITE.currencySymbol}${i.price}`)
     .join('\n');
+  const sym = SITE.currencySymbol;
   return [
     `Tantu Kala order  #${o.ref}`,
     '--------------------------------',
     lines,
     '--------------------------------',
-    `Items: ${o.itemCount}   Subtotal: ${SITE.currencySymbol}${o.subtotal}`,
-    '(final total incl. shipping confirmed by Tantu Kala)',
+    `Items: ${o.itemCount}   Subtotal: ${sym}${o.subtotal}`,
+    o.coupon ? `Coupon (${o.coupon.percentOff}% off): -${sym}${o.coupon.discount}` : '',
+    `Shipping: ${o.shipping === 0 ? 'Free' : sym + o.shipping}`,
+    `To pay: ${sym}${o.payable}`,
     '',
     `Name: ${o.customer.name}`,
     `Phone: ${o.customer.phone}`,

@@ -4,8 +4,17 @@ import ProductCard from '../components/ProductCard.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import { products } from '../data/products';
 import { SITE } from '../config/site.mjs';
+
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  sameAs: [SITE.instagram, SITE.facebook].filter(Boolean),
+};
 ---
-<Base>
+<Base jsonLd={orgLd}>
   <!-- Hero -->
   <section class="wrap pt-10 pb-6 sm:pt-16 sm:pb-10 text-center">
     <p class="text-saffron font-semibold tracking-wide uppercase text-sm">Raksha Bandhan 2026</p>
