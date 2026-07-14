@@ -11,6 +11,10 @@ export interface PriceInfo {
 /**
  * Compute the payable price. Discount is a percentage off `price`, rounded
  * UP to the nearest rupee (ceil) — so we never undercharge on rounding.
+ *
+ * The same ceil-discount math is intentionally re-implemented server-side in
+ * apps-script/Code.gs (expectedTotal_) for independent tamper detection — the two
+ * must stay in sync. Rules (prices/discounts) are shared via /pricing.json.
  */
 export function priceInfo(p: Product): PriceInfo {
   const d = typeof p.discountPercent === 'number' && p.discountPercent > 0 ? p.discountPercent : 0;

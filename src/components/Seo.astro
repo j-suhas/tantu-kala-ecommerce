@@ -7,7 +7,7 @@ interface Props {
   /** Absolute or root-relative path to a JPG/PNG OG image. */
   ogImage?: string;
   /** JSON-LD object, or an array of objects (e.g. Product + BreadcrumbList). */
-  jsonLd?: object;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 const {
