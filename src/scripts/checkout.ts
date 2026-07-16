@@ -266,11 +266,10 @@ $("checkout-form").addEventListener("submit", async (e) => {
   const btn = $("submit-btn") as HTMLButtonElement;
   btn.disabled = true;
   btn.textContent = "Placing order…";
-  try {
-    await recordOrder(payload);
-  } finally {
-    completeOrder(payload, payable);
-  }
+  // Record in the background (best-effort) and show the pay screen IMMEDIATELY —
+  // never make the customer wait on a slow/cold Apps Script webhook.
+  void recordOrder(payload);
+  completeOrder(payload, payable);
 });
 
 // ---- Payment screen ----
@@ -368,42 +367,64 @@ const pinInput = document.getElementById("pincode") as HTMLInputElement | null;
 const cityInput = document.getElementById("city") as HTMLInputElement | null;
 const stateInput = document.getElementById("state") as HTMLInputElement | null;
 const pinHint = document.getElementById("pin-hint");
-let lastPin = "";
+
+let pinDebounce: ReturnType<typeof setTimeout> | undefined;
+let pinCtrl: AbortController | null = null;
+let pinSeq = 0; // guards against out-of-order responses
+let lastGoodPin = ""; // only cache SUCCESSFUL lookups, so failures can retry
+let cityAuto = false; // did WE fill city (vs the user)?
+let stateAuto = false;
+
+function setHint(text: string, tone: "info" | "ok" | "warn") {
+  if (!pinHint) return;
+  pinHint.textContent = text;
+  pinHint.classList.remove("hidden", "text-leaf", "text-ink/50", "text-henna");
+  pinHint.classList.add(tone === "ok" ? "text-leaf" : tone === "warn" ? "text-henna" : "text-ink/50");
+}
+
+// If the user edits city/state themselves, stop auto-overwriting it.
+cityInput?.addEventListener("input", (e) => { if (e.isTrusted) cityAuto = false; });
+stateInput?.addEventListener("input", (e) => { if (e.isTrusted) stateAuto = false; });
+
+function pinDigits(): string {
+  return (pinInput?.value || "").replace(/\D/g, "").slice(0, 6);
+}
 
 pinInput?.addEventListener("input", () => {
-  const pin = (pinInput.value || "").replace(/\D/g, "").slice(0, 6);
-  if (pin.length !== 6 || pin === lastPin) return;
-  lastPin = pin;
-  void fetchPinLocation(pin);
+  clearTimeout(pinDebounce);
+  if (pinDigits().length !== 6) { pinHint?.classList.add("hidden"); return; }
+  pinDebounce = setTimeout(runPinLookup, 350); // wait for typing to settle
 });
+pinInput?.addEventListener("blur", () => runPinLookup());
 
-async function fetchPinLocation(pin: string) {
+async function runPinLookup() {
+  const pin = pinDigits();
+  if (pin.length !== 6 || pin === lastGoodPin) return;
+
+  pinCtrl?.abort(); // cancel any in-flight request
+  const ctrl = new AbortController();
+  pinCtrl = ctrl;
+  const seq = ++pinSeq;
+  setHint("Looking up pincode…", "info");
+
+  const timer = setTimeout(() => ctrl.abort(), 6000);
   try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 5000);
-    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, {
-      signal: ctrl.signal,
-    });
+    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, { signal: ctrl.signal });
     clearTimeout(timer);
+    if (seq !== pinSeq) return; // a newer lookup superseded this one
     const data = await res.json();
     const rec = Array.isArray(data) ? data[0] : null;
-    const po =
-      rec && rec.Status === "Success" && rec.PostOffice && rec.PostOffice[0];
-    if (!po) {
-      pinHint?.classList.add("hidden");
-      return;
-    }
-    // don't clobber a city the user already typed; always sync the read-only state
-    if (cityInput && !cityInput.value.trim())
-      cityInput.value = po.District || "";
-    if (stateInput) stateInput.value = po.State || "";
-    if (pinHint) {
-      pinHint.textContent = `📍 ${po.District}, ${po.State}`;
-      pinHint.classList.remove("hidden");
-    }
+    const po = rec && rec.Status === "Success" && rec.PostOffice && rec.PostOffice[0];
+    if (!po) { setHint("Couldn't find that pincode — please type your city & state.", "warn"); return; }
+
+    lastGoodPin = pin;
+    if (cityInput && (cityAuto || !cityInput.value.trim())) { cityInput.value = po.District || ""; cityAuto = true; }
+    if (stateInput && (stateAuto || !stateInput.value.trim())) { stateInput.value = po.State || ""; stateAuto = true; }
+    setHint(`📍 ${po.District}, ${po.State}`, "ok");
   } catch {
-    // API slow / unavailable / offline — user fills City manually. Never block.
-    pinHint?.classList.add("hidden");
+    clearTimeout(timer);
+    if (seq !== pinSeq) return; // superseded/aborted by a newer lookup
+    setHint("Couldn't reach the lookup — please type your city & state.", "warn");
   }
 }
 
