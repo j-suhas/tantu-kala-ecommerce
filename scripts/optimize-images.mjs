@@ -1,50 +1,72 @@
 /**
  * Image pipeline (run: `npm run optimize`).
- * For every product image in public/images/products/:
- *   - resizes to max 1200px and writes a .webp alongside it
- * For every product in src/data/products.json:
- *   - generates a stable public/og/<slug>.jpg (1200x630) for social previews
- *     (WhatsApp/Facebook need JPG/PNG, not webp).
- * Safe to run repeatedly; skips nothing, just regenerates.
+ *
+ * Drop a raw photo (even 2–5 MB) as public/images/products/<slug>.jpg, then run this.
+ * For every product image it:
+ *   1. Backs up your untouched master to public/images/products/_originals/ (once).
+ *   2. Resizes the served JPG/PNG in place to max 1400px, compressed (~100–250 KB).
+ *   3. Writes a .webp next to it (max 1200px) — what modern browsers actually load.
+ *   4. Generates a stable public/og/<slug>.jpg (1200×630) for WhatsApp/FB previews.
+ * Plus a default OG image. Idempotent: it always re-derives from the master in
+ * _originals/, so repeat runs never degrade quality.
  */
 import sharp from 'sharp';
-import { readFile, readdir, mkdir } from 'node:fs/promises';
+import { readFile, readdir, mkdir, copyFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'public', 'images', 'products');
+const ORIG = path.join(SRC, '_originals');
 const OG = path.join(ROOT, 'public', 'og');
 
+const MAX_DISPLAY = 1400; // longest edge for the served image
+const MAX_WEBP = 1200;
+
+const isImage = (f) => /\.(jpe?g|png)$/i.test(f);
+
 async function main() {
+  await mkdir(ORIG, { recursive: true });
   await mkdir(OG, { recursive: true });
 
-  // 1) webp variants
-  const files = existsSync(SRC) ? await readdir(SRC) : [];
-  for (const f of files) {
-    if (!/\.(jpe?g|png)$/i.test(f)) continue;
-    const input = path.join(SRC, f);
-    const webp = path.join(SRC, f.replace(/\.(jpe?g|png)$/i, '.webp'));
-    await sharp(input).resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 78 }).toFile(webp);
-    // also compress the original in place-ish (write to tmp then rename would be ideal;
-    // for MVP we leave originals untouched to avoid data loss)
-    console.log('webp:', path.basename(webp));
+  const files = existsSync(SRC) ? await readdir(SRC, { withFileTypes: true }) : [];
+  for (const ent of files) {
+    if (ent.isDirectory() || !isImage(ent.name)) continue;
+    const name = ent.name;
+    const served = path.join(SRC, name);
+    const master = path.join(ORIG, name);
+
+    // 1. Preserve the master once, before we ever compress the served copy.
+    if (!existsSync(master)) await copyFile(served, master);
+
+    // 2. Re-derive the served image from the master (idempotent, no cumulative loss).
+    // We read the master (in _originals/) and write the served copy — different files,
+    // so writing directly is safe (no same-file read/write conflict).
+    const isPng = /\.png$/i.test(name);
+    let pipe = sharp(master).rotate().resize({ width: MAX_DISPLAY, height: MAX_DISPLAY, fit: 'inside', withoutEnlargement: true });
+    pipe = isPng ? pipe.png({ compressionLevel: 9 }) : pipe.jpeg({ quality: 82, mozjpeg: true });
+    await pipe.toFile(served);
+
+    // 3. WebP variant (what browsers load first via <picture>).
+    const webp = path.join(SRC, name.replace(/\.(jpe?g|png)$/i, '.webp'));
+    await sharp(master).rotate().resize({ width: MAX_WEBP, withoutEnlargement: true }).webp({ quality: 78 }).toFile(webp);
+
+    console.log('optimized:', name, '(+webp)');
   }
 
-  // 2) per-product OG jpg
+  // 4. Per-product OG image (JPG/PNG only — WhatsApp won't render webp/avif).
   const products = JSON.parse(await readFile(path.join(ROOT, 'src', 'data', 'products.json'), 'utf8'));
   for (const p of products) {
-    const input = path.join(SRC, p.image);
+    const master = path.join(ORIG, p.image);
+    const source = existsSync(master) ? master : path.join(SRC, p.image);
+    if (!existsSync(source)) continue;
     const out = path.join(OG, `${p.slug}.jpg`);
-    if (existsSync(input)) {
-      await sharp(input).resize(1200, 630, { fit: 'cover' }).jpeg({ quality: 82 }).toFile(out);
-      console.log('og:', path.basename(out));
-    }
+    await sharp(source).rotate().resize(1200, 630, { fit: 'cover' }).jpeg({ quality: 82, mozjpeg: true }).toFile(out);
+    console.log('og:', path.basename(out));
   }
 
-  // 3) default OG
-  const def = path.join(OG, 'default.jpg');
+  // 5. Default OG (brand card).
   await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#7A1F2B' } })
     .composite([{
       input: Buffer.from(
@@ -54,7 +76,7 @@ async function main() {
       top: 0, left: 0,
     }])
     .jpeg({ quality: 82 })
-    .toFile(def);
+    .toFile(path.join(OG, 'default.jpg'));
   console.log('og: default.jpg');
 }
 

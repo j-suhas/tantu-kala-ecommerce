@@ -21,7 +21,6 @@ import { autoCoupon } from "../lib/coupon";
 import { upiLink, isMobile } from "../lib/upi";
 import { products } from "../data/products";
 import { SITE } from "../config/site.mjs";
-import QRCode from "qrcode";
 
 const sym = SITE.currencySymbol;
 const money = (n: number) => sym + n.toLocaleString("en-IN");
@@ -319,7 +318,11 @@ function renderPayScreen(ref: string, total: number, waText: string) {
     b.classList.remove("hidden");
   } else {
     $("upi-qr-wrap").classList.remove("hidden");
-    QRCode.toCanvas($("upi-qr"), uri, { width: 220, margin: 1 }, () => {});
+    // Load the ~30 kB QR library only when a QR is actually shown (desktop pay
+    // screen) — keeps the cart page's initial JS small.
+    void import("qrcode").then(({ default: QRCode }) =>
+      QRCode.toCanvas($("upi-qr"), uri, { width: 220, margin: 1 }, () => {}),
+    );
   }
 
   const wa = $("wa-confirm") as HTMLAnchorElement;
@@ -379,12 +382,22 @@ function setHint(text: string, tone: "info" | "ok" | "warn") {
   if (!pinHint) return;
   pinHint.textContent = text;
   pinHint.classList.remove("hidden", "text-leaf", "text-ink/50", "text-henna");
-  pinHint.classList.add(tone === "ok" ? "text-leaf" : tone === "warn" ? "text-henna" : "text-ink/50");
+  pinHint.classList.add(
+    tone === "ok"
+      ? "text-leaf"
+      : tone === "warn"
+        ? "text-henna"
+        : "text-ink/50",
+  );
 }
 
 // If the user edits city/state themselves, stop auto-overwriting it.
-cityInput?.addEventListener("input", (e) => { if (e.isTrusted) cityAuto = false; });
-stateInput?.addEventListener("input", (e) => { if (e.isTrusted) stateAuto = false; });
+cityInput?.addEventListener("input", (e) => {
+  if (e.isTrusted) cityAuto = false;
+});
+stateInput?.addEventListener("input", (e) => {
+  if (e.isTrusted) stateAuto = false;
+});
 
 function pinDigits(): string {
   return (pinInput?.value || "").replace(/\D/g, "").slice(0, 6);
@@ -392,7 +405,10 @@ function pinDigits(): string {
 
 pinInput?.addEventListener("input", () => {
   clearTimeout(pinDebounce);
-  if (pinDigits().length !== 6) { pinHint?.classList.add("hidden"); return; }
+  if (pinDigits().length !== 6) {
+    pinHint?.classList.add("hidden");
+    return;
+  }
   pinDebounce = setTimeout(runPinLookup, 350); // wait for typing to settle
 });
 pinInput?.addEventListener("blur", () => runPinLookup());
@@ -409,22 +425,40 @@ async function runPinLookup() {
 
   const timer = setTimeout(() => ctrl.abort(), 6000);
   try {
-    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, { signal: ctrl.signal });
+    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, {
+      signal: ctrl.signal,
+    });
     clearTimeout(timer);
     if (seq !== pinSeq) return; // a newer lookup superseded this one
     const data = await res.json();
     const rec = Array.isArray(data) ? data[0] : null;
-    const po = rec && rec.Status === "Success" && rec.PostOffice && rec.PostOffice[0];
-    if (!po) { setHint("Couldn't find that pincode — please type your city & state.", "warn"); return; }
+    const po =
+      rec && rec.Status === "Success" && rec.PostOffice && rec.PostOffice[0];
+    if (!po) {
+      setHint(
+        "Couldn't find that pincode — please type your city & state.",
+        "warn",
+      );
+      return;
+    }
 
     lastGoodPin = pin;
-    if (cityInput && (cityAuto || !cityInput.value.trim())) { cityInput.value = po.District || ""; cityAuto = true; }
-    if (stateInput && (stateAuto || !stateInput.value.trim())) { stateInput.value = po.State || ""; stateAuto = true; }
+    if (cityInput && (cityAuto || !cityInput.value.trim())) {
+      cityInput.value = po.District || "";
+      cityAuto = true;
+    }
+    if (stateInput && (stateAuto || !stateInput.value.trim())) {
+      stateInput.value = po.State || "";
+      stateAuto = true;
+    }
     setHint(`📍 ${po.District}, ${po.State}`, "ok");
   } catch {
     clearTimeout(timer);
     if (seq !== pinSeq) return; // superseded/aborted by a newer lookup
-    setHint("Couldn't reach the lookup — please type your city & state.", "warn");
+    setHint(
+      "Couldn't reach the lookup — please type your city & state.",
+      "warn",
+    );
   }
 }
 
