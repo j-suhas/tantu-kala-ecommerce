@@ -320,9 +320,18 @@ function renderPayScreen(ref: string, total: number, waText: string) {
     $("upi-qr-wrap").classList.remove("hidden");
     // Load the ~30 kB QR library only when a QR is actually shown (desktop pay
     // screen) — keeps the cart page's initial JS small.
-    void import("qrcode").then(({ default: QRCode }) =>
-      QRCode.toCanvas($("upi-qr"), uri, { width: 220, margin: 1 }, () => {}),
-    );
+    void import("qrcode")
+      .then(({ default: QRCode }) =>
+        QRCode.toCanvas($("upi-qr"), uri, { width: 220, margin: 1 }, () => {}),
+      )
+      .catch(() => {
+        // If the QR lib fails to load, fall back to the UPI ID shown just below —
+        // the pay flow stays usable, no blank box.
+        const wrap = $("upi-qr-wrap");
+        wrap.textContent =
+          "Couldn't load the QR — please pay to the UPI ID shown below.";
+        wrap.classList.add("text-sm", "text-ink/70");
+      });
   }
 
   const wa = $("wa-confirm") as HTMLAnchorElement;

@@ -41,16 +41,18 @@ async function main() {
     if (!existsSync(master)) await copyFile(served, master);
 
     // 2. Re-derive the served image from the master (idempotent, no cumulative loss).
-    // We read the master (in _originals/) and write the served copy — different files,
-    // so writing directly is safe (no same-file read/write conflict).
+    // Decode the master ONCE and .clone() the pipeline for each output, so a big
+    // batch doesn't re-decode the same large file twice per image.
     const isPng = /\.png$/i.test(name);
-    let pipe = sharp(master).rotate().resize({ width: MAX_DISPLAY, height: MAX_DISPLAY, fit: 'inside', withoutEnlargement: true });
-    pipe = isPng ? pipe.png({ compressionLevel: 9 }) : pipe.jpeg({ quality: 82, mozjpeg: true });
-    await pipe.toFile(served);
+    const base = sharp(master).rotate(); // single decode + auto-orient
+
+    let display = base.clone().resize({ width: MAX_DISPLAY, height: MAX_DISPLAY, fit: 'inside', withoutEnlargement: true });
+    display = isPng ? display.png({ compressionLevel: 9 }) : display.jpeg({ quality: 82, mozjpeg: true });
+    await display.toFile(served);
 
     // 3. WebP variant (what browsers load first via <picture>).
     const webp = path.join(SRC, name.replace(/\.(jpe?g|png)$/i, '.webp'));
-    await sharp(master).rotate().resize({ width: MAX_WEBP, withoutEnlargement: true }).webp({ quality: 78 }).toFile(webp);
+    await base.clone().resize({ width: MAX_WEBP, withoutEnlargement: true }).webp({ quality: 78 }).toFile(webp);
 
     console.log('optimized:', name, '(+webp)');
   }
