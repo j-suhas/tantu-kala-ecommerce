@@ -1,0 +1,15 @@
+{
+  // Cloudflare Workers "Static Assets" config: serve the Astro build (./dist) as a
+  // static site — no Worker script needed.
+  //
+  // IMPORTANT: "name" must match your Worker's name in the Cloudflare dashboard,
+  // otherwise the deploy targets the wrong (or a brand-new) Worker. Change it if
+  // your Worker is named differently.
+  "name": "tantu-kala-ecommerce",
+  "compatibility_date": "2026-07-24",
+  "assets": {
+    "directory": "./dist",
+    // Serve our branded /404.html for unknown routes.
+    "not_found_handling": "404-page",
+  },
+}

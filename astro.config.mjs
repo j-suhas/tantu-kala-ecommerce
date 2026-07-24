@@ -11,4 +11,6 @@ export default defineConfig({
   // applyBaseStyles:false because we ship our own base layer in src/styles/global.css
   integrations: [tailwind({ applyBaseStyles: false }), sitemap()],
   build: { format: 'directory' },
+  // Prefetch linked pages on hover for snappy catalog browsing (tiny runtime).
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });

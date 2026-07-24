@@ -18,7 +18,7 @@ export const SITE = {
   // WhatsApp number in international format, digits only, no + or spaces.
   whatsapp: '919975560123',
   instagram: 'https://www.instagram.com/tantu_kala_/',
-  facebook: 'https://facebook.com/tantukala',
+  facebook: 'https://www.facebook.com/share/1CjoDUUpzU/',
   email: 'sushama.jaybhaye@gmail.com',
 
   // ---- PAYMENT (Direct UPI) ----

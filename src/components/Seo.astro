@@ -43,5 +43,8 @@ const ogAbs = new URL(ogImage, SITE.url).href;
 <meta name="twitter:image" content={ogAbs} />
 
 {jsonLd && (
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+  />
 )}

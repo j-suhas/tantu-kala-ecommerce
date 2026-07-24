@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# image masters — kept local; the compressed served copies are committed
+public/images/products/_originals/
+
 # deps
 node_modules/
 

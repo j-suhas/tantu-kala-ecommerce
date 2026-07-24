@@ -53,8 +53,14 @@ Then run `npm run optimize` (makes the webp + social-preview image) and rebuild.
 
 ### 2. Replace an image
 Drop a JPG/PNG named exactly like the product's `image` into
-`public/images/products/`, run `npm run optimize`, rebuild. Use a roughly square photo
-(≥1000px) for best results.
+`public/images/products/` — **a full-size photo straight off your phone is fine** — then
+run `npm run optimize` and rebuild. The script:
+- backs up your untouched master to `public/images/products/_originals/` (kept local, not committed),
+- resizes the served image to ~1400px and compresses it (multi-MB → ~100–250 KB),
+- generates the `.webp` (what browsers load) and the 1200×630 social-preview image.
+
+It's idempotent (re-derives from the master), so re-running never degrades quality.
+Use a roughly square photo for best results in the grid.
 
 ### 3. Change the WhatsApp number, UPI ID, contact, cutoff — `src/config/site.mjs`
 - `whatsapp`: international format, digits only (e.g. `919812345678`).
