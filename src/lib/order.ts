@@ -6,6 +6,8 @@ export interface CustomerDetails {
   phone: string;
   address: string;
   pincode: string;
+  city?: string;
+  state?: string;
   note?: string;
 }
 
@@ -60,6 +62,8 @@ export function orderText(o: OrderPayload): string {
     `Name: ${o.customer.name}`,
     `Phone: ${o.customer.phone}`,
     `Address: ${o.customer.address}`,
+    o.customer.city ? `City: ${o.customer.city}` : '',
+    o.customer.state ? `State: ${o.customer.state}` : '',
     `Pincode: ${o.customer.pincode}`,
     o.customer.note ? `Note: ${o.customer.note}` : '',
   ]

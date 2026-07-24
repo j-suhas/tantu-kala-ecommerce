@@ -3,11 +3,25 @@ import { SITE } from '../config/site.mjs';
 
 const cutoff = new Date(SITE.orderCutoffISO);
 const label = cutoff.toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+
+// Advertise the auto-applied order-value coupon (lowest threshold tier).
+// Driven by SITE.coupons so the banner never drifts from the actual rule.
+const tiers = SITE.coupons?.autoOrderValue ?? [];
+const promoTier = tiers.length ? [...tiers].sort((a, b) => a.minSubtotal - b.minSubtotal)[0] : null;
+const promo = promoTier
+  ? `${promoTier.percentOff}% OFF orders over ${SITE.currencySymbol}${promoTier.minSubtotal} — auto-applied, no code needed`
+  : null;
 ---
 
 <div id="cutoff-banner" class="hidden bg-maroon text-cream text-center text-sm py-2 px-4">
   🪢 Raksha Bandhan is near — order by <strong>{label}</strong> to ship in time<span id="cutoff-days"></span>
 </div>
+
+{promo && (
+  <div class="bg-saffron text-white text-center text-sm py-1.5 px-4 font-medium">
+    🎁 {promo}
+  </div>
+)}
 
 <script define:vars={{ cutoffISO: SITE.orderCutoffISO }}>
   // Computed per-visitor at runtime so "X days left" is never stale.
