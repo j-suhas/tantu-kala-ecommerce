@@ -24,7 +24,19 @@ const VALID_STATUS: ProductStatus[] = ['available', 'made_to_order', 'sold_out']
  * never crash a page or the build. Anything off gets coerced to a safe default,
  * and (in dev only) logged so you can find and fix the source.
  */
-function normalize(raw: Record<string, any>): Product {
+function normalize(raw: Record<string, any>): Product | null {
+  // Critical fields — a product without these is unusable. Skip it (so a half-
+  // baked entry never renders) and warn loudly rather than silently emitting it.
+  const slug = String(raw?.slug ?? '').trim();
+  const name = String(raw?.name ?? '').trim();
+  const image = String(raw?.image ?? '').trim();
+  if (!slug || !name || !image) {
+    console.warn(
+      `[products.json] SKIPPED entry missing slug/name/image: ${JSON.stringify({ slug, name, image })}`,
+    );
+    return null;
+  }
+
   const issues: string[] = [];
 
   let status = String(raw?.status ?? '').trim().toLowerCase();
@@ -51,10 +63,10 @@ function normalize(raw: Record<string, any>): Product {
   }
 
   return {
-    slug: String(raw?.slug ?? ''),
-    name: String(raw?.name ?? ''),
+    slug,
+    name,
     price,
-    image: String(raw?.image ?? ''),
+    image,
     shortDescription: String(raw?.shortDescription ?? ''),
     description: String(raw?.description ?? ''),
     status: status as ProductStatus,
@@ -65,7 +77,9 @@ function normalize(raw: Record<string, any>): Product {
   };
 }
 
-export const products: Product[] = (data as Record<string, any>[]).map(normalize);
+export const products: Product[] = (data as Record<string, any>[])
+  .map(normalize)
+  .filter((p): p is Product => p !== null);
 
 export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);

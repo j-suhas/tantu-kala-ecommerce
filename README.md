@@ -54,8 +54,8 @@ Then run `npm run optimize` (makes the webp + social-preview image) and rebuild.
 
 ### 2. Add / replace an image
 
-Put your original photo — any size or format, straight off the phone is fine — in
-**`image-masters/<slug>.<ext>`** (that folder is local-only, git-ignored, and lives
+Put your original photo — any size, common format (JPG/PNG/WebP; export iPhone HEIC to
+JPG first) — in **`image-masters/<slug>.<ext>`** (that folder is local-only, git-ignored, and lives
 _outside_ `public/` so masters never bloat the build). The `image` field in
 `products.json` should be `"<slug>.jpg"`. Then run `npm run optimize`.
 
