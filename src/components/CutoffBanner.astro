@@ -9,11 +9,11 @@ const label = cutoff.toLocaleDateString('en-IN', { day: 'numeric', month: 'long'
 const tiers = SITE.coupons?.autoOrderValue ?? [];
 const promoTier = tiers.length ? [...tiers].sort((a, b) => a.minSubtotal - b.minSubtotal)[0] : null;
 const promo = promoTier
-  ? `${promoTier.percentOff}% OFF orders over ${SITE.currencySymbol}${promoTier.minSubtotal} — auto-applied, no code needed`
+  ? `Extra ${promoTier.percentOff}% OFF orders over ${SITE.currencySymbol}${promoTier.minSubtotal} — auto-applied, no code needed`
   : null;
 ---
 
-<div id="cutoff-banner" class="hidden bg-maroon text-cream text-center text-sm py-2 px-4">
+<div id="cutoff-banner" data-cutoff={SITE.orderCutoffISO} class="hidden bg-maroon text-cream text-center text-sm py-2 px-4">
   🪢 Raksha Bandhan is near — order by <strong>{label}</strong> to ship in time<span id="cutoff-days"></span>
 </div>
 
@@ -23,13 +23,17 @@ const promo = promoTier
   </div>
 )}
 
-<script define:vars={{ cutoffISO: SITE.orderCutoffISO }}>
-  // Computed per-visitor at runtime so "X days left" is never stale.
+<script>
+  // Hoisted to an external module (CSP-safe — no inline script). Reads the cutoff
+  // date from the banner's data attribute; computed per-visitor so it's never stale.
   const banner = document.getElementById('cutoff-banner');
   const daysEl = document.getElementById('cutoff-days');
-  const days = Math.ceil((new Date(cutoffISO).getTime() - Date.now()) / 86400000);
-  if (banner && days > 0) {
-    banner.classList.remove('hidden');
-    if (days <= 21 && daysEl) daysEl.textContent = ` · just ${days} day${days === 1 ? '' : 's'} left`;
+  if (banner) {
+    const cutoffISO = banner.dataset.cutoff;
+    const days = Math.ceil((new Date(cutoffISO).getTime() - Date.now()) / 86400000);
+    if (days > 0) {
+      banner.classList.remove('hidden');
+      if (days <= 21 && daysEl) daysEl.textContent = ` · just ${days} day${days === 1 ? '' : 's'} left`;
+    }
   }
 </script>

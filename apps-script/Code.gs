@@ -10,7 +10,7 @@ var NOTIFY_EMAIL = "suhasjaybhaye.sj@gmail.com";
 // Your deployed site URL (e.g. https://tantukala.pages.dev). Used to fetch the
 // authoritative price list (/pricing.json) and re-verify the order total
 // server-side, so a tampered cart/coupon is flagged. Leave '' to skip verification.
-var SITE_URL = "";
+var SITE_URL = "https://tantu-kala-ecommerce.suhasjaybhaye-sj.workers.dev";
 
 function doPost(e) {
   try {

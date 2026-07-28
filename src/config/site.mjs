@@ -8,7 +8,9 @@ export const SITE = {
   tagline: 'Handmade crochet, knotted with love',
   // Canonical site URL — used for OG images, sitemap, JSON-LD.
   // At deploy time set this to your live URL (e.g. https://tantukala.pages.dev).
-  url: 'https://tantukala.pages.dev',
+  // Live URL — drives canonical, OG images, sitemap, robots. Update to your custom
+  // domain once it's attached, then rebuild/redeploy.
+  url: 'https://tantu-kala-ecommerce.suhasjaybhaye-sj.workers.dev',
   description:
     'Tantu Kala makes handmade crochet rakhis and gifts — each piece knotted by hand. Book on our site and pay securely via UPI.',
   currency: 'INR',
