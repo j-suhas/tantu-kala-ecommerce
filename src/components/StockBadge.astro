@@ -12,7 +12,7 @@ const map = {
   sold_out: { text: 'Sold out', cls: 'bg-ink/60 text-white' },
 } as const;
 
-const b = map[product.status];
+const b = map[product.status] ?? map.available;
 ---
 <span class={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${b.cls}`}>
   {b.text}

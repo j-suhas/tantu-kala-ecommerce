@@ -52,18 +52,23 @@ Then run `npm run optimize` (makes the webp + social-preview image) and rebuild.
 - **Sold out?** set `"status": "sold_out"` — the card greys out and Add-to-cart disappears.
 - **Made to order?** set `"status": "made_to_order"` and a `leadTimeDays`.
 
-### 2. Replace an image
+### 2. Add / replace an image
 
-Drop a JPG/PNG named exactly like the product's `image` into
-`public/images/products/` — **a full-size photo straight off your phone is fine** — then
-run `npm run optimize` and rebuild. The script:
+Put your original photo — any size or format, straight off the phone is fine — in
+**`image-masters/<slug>.<ext>`** (that folder is local-only, git-ignored, and lives
+_outside_ `public/` so masters never bloat the build). The `image` field in
+`products.json` should be `"<slug>.jpg"`. Then run `npm run optimize`.
 
-- backs up your untouched master to `public/images/products/_originals/` (kept local, not committed),
-- resizes the served image to ~1400px and compresses it (multi-MB → ~100–250 KB),
-- generates the `.webp` (what browsers load) and the 1200×630 social-preview image.
+For every product the script regenerates, from the master, into `public/images/products/`:
 
-It's idempotent (re-derives from the master), so re-running never degrades quality.
-Use a roughly square photo for best results in the grid.
+- **`<slug>.jpg`** — a compressed JPG fallback (~100–250 KB), even if the master is a PNG,
+- **`<slug>.webp`** — what modern browsers actually load (via `<picture>`),
+
+plus **`public/og/<slug>.jpg`** (1200×630) for WhatsApp/Facebook link previews.
+
+It never ships PNGs (huge for photos) and auto-deletes stale/orphan images. Idempotent —
+always re-derived from the master, so re-running never degrades quality. Use a roughly
+square photo for best results in the grid.
 
 ### 3. Change the WhatsApp number, UPI ID, contact, cutoff — `src/config/site.mjs`
 
