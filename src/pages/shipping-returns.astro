@@ -1,47 +1,51 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config/site.mjs';
+
+const cutoffLabel = new Date(SITE.orderCutoffISO).toLocaleDateString('en-IN', {
+  day: 'numeric',
+  month: 'long',
+});
 ---
 <Base title="Shipping & Returns" description="How Tantu Kala ships handmade orders, and our returns & refund policy.">
-  <div class="wrap py-10 max-w-2xl prose-tk">
+  <div class="wrap py-10 max-w-2xl">
     <h1 class="text-4xl">Shipping & Returns</h1>
-    <p class="mt-2 text-sm text-ink/60">
-      Please review this before ordering. <em>Edit the bracketed parts to match your real policy.</em>
-    </p>
+    <p class="mt-2 text-sm text-ink/60">Everything you need to know before you order.</p>
 
     <h2 class="text-2xl mt-8">Payment</h2>
     <p class="mt-2 text-ink/80">
-      We accept secure <strong>UPI</strong> payment on this website. After you place an order you'll
-      get an order number and a UPI payment option (tap-to-pay on mobile, scan-QR on desktop).
-      We verify your payment against your order number before we dispatch.
+      We accept secure <strong>UPI</strong> payment on this website. After you place an order
+      you'll get an order number and a UPI payment option — tap-to-pay on mobile, scan-QR on
+      desktop. We verify your payment against your order number before we dispatch.
     </p>
 
     <h2 class="text-2xl mt-8">Shipping</h2>
     <p class="mt-2 text-ink/80">
-      We ship across India. <em>[State your courier, dispatch time, and delivery estimate — e.g.
-      "Orders are dispatched within 2–4 days; delivery in 3–7 days depending on location."]</em>
-      For Raksha Bandhan, order by <strong>{new Date(SITE.orderCutoffISO).toLocaleDateString('en-IN', { day: 'numeric', month: 'long' })}</strong>
-      to receive in time.
+      We ship across India. Orders are usually <strong>dispatched within 2 working days</strong>,
+      and most reach you in about <strong>5–9 days</strong> depending on your location. We'll keep
+      you posted on WhatsApp once your order is on its way. For Raksha Bandhan, please order by
+      <strong>{cutoffLabel}</strong> to receive it in time.
     </p>
 
     <h2 class="text-2xl mt-8">Returns & Refunds</h2>
     <p class="mt-2 text-ink/80">
-      Every piece is <strong>handmade to order</strong>, so we're unable to accept returns for
-      change of mind. If your order arrives <strong>damaged or incorrect</strong>, message us within
-      <em>[48 hours]</em> with a photo and we'll replace it or refund you. <em>[State how refunds are
-      issued and the timeline.]</em>
+      Every piece is <strong>handmade to order</strong>, so we're unable to accept returns for a
+      change of mind. If your order arrives <strong>damaged or incorrect</strong>, message us
+      within <strong>48 hours</strong> of delivery with a photo and we'll make it right — a
+      replacement or a full refund. Refunds go back to your original UPI account, usually within
+      <strong>5–7 working days</strong>.
     </p>
 
     <h2 class="text-2xl mt-8">Handmade note</h2>
     <p class="mt-2 text-ink/80">
-      Because each rakhi is crocheted by hand, small variations in colour and size are natural and
-      not considered defects.
+      Because each rakhi is crocheted by hand, small variations in colour, size, and finish are
+      natural and part of the charm — they aren't considered defects.
     </p>
 
     <h2 class="text-2xl mt-8">Privacy</h2>
     <p class="mt-2 text-ink/80">
-      This site takes no payment data and stores nothing on your device except your cart. The
-      delivery details you enter at checkout are used only to process and ship your order.
+      This site takes no card/payment data and stores nothing on your device except your cart.
+      The delivery details you enter at checkout are used only to process and ship your order.
     </p>
 
     <div class="mt-8 card p-5 bg-sand">

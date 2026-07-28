@@ -28,21 +28,22 @@ npm run preview    # preview the built site
 ## The 4 things you'll actually edit
 
 ### 1. Add / change a product — `src/data/products.json`
+
 Add one object, drop one image in `public/images/products/`. That's it.
 
 ```json
 {
-  "slug": "rose-rakhi",                     // URL + filename id (no spaces)
+  "slug": "rose-rakhi", // URL + filename id (no spaces)
   "name": "Rose Rakhi",
-  "price": 189,                              // rupees, number only
-  "image": "rose-rakhi.jpg",                // file in public/images/products/
+  "price": 189, // rupees, number only
+  "image": "rose-rakhi.jpg", // file in public/images/products/
   "shortDescription": "One line for cards & previews.",
   "description": "Full paragraph for the product page.",
-  "status": "available",                    // available | made_to_order | sold_out
-  "stock": 20,                               // optional
-  "leadTimeDays": 4,                         // optional, for made_to_order
-  "discountPercent": 15,                     // optional, % off price (shown discounted, rounded up)
-  "tags": ["floral"]                         // optional
+  "status": "available", // available | made_to_order | sold_out
+  "stock": 20, // optional
+  "leadTimeDays": 4, // optional, for made_to_order
+  "discountPercent": 15, // optional, % off price (shown discounted, rounded up)
+  "tags": ["floral"] // optional
 }
 ```
 
@@ -51,30 +52,39 @@ Then run `npm run optimize` (makes the webp + social-preview image) and rebuild.
 - **Sold out?** set `"status": "sold_out"` — the card greys out and Add-to-cart disappears.
 - **Made to order?** set `"status": "made_to_order"` and a `leadTimeDays`.
 
-### 2. Replace an image
-Drop a JPG/PNG named exactly like the product's `image` into
-`public/images/products/` — **a full-size photo straight off your phone is fine** — then
-run `npm run optimize` and rebuild. The script:
-- backs up your untouched master to `public/images/products/_originals/` (kept local, not committed),
-- resizes the served image to ~1400px and compresses it (multi-MB → ~100–250 KB),
-- generates the `.webp` (what browsers load) and the 1200×630 social-preview image.
+### 2. Add / replace an image
 
-It's idempotent (re-derives from the master), so re-running never degrades quality.
-Use a roughly square photo for best results in the grid.
+Put your original photo — any size, common format (JPG/PNG/WebP; export iPhone HEIC to
+JPG first) — in **`image-masters/<slug>.<ext>`** (that folder is local-only, git-ignored, and lives
+_outside_ `public/` so masters never bloat the build). The `image` field in
+`products.json` should be `"<slug>.jpg"`. Then run `npm run optimize`.
+
+For every product the script regenerates, from the master, into `public/images/products/`:
+
+- **`<slug>.jpg`** — a compressed JPG fallback (~100–250 KB), even if the master is a PNG,
+- **`<slug>.webp`** — what modern browsers actually load (via `<picture>`),
+
+plus **`public/og/<slug>.jpg`** (1200×630) for WhatsApp/Facebook link previews.
+
+It never ships PNGs (huge for photos) and auto-deletes stale/orphan images. Idempotent —
+always re-derived from the master, so re-running never degrades quality. Use a roughly
+square photo for best results in the grid.
 
 ### 3. Change the WhatsApp number, UPI ID, contact, cutoff — `src/config/site.mjs`
+
 - `whatsapp`: international format, digits only (e.g. `919812345678`).
 - `upi.vpa` + `upi.payeeName`: your UPI ID and display name.
 - `orderCutoffISO` / `rakhiDateISO`: drives the countdown banner.
 - `shipping.flat` / `shipping.freeAbove`: set flat shipping, or leave `0` to confirm it yourself.
 - `shipping.strikethroughFrom`: the "was" shipping price shown struck-through on the cart to signal free shipping (e.g. `49` → "₹49 FREE"); `0` hides it.
 - `delivery.dispatchDays` / `transitDaysMin` / `transitDaysMax`: drives the "Delivery in ~X–Y days" estimate shown on product, cart and pay screens.
-- `coupons.autoOrderValue`: auto-applied order-value discounts (e.g. `{ minSubtotal: 500, percentOff: 20 }` = 20% off orders over ₹500). Stacks on top of per-product `discountPercent`; highest matching tier wins. These rules are also served at `/pricing.json` and re-checked server-side by the Apps Script to catch tampering — so keep the rules here as the single source of truth.
+- `coupons.autoOrderValue`: auto-applied order-value discounts (e.g. `{ minSubtotal: 500, percentOff: 20 }` = Extra 20% off orders over ₹500). Stacks on top of per-product `discountPercent`; highest matching tier wins. These rules are also served at `/pricing.json` and re-checked server-side by the Apps Script to catch tampering — so keep the rules here as the single source of truth.
 - `url`: set to your live domain before deploying (used for social previews & sitemap).
 
 Security headers (incl. a Content-Security-Policy) ship in **`public/_headers`** and apply automatically on Cloudflare Pages / Netlify. If you add a new external script/style/font/API domain, add it to the matching CSP directive there.
 
 ### 4. Turn on order recording (Sheet + email)
+
 Follow `apps-script/README.md` (5 min), then paste the Web App URL into
 `site.mjs → orderWebhookUrl`. Until you do, the site still works — orders just aren't logged.
 
@@ -94,11 +104,13 @@ previews and the sitemap use the right domain.
 ---
 
 ## Payment note (v1)
+
 Direct UPI, ₹0 fees. Payment confirmation is **manual**: match the incoming UPI credit to
 the order ref (`#TK-…`) in the Sheet, verify the amount, then ship. Automated confirmation
 via Razorpay is a planned fast-follow (start KYC early — see `MVP-SCOPE.md`).
 
 ## Project map
+
 ```
 src/config/site.mjs      ← all settings you edit
 src/data/products.json   ← the catalog

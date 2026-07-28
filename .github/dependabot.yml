@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    # Astro is intentionally pinned to v4 (v5+ needs a Tailwind migration).
+    # Ignore its majors so Dependabot doesn't churn on a known deferral.
+    ignore:
+      - dependency-name: "astro"
+        update-types: ["version-update:semver-major"]
