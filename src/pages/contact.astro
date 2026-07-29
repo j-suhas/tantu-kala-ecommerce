@@ -14,18 +14,30 @@ import { SITE } from '../config/site.mjs';
         <span class="font-medium">WhatsApp</span><span class="text-henna">Message us →</span>
       </a>
       <a href={SITE.instagram} class="card p-4 flex items-center justify-between hover:bg-sand">
-        <span class="font-medium">Instagram</span><span class="text-henna">@tantukala →</span>
+        <span class="font-medium">Instagram</span><span class="text-henna">@tantu_kala_ →</span>
       </a>
       <a href={SITE.facebook} class="card p-4 flex items-center justify-between hover:bg-sand">
         <span class="font-medium">Facebook</span><span class="text-henna">Visit page →</span>
       </a>
-      <a href={`mailto:${SITE.email}`} class="card p-4 flex items-center justify-between hover:bg-sand">
-        <span class="font-medium">Email</span><span class="text-henna">{SITE.email} →</span>
-      </a>
+      <div class="card p-4 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="font-medium">Email</p>
+          <p class="text-sm text-ink/70 truncate select-text">{SITE.email}</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span id="copy-email-done" class="opacity-0 transition-opacity text-leaf text-xs font-medium">Copied ✓</span>
+          <button id="copy-email" data-email={SITE.email} class="btn-outline !px-3 !py-1.5 text-xs">Copy</button>
+          <a href={`mailto:${SITE.email}`} class="text-henna text-sm whitespace-nowrap">Email us →</a>
+        </div>
+      </div>
     </div>
 
     <p class="mt-6 text-sm text-ink/60">
       Ordering? Just add items to your cart and check out — you don't need to message us first.
     </p>
   </div>
+
+  <script>
+    import '../scripts/contact';
+  </script>
 </Base>

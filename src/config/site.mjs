@@ -4,31 +4,31 @@
  * the WhatsApp number, the UPI ID, and the order cutoff. See README.
  */
 export const SITE = {
-  name: 'Tantu Kala',
-  tagline: 'Handmade crochet, knotted with love',
+  name: "Tantu Kala",
+  tagline: "Handmade crochet, knotted with love",
   // Canonical site URL — used for OG images, sitemap, JSON-LD.
   // At deploy time set this to your live URL (e.g. https://tantukala.pages.dev).
   // Live URL — drives canonical, OG images, sitemap, robots. Update to your custom
   // domain once it's attached, then rebuild/redeploy.
-  url: 'https://tantu-kala-ecommerce.suhasjaybhaye-sj.workers.dev',
+  url: "https://tantukala.embox.in",
   description:
-    'Tantu Kala makes handmade crochet rakhis and gifts — each piece knotted by hand. Book on our site and pay securely via UPI.',
-  currency: 'INR',
-  currencySymbol: '₹',
+    "Tantu Kala makes handmade crochet rakhis and gifts — each piece knotted by hand. Book on our site and pay securely via UPI.",
+  currency: "INR",
+  currencySymbol: "₹",
 
   // ---- CONTACT / SOCIAL (placeholders — replace before launch) ----
   // WhatsApp number in international format, digits only, no + or spaces.
-  whatsapp: '919975560123',
-  instagram: 'https://www.instagram.com/tantu_kala_/',
-  facebook: 'https://www.facebook.com/share/1CjoDUUpzU/',
-  email: 'sushama.jaybhaye@gmail.com',
+  whatsapp: "918999282304",
+  instagram: "https://www.instagram.com/tantu_kala_/",
+  facebook: "https://www.facebook.com/share/1CjoDUUpzU/",
+  email: "tantu.kala@gmail.com",
 
   // ---- PAYMENT (Direct UPI) ----
   upi: {
     // Your UPI VPA, e.g. 'tantukala@okhdfcbank' (placeholder below).
-    vpa: 'sushama.jaybhaye@oksbi',
+    vpa: "sushama.jaybhaye@oksbi",
     // Payee name shown in the customer's UPI app.
-    payeeName: 'Tantu Kala',
+    payeeName: "Tantu Kala",
   },
 
   // ---- SHIPPING ----
@@ -51,7 +51,7 @@ export const SITE = {
       {
         minSubtotal: 500,
         percentOff: 20,
-        label: 'Festive 20% off (orders over ₹500)',
+        label: "Festive 20% off (orders over ₹500)",
       },
     ],
   },
@@ -61,21 +61,21 @@ export const SITE = {
   // (see apps-script/README.md). Leave '' to disable remote recording
   // (the site still works; orders just aren't logged to the sheet).
   orderWebhookUrl:
-    'https://script.google.com/macros/s/AKfycbzbFWKgHdvS_mNwo0ysWA1fDnmkeW0-sLjbx9kBVB_e54Xwhtd73qeGnb51V9sVDZtk/exec',
+    "https://script.google.com/macros/s/AKfycbzbFWKgHdvS_mNwo0ysWA1fDnmkeW0-sLjbx9kBVB_e54Xwhtd73qeGnb51V9sVDZtk/exec",
 
   // ---- RAKSHA BANDHAN 2026 ----
   // Verify the festival date; set the order cutoff you can reliably ship by.
-  rakhiDateISO: '2026-08-28',
-  orderCutoffISO: '2026-08-20',
+  rakhiDateISO: "2026-08-28",
+  orderCutoffISO: "2026-08-20",
 
   // ---- ANALYTICS ----
   // Cloudflare Web Analytics token (added after deploy). Leave '' to disable.
-  cfAnalyticsToken: '',
+  cfAnalyticsToken: "",
 };
 
 export const NAV = [
-  { label: 'Rakhis', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Shipping & Returns', href: '/shipping-returns' },
-  { label: 'Contact', href: '/contact' },
+  { label: "Rakhis", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Shipping & Returns", href: "/shipping-returns" },
+  { label: "Contact", href: "/contact" },
 ];

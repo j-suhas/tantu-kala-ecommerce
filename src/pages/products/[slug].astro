@@ -10,8 +10,11 @@ import {
   type Product,
 } from '../../data/products';
 import { payablePrice } from '../../lib/pricing';
+import { inr } from '../../lib/format';
 import PriceTag from '../../components/PriceTag.astro';
 import DeliveryEstimate from '../../components/DeliveryEstimate.astro';
+import ShareButton from '../../components/ShareButton.astro';
+import RelatedProducts from '../../components/RelatedProducts.astro';
 import { SITE } from '../../config/site.mjs';
 
 export function getStaticPaths() {
@@ -66,14 +69,14 @@ const jsonLd = [productLd, breadcrumbLd];
     <a href="/" class="text-sm text-henna hover:underline">← All rakhis</a>
 
     <div class="mt-4 grid gap-8 md:grid-cols-2">
-      <div class="card overflow-hidden">
+      <div class="card overflow-hidden relative aspect-square">
         <picture>
           <source srcset={productImageWebp(product)} type="image/webp" />
           <img
             src={productImage(product)}
             alt={product.name}
             width="900" height="900"
-            class="w-full aspect-square object-cover"
+            class="img-fade absolute inset-0 h-full w-full object-cover"
           />
         </picture>
       </div>
@@ -116,6 +119,8 @@ const jsonLd = [productLd, breadcrumbLd];
           </a>
         )}
 
+        <div class="mt-5"><ShareButton title={product.name} /></div>
+
         <div class="mt-8 border-t border-ink/10 pt-5 text-sm text-ink/70 space-y-1">
           <p>✓ Handmade to order in pure cotton yarn</p>
           <p>✓ Secure UPI payment · confirmed by us before dispatch</p>
@@ -125,15 +130,26 @@ const jsonLd = [productLd, breadcrumbLd];
     </div>
   </div>
 
+  <RelatedProducts product={product} />
+
+  {buyable && (
+    <div
+      id="sticky-bar"
+      class="sm:hidden fixed bottom-0 inset-x-0 z-40 translate-y-full transition-transform duration-300 bg-cream/95 backdrop-blur ring-1 ring-ink/10 px-4 py-3 flex items-center justify-between gap-3"
+    >
+      <span class="font-display text-lg text-maroon">{inr(payablePrice(product))}</span>
+      <button
+        id="sticky-add"
+        class="btn-accent add-to-cart flex-1 max-w-[62%]"
+        data-slug={product.slug}
+        data-name={product.name}
+        data-price={payablePrice(product)}
+        data-qty="1"
+      >Add to cart</button>
+    </div>
+  )}
+
   <script>
-    // Keep the "Add to cart" qty in sync with the number input.
-    const qty = document.getElementById('qty');
-    const btn = document.getElementById('add-btn');
-    qty?.addEventListener('input', () => {
-      const max = Number(qty.max) || Infinity;
-      const val = Math.min(max, Math.max(1, Number(qty.value) || 1));
-      qty.value = String(val);
-      if (btn) btn.dataset.qty = String(val);
-    });
+    import '../../scripts/product';
   </script>
 </Base>

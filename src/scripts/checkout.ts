@@ -15,6 +15,7 @@ import {
   makeOrderRef,
   orderText,
   recordOrder,
+  claimPaid,
   type OrderPayload,
 } from "../lib/order";
 import { autoCoupon } from "../lib/coupon";
@@ -26,6 +27,11 @@ const sym = SITE.currencySymbol;
 const money = (n: number) => sym + n.toLocaleString("en-IN");
 const $ = (id: string) => document.getElementById(id)!;
 const LAST_ORDER_KEY = "tk_last_order_v1";
+
+// Pay-screen state used by the "I've completed the payment" confirmation step.
+let currentRef = ""; // the order ref currently shown on the pay screen
+let placedSummary = ""; // one-line summary shown on the "order placed" screen
+let claimed = false; // guards the claim POST against double taps
 
 // Validation patterns — mirrored server-side in apps-script/Code.gs (validateOrder).
 // Keep the two in sync. Name = any letter (Unicode, so Indian names in any script)
@@ -43,6 +49,9 @@ const stockOf: Record<string, number> = {};
 for (const p of products)
   if (p.status === "available" && typeof p.stock === "number")
     stockOf[p.slug] = p.stock;
+
+const imageOf: Record<string, string> = {};
+for (const p of products) imageOf[p.slug] = p.image;
 
 let paid = false;
 
@@ -101,7 +110,15 @@ function cartRow(it: {
   remove.className = "remove text-henna text-sm";
   remove.textContent = "Remove";
 
-  li.append(info, qty, remove);
+  const thumb = document.createElement("img");
+  thumb.src = `/images/products/${imageOf[it.slug] || it.slug + ".jpg"}`;
+  thumb.alt = it.name;
+  thumb.width = 48;
+  thumb.height = 48;
+  thumb.loading = "lazy";
+  thumb.className = "w-12 h-12 rounded-lg object-cover bg-sand shrink-0";
+
+  li.append(thumb, info, qty, remove);
   return li;
 }
 
@@ -156,7 +173,21 @@ function renderCart() {
   }
 
   renderShipping(sub, ship);
-  $("total").textContent = money(sub - (coupon ? coupon.discount : 0) + ship);
+  const totalStr = money(sub - (coupon ? coupon.discount : 0) + ship);
+  $("total").textContent = totalStr;
+  const stickyTotal = document.getElementById("sticky-total");
+  if (stickyTotal) stickyTotal.textContent = totalStr;
+
+  // "Add ₹X more to unlock the coupon" nudge (only when below the lowest tier).
+  const tiers = SITE.coupons?.autoOrderValue ?? [];
+  const tier = tiers.length ? [...tiers].sort((a, b) => a.minSubtotal - b.minSubtotal)[0] : null;
+  const nudge = $("coupon-nudge");
+  if (tier && !coupon && sub < tier.minSubtotal) {
+    nudge.textContent = `Add ${money(tier.minSubtotal - sub)} more to unlock Extra ${tier.percentOff}% off 🎁`;
+    nudge.classList.remove("hidden");
+  } else {
+    nudge.classList.add("hidden");
+  }
 }
 
 itemsEl.addEventListener("input", (e) => {
@@ -174,6 +205,13 @@ itemsEl.addEventListener("click", (e) => {
 window.addEventListener(CART_EVENT, renderCart);
 
 // ---- Validation ----
+function fieldEl(field: string): HTMLInputElement | null {
+  const sel = field === "pincode" ? "#pincode" : field === "city" ? "#city" : `[name=${field}]`;
+  return document.querySelector(sel);
+}
+function fieldVal(field: string): string {
+  return (fieldEl(field)?.value ?? "").trim();
+}
 function showErr(field: string, msg: string) {
   const el = document.getElementById("err-" + field);
   if (el) {
@@ -181,10 +219,8 @@ function showErr(field: string, msg: string) {
     el.classList.remove("hidden");
   }
 }
-function clearErrs() {
-  ["name", "phone", "address", "pincode", "city"].forEach((f) =>
-    document.getElementById("err-" + f)?.classList.add("hidden"),
-  );
+function clearErr(field: string) {
+  document.getElementById("err-" + field)?.classList.add("hidden");
 }
 function normPhone(raw: string): string {
   let d = (raw || "").replace(/\D/g, "");
@@ -193,43 +229,40 @@ function normPhone(raw: string): string {
   return d;
 }
 
+/** Validate one field, showing/clearing its inline error. Returns true if valid. */
+function validateField(field: string): boolean {
+  const v = fieldVal(field);
+  let msg = "";
+  if (field === "name") { if (!NAME_RE.test(v)) msg = "Enter your name (2–50 letters)."; }
+  else if (field === "phone") { if (!PHONE_RE.test(normPhone(v))) msg = "Enter a valid 10-digit Indian mobile number."; }
+  else if (field === "address") { if (v.length < 10) msg = "Please enter your full delivery address."; }
+  else if (field === "pincode") { if (!PINCODE_RE.test(v)) msg = "Enter a valid 6-digit pincode."; }
+  else if (field === "city") { if (v.length < 2) msg = "Enter your city / district."; }
+  if (msg) { showErr(field, msg); return false; }
+  clearErr(field);
+  return true;
+}
+
+const FIELDS = ["name", "phone", "address", "pincode", "city"];
+// Validate each field the moment the user leaves it.
+FIELDS.forEach((f) => fieldEl(f)?.addEventListener("blur", () => validateField(f)));
+
 $("checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const form = e.target as HTMLFormElement;
-  const data = new FormData(form);
-  const get = (k: string) => String(data.get(k) || "").trim();
 
-  if (get("company")) return; // honeypot
+  // honeypot — a filled hidden "company" means a bot; stop silently.
+  if ((document.querySelector("[name=company]") as HTMLInputElement | null)?.value.trim()) return;
 
-  clearErrs();
-  const name = get("name");
-  const phone = normPhone(get("phone"));
-  const address = get("address");
-  const pincode = get("pincode");
-  const city = get("city");
-  let ok = true;
-
-  if (!NAME_RE.test(name)) {
-    showErr("name", "Enter your name (2–50 letters).");
-    ok = false;
-  }
-  if (!PHONE_RE.test(phone)) {
-    showErr("phone", "Enter a valid 10-digit Indian mobile number.");
-    ok = false;
-  }
-  if (address.length < 10) {
-    showErr("address", "Please enter your full delivery address.");
-    ok = false;
-  }
-  if (!PINCODE_RE.test(pincode)) {
-    showErr("pincode", "Enter a valid 6-digit pincode.");
-    ok = false;
-  }
-  if (city.length < 2) {
-    showErr("city", "Enter your city / district.");
-    ok = false;
-  }
+  const ok = FIELDS.map(validateField).every(Boolean);
   if (!ok) return;
+
+  const name = fieldVal("name");
+  const phone = normPhone(fieldVal("phone"));
+  const address = fieldVal("address");
+  const pincode = fieldVal("pincode");
+  const city = fieldVal("city");
+  const state = (document.getElementById("state") as HTMLInputElement | null)?.value.trim() ?? "";
+  const note = (document.querySelector("[name=note]") as HTMLInputElement | null)?.value.trim() ?? "";
 
   const items = getCart();
   if (items.length === 0) return;
@@ -257,8 +290,8 @@ $("checkout-form").addEventListener("submit", async (e) => {
       address,
       pincode,
       city,
-      state: get("state"),
-      note: get("note"),
+      state,
+      note,
     },
   };
 
@@ -300,9 +333,15 @@ function loadLastOrder(): StoredOrder | null {
 
 function renderPayScreen(ref: string, total: number, waText: string) {
   paid = true;
+  currentRef = ref;
+  claimed = false;
   cartSection.classList.add("hidden");
   emptyEl.classList.add("hidden");
   paySection.classList.remove("hidden");
+  // Ensure we start on the "pay now" view, not a stale "placed" view.
+  document.getElementById("pay-active")?.classList.remove("hidden");
+  document.getElementById("placed")?.classList.add("hidden");
+  document.getElementById("sticky-pay")?.classList.add("translate-y-full");
 
   $("pay-amount").textContent = money(total);
   $("pay-amount-2").textContent = money(total);
@@ -341,6 +380,7 @@ function renderPayScreen(ref: string, total: number, waText: string) {
 /** Fresh order: full WhatsApp message, then persist (ref+amount only) and clear cart. */
 function completeOrder(o: OrderPayload, total: number) {
   window.scrollTo({ top: 0, behavior: "smooth" });
+  placedSummary = `Order #${o.ref} · ${o.itemCount} item${o.itemCount > 1 ? "s" : ""} · ${money(total)}`;
   renderPayScreen(
     o.ref,
     total,
@@ -352,6 +392,7 @@ function completeOrder(o: OrderPayload, total: number) {
 
 /** Restored order (page refresh): only ref + amount survive, so use a generic message. */
 function restoreOrder(s: StoredOrder) {
+  placedSummary = `Order #${s.ref} · ${money(s.payable)}`;
   renderPayScreen(
     s.ref,
     s.payable,
@@ -367,12 +408,85 @@ $("copy-vpa").addEventListener("click", async () => {
   } catch {}
 });
 
-$("new-order").addEventListener("click", () => {
+function goNewOrder() {
   try {
     localStorage.removeItem(LAST_ORDER_KEY);
   } catch {}
   window.location.href = "/";
+}
+$("new-order").addEventListener("click", goNewOrder);
+document.getElementById("new-order-2")?.addEventListener("click", goNewOrder);
+
+// "I've completed the payment" → tell the sheet, show the thank-you screen.
+// Payment is still verified manually by the owner before dispatch; this only
+// flips the sheet row to CLAIMED PAID so they know to look.
+document.getElementById("ive-paid")?.addEventListener("click", () => {
+  if (claimed) return;
+  claimed = true;
+  void claimPaid(currentRef);
+
+  const summaryEl = document.getElementById("placed-summary");
+  if (summaryEl) summaryEl.textContent = placedSummary;
+  const waPlaced = document.getElementById("wa-placed") as HTMLAnchorElement | null;
+  const waConfirm = document.getElementById("wa-confirm") as HTMLAnchorElement | null;
+  if (waPlaced && waConfirm) waPlaced.href = waConfirm.href;
+
+  document.getElementById("pay-active")?.classList.add("hidden");
+  document.getElementById("placed")?.classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  celebrate();
 });
+
+// Word-of-mouth: share the shop. Web Share API where available, WhatsApp fallback.
+document.getElementById("share-tk")?.addEventListener("click", async () => {
+  const shareData = {
+    title: SITE.name,
+    text: "Handmade crochet rakhis & gifts from Tantu Kala 🧶",
+    url: SITE.url,
+  };
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+  } catch {
+    return; // user cancelled the share sheet — do nothing
+  }
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(`${shareData.text} ${shareData.url}`)}`,
+    "_blank",
+    "noopener",
+  );
+});
+
+/** A short, festive confetti burst using the Web Animations API (CSP-safe: no
+ *  inline <script>). Skipped entirely when the user prefers reduced motion. */
+function celebrate() {
+  if (!matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+  const colors = ["#E8873A", "#7A1F2B", "#B84A2E", "#5E7A4F", "#C9A227"];
+  for (let i = 0; i < 70; i++) {
+    const bit = document.createElement("div");
+    const size = 6 + Math.random() * 6;
+    bit.style.cssText =
+      `position:fixed;top:-12px;left:${Math.random() * 100}vw;` +
+      `width:${size}px;height:${size * 0.6}px;background:${colors[i % colors.length]};` +
+      `z-index:60;pointer-events:none;border-radius:2px;`;
+    document.body.appendChild(bit);
+    const dur = 1900 + Math.random() * 1500;
+    bit
+      .animate(
+        [
+          { transform: "translateY(0) rotate(0deg)", opacity: 1 },
+          {
+            transform: `translateY(${window.innerHeight + 40}px) rotate(${540 + Math.random() * 360}deg)`,
+            opacity: 1,
+          },
+        ],
+        { duration: dur, easing: "cubic-bezier(.25,.6,.5,1)" },
+      )
+      .finished.finally(() => bit.remove());
+  }
+}
 
 // ---- Pincode -> city/state (progressive enhancement; never blocks checkout) ----
 const pinInput = document.getElementById("pincode") as HTMLInputElement | null;
@@ -386,6 +500,18 @@ let pinSeq = 0; // guards against out-of-order responses
 let lastGoodPin = ""; // only cache SUCCESSFUL lookups, so failures can retry
 let cityAuto = false; // did WE fill city (vs the user)?
 let stateAuto = false;
+
+/** Lock City/State until a pincode lookup has settled (per requirement). Once a
+    lookup completes — success OR failure — they unlock and stay editable. */
+function setLocLocked(locked: boolean) {
+  [cityInput, stateInput].forEach((el) => {
+    if (!el) return;
+    el.disabled = locked;
+    el.classList.toggle("bg-ink/5", locked);
+    el.classList.toggle("cursor-not-allowed", locked);
+  });
+}
+setLocLocked(true);
 
 function setHint(text: string, tone: "info" | "ok" | "warn") {
   if (!pinHint) return;
@@ -448,6 +574,7 @@ async function runPinLookup() {
         "Couldn't find that pincode — please type your city & state.",
         "warn",
       );
+      setLocLocked(false);
       return;
     }
 
@@ -461,6 +588,7 @@ async function runPinLookup() {
       stateAuto = true;
     }
     setHint(`📍 ${po.District}, ${po.State}`, "ok");
+    setLocLocked(false);
   } catch {
     clearTimeout(timer);
     if (seq !== pinSeq) return; // superseded/aborted by a newer lookup
@@ -468,7 +596,22 @@ async function runPinLookup() {
       "Couldn't reach the lookup — please type your city & state.",
       "warn",
     );
+    setLocLocked(false);
   }
+}
+
+// Sticky "To pay" bar — show while filling the form (summary total scrolled out of
+// view), hidden on the pay screen. Mobile only.
+const stickyPay = document.getElementById("sticky-pay");
+const totalObserved = document.getElementById("total");
+if (stickyPay && totalObserved && "IntersectionObserver" in window) {
+  new IntersectionObserver(
+    ([entry]) => {
+      const show = !entry.isIntersecting && !paid && !cartSection.classList.contains("hidden");
+      stickyPay.classList.toggle("translate-y-full", !show);
+    },
+    { threshold: 0 },
+  ).observe(totalObserved);
 }
 
 // ---- Init ----

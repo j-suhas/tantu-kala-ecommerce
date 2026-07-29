@@ -1,0 +1,18 @@
+---
+/** Share the current product. Native Web Share on mobile, WhatsApp fallback.
+    Behaviour lives in scripts/product.ts (CSP-safe module). */
+interface Props { title: string; class?: string; }
+const { title, class: cls = '' } = Astro.props;
+---
+<button
+  id="share-btn"
+  data-share-title={title}
+  class={`btn-outline !px-4 !py-2 text-sm inline-flex items-center gap-2 ${cls}`}
+  aria-label="Share this rakhi"
+>
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+    <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+  </svg>
+  Share
+</button>

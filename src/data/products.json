@@ -28,7 +28,8 @@
       "chandrakor",
       "warkari",
       "pair-set",
-      "traditional"
+      "traditional",
+      "mauli"
     ]
   },
   {
@@ -130,7 +131,7 @@
   {
     "slug": "shankh-blossom-rakhi-purple-peach",
     "name": "Blossom Shankh Rakhi — Purple & Peach",
-    "price": 149,
+    "price": 159,
     "image": "shankh-blossom-rakhi-purple-peach.jpg",
     "shortDescription": "A layered crochet flower in purple and peach tones holding a sacred miniature Shankh.",
     "description": "A beautiful fusion of beach and belief. This Rakhi features a soft, layered crochet flower framing a small, natural white Shankh sourced from the beaches of Bali, tied with a multi-strand cotton thread.",
@@ -166,7 +167,7 @@
   {
     "slug": "triple-shankh-blossom-rakhi-pink",
     "name": "Triple Shankh Blossom Rakhi - Pink ",
-    "price": 169,
+    "price": 189,
     "image": "triple-shankh-blossom-rakhi-pink.jpg",
     "shortDescription": "A vibrant pink crocheted blossom centerpiece beautifully holding a trio of sacred miniature Shankhs from Bali.",
     "description": "Combining coastal beauty with traditional belief, this striking Rakhi features a richly textured, scalloped crochet flower in vibrant pink. At its heart rest three miniature, natural white Shankh shells sourced from the beaches of Bali, accented with pearl and crystal spacers along the band",
@@ -177,15 +178,15 @@
   },
   {
     "slug": "warkari-tilak-rakhi-yellow",
-    "name": "Warkari Tilak Rakhi (Set of 2)",
+    "name": "Warkari Tilak Rakhi",
     "price": 139,
     "image": "warkari-tilak-rakhi-yellow.jpg",
-    "shortDescription": "A matching pair of festive Tilak-shaped crochet rakhis, inspired by the sacred symbol of Mauli.",
-    "description": "Deeply rooted in faith, this special set is shaped like the sacred Tilak adorned on Lord Vitthal's forehead. Meticulously hand-crocheted in radiant yellow yarn with a striking black center, dedicated to the spirit of the Warkari Sampraday.",
+    "shortDescription": "A traditional Warkari Tilak-shaped crochet rakhi, inspired by the sacred symbol of Mauli.",
+    "description": "Deeply rooted in faith, this special rakhi is shaped like the sacred Tilak adorned on Lord Vitthal's forehead. Meticulously hand-crocheted in radiant yellow yarn with a striking black center, dedicated to the spirit of the Warkari Sampraday.",
     "status": "available",
     "stock": null,
     "discountPercent": 10,
-    "tags": ["tilak", "warkari", "vitthal", "traditional", "pair-set"]
+    "tags": ["tilak", "warkari", "vitthal", "traditional", "mauli"]
   },
   {
     "slug": "pastel-rainbow-rakhi",

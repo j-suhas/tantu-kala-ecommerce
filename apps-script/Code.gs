@@ -5,16 +5,18 @@
  */
 
 // The email address(es) to notify on each order (comma-separated).
-var NOTIFY_EMAIL = "suhasjaybhaye.sj@gmail.com";
+var NOTIFY_EMAIL = "tantu.kala@gmail.com, sushama.jaybhaye@gmail.com";
 
 // Your deployed site URL (e.g. https://tantukala.pages.dev). Used to fetch the
 // authoritative price list (/pricing.json) and re-verify the order total
 // server-side, so a tampered cart/coupon is flagged. Leave '' to skip verification.
-var SITE_URL = "https://tantu-kala-ecommerce.suhasjaybhaye-sj.workers.dev";
+var SITE_URL = "https://tantukala.embox.in";
 
 function doPost(e) {
   try {
     var order = JSON.parse(e.postData.contents);
+    // "I've paid" ping from the pay screen — flip the existing row to CLAIMED PAID.
+    if (order.action === "claim-paid") return markClaimed_(order.ref);
     // Honeypot: a filled "company" field means a bot — accept silently, don't record.
     if (order.company) return json({ ok: true });
     var problem = validateOrder(order);
@@ -109,6 +111,35 @@ function appendToSheet(order, expected) {
     c.note || "",
     "NEW",
   ]);
+}
+
+/**
+ * Customer tapped "I've completed the payment": find their order row by ref and
+ * advance a still-NEW row to CLAIMED PAID. We never overwrite a status the owner
+ * has already moved on (e.g. VERIFIED / SHIPPED), and payment is still confirmed
+ * manually before dispatch — this is only a "please check" signal.
+ */
+function markClaimed_(ref) {
+  if (!ref) return json({ ok: false, error: "no ref" });
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  if (!sheet || sheet.getLastRow() < 2)
+    return json({ ok: false, error: "no orders" });
+  var header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var refCol = header.indexOf("Order Ref") + 1;
+  var statusCol = header.indexOf("Status") + 1;
+  if (!refCol || !statusCol) return json({ ok: false, error: "bad sheet" });
+  var n = sheet.getLastRow() - 1;
+  var refs = sheet.getRange(2, refCol, n, 1).getValues();
+  var found = false;
+  for (var i = 0; i < n; i++) {
+    if (String(refs[i][0]) === String(ref)) {
+      var cell = sheet.getRange(i + 2, statusCol);
+      var cur = String(cell.getValue());
+      if (cur === "NEW" || cur === "") cell.setValue("CLAIMED PAID");
+      found = true;
+    }
+  }
+  return json({ ok: found });
 }
 
 /** Compose address + city + state for display/records. */

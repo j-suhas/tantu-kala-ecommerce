@@ -103,3 +103,17 @@ export function productImageWebp(p: Product): string {
 export function productOgImage(p: Product): string {
   return `/og/${p.slug}.jpg`;
 }
+
+/**
+ * "You may also like" — same-tag products first, then other in-stock ones to fill,
+ * always excluding the current product and anything sold out.
+ */
+export function relatedProducts(current: Product, limit = 4): Product[] {
+  const tags = new Set(current.tags ?? []);
+  return products
+    .filter((p) => p.slug !== current.slug && p.status !== 'sold_out')
+    .map((p) => ({ p, score: (p.tags ?? []).filter((t) => tags.has(t)).length }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.p);
+}

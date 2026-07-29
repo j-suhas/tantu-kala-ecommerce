@@ -1,0 +1,17 @@
+---
+import type { Product } from '../data/products';
+import { relatedProducts } from '../data/products';
+import ProductCard from './ProductCard.astro';
+
+interface Props { product: Product; }
+const { product } = Astro.props;
+const items = relatedProducts(product, 4);
+---
+{items.length > 0 && (
+  <section class="wrap py-10 mt-2 border-t border-ink/10">
+    <h2 class="text-2xl sm:text-3xl mb-6">You may also like</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {items.map((p) => <ProductCard product={p} />)}
+    </div>
+  </section>
+)}
