@@ -32,6 +32,7 @@ import { SITE } from '../config/site.mjs';
         <div class="flex justify-between font-semibold text-maroon text-base pt-1 border-t border-ink/10 mt-1">
           <span>To pay via UPI</span><span id="total"></span>
         </div>
+        <p id="coupon-nudge" class="hidden text-saffron font-medium pt-1"></p>
         <DeliveryEstimate class="pt-2" />
       </div>
 
@@ -80,18 +81,23 @@ import { SITE } from '../config/site.mjs';
           </label>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-2">
-          <label class="block">
-            <span class="text-sm font-medium">State</span>
-            <input id="state" name="state" autocomplete="address-level1"
-                   placeholder="auto-fills from pincode (editable)"
-                   class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
-          </label>
-          <label class="block">
-            <span class="text-sm font-medium">Note (optional)</span>
-            <input name="note" class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
-          </label>
-        </div>
+        <label class="block">
+          <span class="text-sm font-medium">State</span>
+          <input id="state" name="state" autocomplete="address-level1"
+                 placeholder="auto-fills from pincode (editable)"
+                 class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2" />
+        </label>
+
+        <label class="block">
+          <span class="text-sm font-medium">Colour or customisation request (optional)</span>
+          <span class="mt-0.5 block text-xs text-ink/60">Prefer a particular colour or want a small tweak? Tell us here — we’ll do our best and confirm on WhatsApp if it affects the price or timeline.</span>
+          <textarea
+            name="note"
+            rows="2"
+            placeholder="e.g. pastel pink instead of red · add a small name tag"
+            class="mt-1 w-full rounded-lg border border-ink/20 px-3 py-2"
+          ></textarea>
+        </label>
 
         <!-- honeypot: humans never see or fill this; bots do -->
         <div class="hidden" aria-hidden="true">
@@ -103,47 +109,78 @@ import { SITE } from '../config/site.mjs';
           You'll get an order number, then pay securely by UPI. We verify payment and confirm shipping before dispatch.
         </p>
       </form>
+
+      <div
+        id="sticky-pay"
+        class="sm:hidden fixed bottom-0 inset-x-0 z-30 translate-y-full transition-transform duration-300 bg-cream/95 backdrop-blur ring-1 ring-ink/10 px-4 py-3 flex items-center justify-between"
+      >
+        <span class="text-sm text-ink/70">To pay via UPI</span>
+        <span id="sticky-total" class="font-semibold text-maroon text-base"></span>
+      </div>
     </div>
 
     <!-- PAYMENT -->
     <div id="pay-section" class="hidden mt-6">
       <div class="card p-6 text-center">
-        <p class="text-leaf font-semibold">✓ Order placed</p>
-        <h2 class="text-2xl mt-1">Pay <span id="pay-amount"></span> via UPI</h2>
-        <p class="text-sm text-ink/60 mt-1">Order <span id="pay-ref" class="font-semibold text-ink"></span></p>
-        <p class="text-sm text-ink/70 mt-1">Paying to <span class="font-semibold text-ink">{SITE.upi.payeeName}</span> — please confirm this name shows in your UPI app before paying.</p>
-        <p class="mt-1 text-sm font-medium text-maroon">Please pay exactly <span id="pay-amount-2"></span></p>
+        <div id="pay-active">
+          <p class="text-leaf font-semibold">✓ Order placed</p>
+          <h2 class="text-2xl mt-1">Pay <span id="pay-amount"></span> via UPI</h2>
+          <p class="text-sm text-ink/60 mt-1">Order <span id="pay-ref" class="font-semibold text-ink"></span></p>
+          <p class="text-sm text-ink/70 mt-1">Paying to <span class="font-semibold text-ink">{SITE.upi.payeeName}</span> — please confirm this name shows in your UPI app before paying.</p>
+          <p class="mt-1 text-sm font-medium text-maroon">Please pay exactly <span id="pay-amount-2"></span></p>
 
-        <a id="upi-btn" class="btn-accent w-full mt-5 hidden" href="#">Pay with any UPI app</a>
+          <a id="upi-btn" class="btn-accent w-full mt-5 hidden" href="#">Pay with any UPI app</a>
 
-        <div id="upi-qr-wrap" class="mt-5 hidden">
-          <p class="text-sm text-ink/70 mb-3">Scan with GPay / PhonePe / Paytm / any UPI app</p>
-          <canvas id="upi-qr" class="mx-auto rounded-lg bg-white p-2"></canvas>
+          <div id="upi-qr-wrap" class="mt-5 hidden">
+            <p class="text-sm text-ink/70 mb-3">Scan with GPay / PhonePe / Paytm / any UPI app</p>
+            <canvas id="upi-qr" class="mx-auto rounded-lg bg-white p-2"></canvas>
+          </div>
+
+          <div class="mt-4 text-sm">
+            <p class="text-ink/70">UPI ID</p>
+            <button id="copy-vpa" class="font-semibold text-maroon underline">{SITE.upi.vpa}</button>
+            <span id="copied" class="ml-2 text-leaf hidden">copied ✓</span>
+          </div>
+
+          <DeliveryEstimate class="mt-4 justify-center text-center" />
+
+          <div class="mt-5 rounded-xl bg-sand p-4 text-sm text-ink/80 text-left space-y-2">
+            <p class="font-semibold text-maroon">After you pay:</p>
+            <p>1. Tap <span class="font-semibold">“I’ve completed the payment”</span> below so we know to check for it.</p>
+            <p>2. We verify the amount against order <span class="pay-ref-inline font-semibold"></span>, confirm shipping, and dispatch your handmade order.</p>
+          </div>
+
+          <button id="ive-paid" class="btn-accent w-full mt-5">I’ve completed the payment</button>
+
+          <div class="mt-4 rounded-xl border border-leaf/30 bg-leaf/5 p-4 text-sm text-left">
+            <p class="font-semibold text-ink">Optional — faster confirmation</p>
+            <p class="text-ink/70 mt-1">Send your order on WhatsApp so we confirm and start processing right away. Not required — you can just pay above.</p>
+            <a id="wa-confirm" class="btn-outline w-full mt-3" href="#" target="_blank" rel="noopener">
+              Send order on WhatsApp
+            </a>
+          </div>
+
+          <button id="new-order" class="block w-full mt-3 text-sm text-henna hover:underline">Start a new order</button>
         </div>
 
-        <div class="mt-4 text-sm">
-          <p class="text-ink/70">UPI ID</p>
-          <button id="copy-vpa" class="font-semibold text-maroon underline">{SITE.upi.vpa}</button>
-          <span id="copied" class="ml-2 text-leaf hidden">copied ✓</span>
-        </div>
+        <!-- Revealed after the customer taps “I’ve completed the payment”. -->
+        <div id="placed" class="hidden">
+          <p class="text-5xl" aria-hidden="true">🎉</p>
+          <h2 class="text-2xl mt-2 text-maroon">Thank you! Your order is in.</h2>
+          <p id="placed-summary" class="text-sm text-ink/60 mt-1"></p>
+          <p class="mt-3 text-ink/80">We’re checking for your payment now. You’ll get an order confirmation from our team on WhatsApp shortly — usually within a few hours.</p>
 
-        <DeliveryEstimate class="mt-4 justify-center text-center" />
-
-        <div class="mt-5 rounded-xl bg-sand p-4 text-sm text-ink/80 text-left space-y-2">
-          <p class="font-semibold text-maroon">After you pay:</p>
-          <p>1. Keep the payment reference — we match it to order <span class="pay-ref-inline font-semibold"></span>.</p>
-          <p>2. We verify the amount, confirm shipping, and dispatch your handmade order.</p>
-        </div>
-
-        <div class="mt-4 rounded-xl border border-leaf/30 bg-leaf/5 p-4 text-sm text-left">
-          <p class="font-semibold text-ink">Optional — faster confirmation</p>
-          <p class="text-ink/70 mt-1">Send your order on WhatsApp so we confirm and start processing right away. Not required — you can just pay above.</p>
-          <a id="wa-confirm" class="btn-outline w-full mt-3" href="#" target="_blank" rel="noopener">
-            Send order on WhatsApp
+          <a id="wa-placed" class="btn-accent w-full mt-5" href="#" target="_blank" rel="noopener">
+            Message us on WhatsApp
           </a>
-        </div>
 
-        <button id="new-order" class="block w-full mt-3 text-sm text-henna hover:underline">Start a new order</button>
+          <div class="mt-6 border-t border-ink/10 pt-5">
+            <p class="text-sm text-ink/70">Loved shopping handmade? Tell a friend 💛</p>
+            <button id="share-tk" class="btn-outline w-full mt-3">Share Tantu Kala</button>
+          </div>
+
+          <button id="new-order-2" class="block w-full mt-4 text-sm text-henna hover:underline">Place another order</button>
+        </div>
       </div>
     </div>
   </div>

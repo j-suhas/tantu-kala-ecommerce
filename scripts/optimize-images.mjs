@@ -95,18 +95,26 @@ async function main() {
     }
   }
 
-  // Default OG (brand card).
-  await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#7A1F2B' } })
-    .composite([{
-      input: Buffer.from(
-        `<svg width="1200" height="630"><text x="60" y="330" font-family="Georgia" font-size="86" fill="#FBF4E9">Tantu Kala</text>` +
-        `<text x="62" y="400" font-family="Georgia" font-size="34" fill="#E8873A">Handmade crochet rakhis</text></svg>`
-      ),
-      top: 0, left: 0,
-    }])
-    .jpeg({ quality: 82 })
-    .toFile(path.join(OG, 'default.jpg'));
-  console.log('og: default.jpg');
+  // Default OG (brand card): the Tantu Kala logo emblem centred on its own brown
+  // ground, laid out 1200×630 for WhatsApp/Facebook/Twitter link previews. Sourced
+  // from public/brand/logo.jpeg (a stable path outside the pruned products dir) so
+  // catalog changes never touch it. Falls back to a plain brand-brown card if the
+  // logo is missing, so the build never breaks.
+  const BRAND_BROWN = { r: 77, g: 49, b: 38 }; // #4D3126 — the logo's background
+  const logoPath = path.join(ROOT, 'public', 'brand', 'logo.jpeg');
+  const ogCard = sharp({ create: { width: 1200, height: 630, channels: 3, background: BRAND_BROWN } });
+  if (existsSync(logoPath)) {
+    const side = 590;
+    const emblem = await sharp(logoPath).resize(side, side, { fit: 'cover' }).toBuffer();
+    await ogCard
+      .composite([{ input: emblem, top: Math.round((630 - side) / 2), left: Math.round((1200 - side) / 2) }])
+      .jpeg({ quality: 86, mozjpeg: true })
+      .toFile(path.join(OG, 'default.jpg'));
+  } else {
+    await ogCard.jpeg({ quality: 86, mozjpeg: true }).toFile(path.join(OG, 'default.jpg'));
+    console.warn('! public/brand/logo.jpeg missing — default OG is a plain brand card');
+  }
+  console.log('og: default.jpg (brand logo card)');
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

@@ -89,3 +89,22 @@ export async function recordOrder(o: OrderPayload): Promise<void> {
     /* best-effort; the customer still gets their pay screen */
   }
 }
+
+/**
+ * The customer tapped "I've paid" — tell the sheet so the owner sees the row
+ * flip to CLAIMED PAID (payment still verified manually before dispatch).
+ * Fire-and-forget `no-cors`, same as recordOrder; never blocks the UI.
+ */
+export async function claimPaid(ref: string): Promise<void> {
+  if (!SITE.orderWebhookUrl || !ref) return;
+  try {
+    await fetch(SITE.orderWebhookUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'claim-paid', ref }),
+    });
+  } catch {
+    /* best-effort; the sheet still has the original NEW row */
+  }
+}
