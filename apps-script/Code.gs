@@ -95,7 +95,7 @@ function appendToSheet(order, expected) {
         : "MISMATCH";
 
   sheet.appendRow([
-    order.createdAt || new Date().toISOString(),
+    istStamp_(order.createdAt),
     order.ref || "",
     itemsStr,
     order.itemCount || "",
@@ -140,6 +140,25 @@ function markClaimed_(ref) {
     }
   }
   return json({ ok: found });
+}
+
+/**
+ * Format an order time as a readable IST string, e.g. "30 Jul 2026, 01:49 AM".
+ * The site sends createdAt as an ISO-8601 UTC string; we convert to Asia/Kolkata
+ * (+5:30) so the sheet reads in local time. If createdAt is missing or
+ * unparseable, we fall back to the server's receipt time — but tag it
+ * "(server time)" and log a warning to the Executions log, so the data issue is
+ * surfaced instead of silently looking like a freshly placed order.
+ */
+function istStamp_(iso) {
+  var d = iso ? new Date(iso) : new Date();
+  var fromClient = iso && !isNaN(d.getTime());
+  if (!fromClient) {
+    console.warn("istStamp_: unusable createdAt " + JSON.stringify(iso) + "; using server time");
+    d = new Date();
+  }
+  var out = Utilities.formatDate(d, "Asia/Kolkata", "dd MMM yyyy, hh:mm a");
+  return fromClient ? out : out + " (server time)";
 }
 
 /** Compose address + city + state for display/records. */
