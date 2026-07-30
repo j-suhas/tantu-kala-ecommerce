@@ -95,7 +95,7 @@ function appendToSheet(order, expected) {
         : "MISMATCH";
 
   sheet.appendRow([
-    order.createdAt || new Date().toISOString(),
+    istStamp_(order.createdAt),
     order.ref || "",
     itemsStr,
     order.itemCount || "",
@@ -140,6 +140,18 @@ function markClaimed_(ref) {
     }
   }
   return json({ ok: found });
+}
+
+/**
+ * Format an order time as a readable IST string, e.g. "30 Jul 2026, 01:49 AM".
+ * The site sends createdAt as an ISO-8601 UTC string; we convert to Asia/Kolkata
+ * (+5:30) so the sheet reads in local time. Falls back to "now" if it's missing
+ * or unparseable.
+ */
+function istStamp_(iso) {
+  var d = iso ? new Date(iso) : new Date();
+  if (isNaN(d.getTime())) d = new Date();
+  return Utilities.formatDate(d, "Asia/Kolkata", "dd MMM yyyy, hh:mm a");
 }
 
 /** Compose address + city + state for display/records. */
