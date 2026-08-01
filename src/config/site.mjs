@@ -6,11 +6,10 @@
 export const SITE = {
   name: "Tantu Kala",
   tagline: "Handmade crochet, knotted with love",
-  // Canonical site URL — used for OG images, sitemap, JSON-LD.
-  // At deploy time set this to your live URL (e.g. https://tantukala.pages.dev).
-  // Live URL — drives canonical, OG images, sitemap, robots. Update to your custom
-  // domain once it's attached, then rebuild/redeploy.
-  url: "https://tantukala.embox.in",
+  // Canonical site URL — drives OG images, canonical tags, sitemap, JSON-LD.
+  // Env-driven (PUBLIC_SITE_URL): prod domain from .env.production, localhost from
+  // .env.development. astro.config reads the same var (via loadEnv) for `site:`.
+  url: import.meta.env.PUBLIC_SITE_URL,
   description:
     "Tantu Kala makes handmade crochet rakhis and gifts — each piece knotted by hand. Book on our site and pay securely via UPI.",
   currency: "INR",
@@ -60,8 +59,10 @@ export const SITE = {
   // Paste the Google Apps Script Web App URL here after deploying it
   // (see apps-script/README.md). Leave '' to disable remote recording
   // (the site still works; orders just aren't logged to the sheet).
-  orderWebhookUrl:
-    "https://script.google.com/macros/s/AKfycbzbFWKgHdvS_mNwo0ysWA1fDnmkeW0-sLjbx9kBVB_e54Xwhtd73qeGnb51V9sVDZtk/exec",
+  // No hardcoded URL — both environments come from env files:
+  //   .env.production  (committed)  -> prod Apps Script  (used by `npm run build`)
+  //   .env.development (gitignored) -> your test Apps Script (used by `npm run dev`)
+  orderWebhookUrl: import.meta.env.PUBLIC_ORDER_WEBHOOK_URL,
 
   // ---- RAKSHA BANDHAN 2026 ----
   // Verify the festival date; set the order cutoff you can reliably ship by.

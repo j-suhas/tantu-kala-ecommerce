@@ -4,13 +4,25 @@
  * and emails the team. Free. See apps-script/README.md for deploy steps.
  */
 
-// The email address(es) to notify on each order (comma-separated).
-var NOTIFY_EMAIL = "tantu.kala@gmail.com, sushama.jaybhaye@gmail.com";
+// Per-deployment config lives in Script Properties (Project Settings -> Script
+// Properties), so the SAME code runs in the prod and local-test Web Apps with no
+// diffs. The literals below are the PROD defaults, used when a property is unset.
+//   Prod project : leave properties empty (uses defaults below).
+//   Test project : set NOTIFY_EMAIL to your inbox, and SITE_URL to '' (Google
+//                  cannot reach http://localhost, so price-verify is skipped).
+var PROPS_ = PropertiesService.getScriptProperties();
 
-// Your deployed site URL (e.g. https://tantukala.pages.dev). Used to fetch the
-// authoritative price list (/pricing.json) and re-verify the order total
-// server-side, so a tampered cart/coupon is flagged. Leave '' to skip verification.
-var SITE_URL = "https://tantukala.embox.in";
+// The email address(es) to notify on each order (comma-separated).
+var NOTIFY_EMAIL =
+  PROPS_.getProperty("NOTIFY_EMAIL") || "tantu.kala@gmail.com, sushama.jaybhaye@gmail.com";
+
+// Deployed site URL. Used to fetch the authoritative price list (/pricing.json)
+// and re-verify the order total server-side. Set to '' (in Script Properties) to
+// skip verification — e.g. in the test project, where localhost is unreachable.
+var SITE_URL =
+  PROPS_.getProperty("SITE_URL") != null
+    ? PROPS_.getProperty("SITE_URL")
+    : "https://tantukala.embox.in";
 
 function doPost(e) {
   try {
@@ -154,7 +166,11 @@ function istStamp_(iso) {
   var d = iso ? new Date(iso) : new Date();
   var fromClient = iso && !isNaN(d.getTime());
   if (!fromClient) {
-    console.warn("istStamp_: unusable createdAt " + JSON.stringify(iso) + "; using server time");
+    console.warn(
+      "istStamp_: unusable createdAt " +
+        JSON.stringify(iso) +
+        "; using server time",
+    );
     d = new Date();
   }
   var out = Utilities.formatDate(d, "Asia/Kolkata", "dd MMM yyyy, hh:mm a");
@@ -168,6 +184,139 @@ function fullAddress_(c) {
       return x;
     })
     .join(", ");
+}
+
+/**
+ * Validate + resolve a pincode via India Post (email enrichment only). Wrapped so a
+ * slow/failed lookup degrades to "unverified" and never blocks the order.
+ * Returns { state:"ok"|"invalid"|"unverified", city, district, stateName, delivery, match }.
+ */
+function pinCheck_(pincode, typedCity, typedState) {
+  var pin = String(pincode || "").trim();
+  if (!/^[1-9]\d{5}$/.test(pin)) return { state: "invalid" };
+  var data;
+  try {
+    var resp = UrlFetchApp.fetch(
+      "https://api.postalpincode.in/pincode/" + pin,
+      {
+        muteHttpExceptions: true,
+      },
+    );
+    if (resp.getResponseCode() !== 200) return { state: "unverified" };
+    data = JSON.parse(resp.getContentText());
+  } catch (e) {
+    return { state: "unverified" };
+  }
+  var rec = data && data[0];
+  if (
+    !rec ||
+    rec.Status !== "Success" ||
+    !rec.PostOffice ||
+    !rec.PostOffice.length
+  ) {
+    return { state: "invalid" };
+  }
+  var pos = rec.PostOffice;
+  var district = pos[0].District || "";
+  var stateName = pos[0].State || "";
+  // City = Block (lowest common locality) -> single/consistent Name -> District.
+  var city = pos[0].Block || "";
+  if (!city) {
+    var names = pos.map(function (p) {
+      return p.Name;
+    });
+    city = names.length === 1 ? names[0] : district;
+  }
+  // Match "Delivery" and "Delivering" but not "Non-Delivery" / "Non Delivery",
+  // so we're resilient to exactly which string India Post returns.
+  var delivering = pos.some(function (p) {
+    return /^deliver/i.test(String(p.DeliveryStatus || ""));
+  });
+
+  // Loose comparison, to avoid false alarms on spelling variants (Pune/Poona etc.).
+  var match = "n/a";
+  if (String(typedCity || "").trim()) {
+    var norm = function (s) {
+      return String(s || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+    };
+    var stateOK =
+      !typedState ||
+      norm(typedState) === norm(stateName) ||
+      norm(stateName).indexOf(norm(typedState)) >= 0 ||
+      norm(typedState).indexOf(norm(stateName)) >= 0;
+    var tokens = pos.map(function (p) {
+      return norm(p.Name);
+    });
+    tokens.push(norm(district), norm(city));
+    var tc = norm(typedCity);
+    var cityOK = tokens.some(function (t) {
+      return t && (t.indexOf(tc) >= 0 || tc.indexOf(t) >= 0);
+    });
+    match = stateOK && cityOK ? "match" : "mismatch";
+  }
+  return {
+    state: "ok",
+    city: city,
+    district: district,
+    stateName: stateName,
+    delivery: delivering ? "Delivering" : "Non-Delivery",
+    match: match,
+  };
+}
+
+/** Tiny UA parser -> "Android · Chrome · mobile". Returns "unknown" if empty. */
+function parseUa_(ua) {
+  ua = String(ua || "");
+  if (!ua) return "unknown";
+  var os = /Android/.test(ua)
+    ? "Android"
+    : /iPhone|iPad|iPod/.test(ua)
+      ? "iOS"
+      : /Windows/.test(ua)
+        ? "Windows"
+        : /Mac OS X/.test(ua)
+          ? "macOS"
+          : /Linux/.test(ua)
+            ? "Linux"
+            : "?";
+  var br = /Edg\//.test(ua)
+    ? "Edge"
+    : /SamsungBrowser/.test(ua)
+      ? "Samsung"
+      : /Chrome\//.test(ua)
+        ? "Chrome"
+        : /Firefox\//.test(ua)
+          ? "Firefox"
+          : /Safari\//.test(ua)
+            ? "Safari"
+            : "?";
+  var type = /Mobi|Android|iPhone|iPod/.test(ua)
+    ? "mobile"
+    : /iPad|Tablet/.test(ua)
+      ? "tablet"
+      : "desktop";
+  return os + " · " + br + " · " + type;
+}
+
+/** Friendly name for a referrer host. */
+function refSource_(host) {
+  host = String(host || "").toLowerCase();
+  if (!host) return "direct";
+  if (host.indexOf("instagram") >= 0) return "Instagram (" + host + ")";
+  if (host.indexOf("facebook") >= 0) return "Facebook (" + host + ")";
+  if (
+    host.indexOf("t.co") >= 0 ||
+    host.indexOf("twitter") >= 0 ||
+    host === "x.com"
+  )
+    return "X/Twitter (" + host + ")";
+  if (host.indexOf("whatsapp") >= 0 || host.indexOf("wa.me") >= 0)
+    return "WhatsApp (" + host + ")";
+  if (host.indexOf("google") >= 0) return "Google (" + host + ")";
+  return host;
 }
 
 function sendEmail(order, expected) {
@@ -189,9 +338,80 @@ function sendEmail(order, expected) {
       ". Do NOT ship until you confirm the correct amount. ***\n";
   }
 
+  // ---- Enrichment: postal location check + browser signals + risk flags ----
+  var pin = pinCheck_(c.pincode, c.city, c.state);
+  var s = order.signals || {};
+  var flags = [];
+  if (expected != null && Number(expected) !== Number(order.payable))
+    flags.push("Amount mismatch");
+  if (pin.state === "invalid") flags.push("Invalid PIN");
+  else if (pin.state === "unverified") flags.push("PIN not verified");
+  else {
+    if (pin.match === "mismatch") flags.push("Location mismatch");
+    if (pin.delivery === "Non-Delivery") flags.push("Non-delivery area");
+  }
+  if (s.fillMs && s.fillMs < 2000)
+    flags.push("Fast submit (" + (s.fillMs / 1000).toFixed(1) + "s)");
+
+  var locBlock = "\nLocation (from PIN " + (c.pincode || "?") + ")\n";
+  if (pin.state === "ok") {
+    locBlock +=
+      "  City: " +
+      (pin.city || "?") +
+      " · District: " +
+      (pin.district || "?") +
+      " · State: " +
+      (pin.stateName || "?") +
+      " · " +
+      pin.delivery +
+      "\n";
+    if (pin.match === "mismatch")
+      locBlock +=
+        "  Customer entered: " +
+        (c.city || "-") +
+        (c.state ? ", " + c.state : "") +
+        "   ** MISMATCH **\n";
+    else if (pin.match === "match")
+      locBlock += "  Customer entered: " + (c.city || "-") + "   (match)\n";
+    if (pin.delivery === "Non-Delivery")
+      locBlock += "  ** India Post shows NON-DELIVERY for this PIN **\n";
+  } else if (pin.state === "invalid") {
+    locBlock += "  ** Invalid pincode — no such PIN **\n";
+  } else {
+    locBlock += "  PIN not verified (postal lookup unavailable)\n";
+  }
+
+  var devBlock = "\nDevice & source\n";
+  devBlock += "  Device:    " + parseUa_(s.ua) + "\n";
+  if (s.lang || s.tz)
+    devBlock +=
+      "  Language:  " +
+      (s.lang || "?") +
+      "     Timezone: " +
+      (s.tz || "?") +
+      "\n";
+  if (s.screen) devBlock += "  Screen:    " + s.screen + "\n";
+  devBlock +=
+    "  Came from: " +
+    refSource_(s.entryRef) +
+    (s.utm ? "  [utm: " + s.utm + "]" : "") +
+    "\n";
+  if (s.fillMs)
+    devBlock +=
+      "  Form time: " +
+      (s.fillMs / 1000).toFixed(1) +
+      "s" +
+      (s.fillMs < 2000 ? "  (bot-like)" : "") +
+      "\n";
+
   var body =
-    "New Tantu Kala order  #" +
+    (flags.length ? "⚠ FLAGS: " + flags.join(" · ") : "✓ No risk flags") +
+    "\n\n" +
+    "Tantu Kala order  #" +
     order.ref +
+    "\n" +
+    "Placed: " +
+    istStamp_(order.createdAt) +
     "\n" +
     "--------------------------------\n" +
     items +
@@ -215,28 +435,36 @@ function sendEmail(order, expected) {
     "\n" +
     (expected != null ? "Verified total (server): Rs." + expected + "\n" : "") +
     warn +
-    "\nName: " +
+    "\nCustomer\n" +
+    "  Name:    " +
     c.name +
     "\n" +
-    "Phone: " +
+    "  Phone:   " +
     c.phone +
     "\n" +
-    "Address: " +
+    "  Address: " +
     fullAddress_(c) +
     "\n" +
-    "Pincode: " +
+    "  Pincode: " +
     c.pincode +
     "\n" +
-    (c.note ? "Note: " + c.note + "\n" : "") +
+    (c.note ? "  Note:    " + c.note + "\n" : "") +
+    locBlock +
+    devBlock +
     "\nVerify the UPI payment (amount + ref #" +
     order.ref +
     ") before dispatch.";
 
-  MailApp.sendEmail(
-    NOTIFY_EMAIL,
-    "New order #" + order.ref + " — " + (c.name || ""),
-    body,
-  );
+  var subject =
+    "New order #" +
+    order.ref +
+    " — " +
+    (c.name || "") +
+    (flags.length
+      ? "  ⚠ (" + flags.length + " flag" + (flags.length > 1 ? "s" : "") + ")"
+      : "  ✓");
+
+  MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
 }
 
 /** Fetch the authoritative price/coupon feed from the deployed site. */

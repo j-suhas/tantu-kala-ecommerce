@@ -15,6 +15,29 @@ function showToast(msg: string) {
   t = setTimeout(() => toast.classList.add('opacity-0', 'translate-y-3'), 1600);
 }
 
+// First-touch entry source, captured once per browsing session and stored in
+// sessionStorage. Used only to enrich the owner's order-notification email
+// (e.g. "came from Instagram"). External referrer host only — never a full URL.
+try {
+  const KEY = 'tk_entry';
+  if (!sessionStorage.getItem(KEY)) {
+    let ref = '';
+    try {
+      const r = document.referrer;
+      if (r && new URL(r).host !== location.host) ref = new URL(r).host;
+    } catch {
+      /* opaque/invalid referrer — leave blank */
+    }
+    const p = new URLSearchParams(location.search);
+    const utm = [p.get('utm_source'), p.get('utm_medium'), p.get('utm_campaign')]
+      .filter(Boolean)
+      .join('/');
+    sessionStorage.setItem(KEY, JSON.stringify({ ref, utm, landing: location.pathname }));
+  }
+} catch {
+  /* storage blocked — signals are best-effort */
+}
+
 document.addEventListener('click', (e) => {
   const btn = (e.target as HTMLElement).closest('.add-to-cart') as HTMLElement | null;
   if (!btn) return;

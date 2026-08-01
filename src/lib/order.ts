@@ -17,6 +17,22 @@ export interface OrderCoupon {
   discount: number;
 }
 
+/**
+ * Non-PII technical signals used ONLY to enrich the owner's order-notification
+ * email (risk flags + "how did they arrive"). Not shown to the customer, not
+ * written to the sheet. All browser-supplied, so treated as hints, not proof.
+ */
+export interface OrderSignals {
+  ua: string; // navigator.userAgent (parsed server-side)
+  lang: string; // navigator.language, e.g. "mr-IN"
+  tz: string; // IANA timezone, e.g. "Asia/Kolkata"
+  screen: string; // "412x915"
+  fillMs: number; // ms from first form interaction to submit (0 = unknown)
+  entryRef: string; // first-touch external referrer host, "" if direct
+  utm: string; // "source/medium/campaign", "" if none
+  landing: string; // first-touch path
+}
+
 export interface OrderPayload {
   ref: string;
   createdAt: string; // ISO
@@ -27,6 +43,7 @@ export interface OrderPayload {
   shipping: number;
   payable: number;           // what the customer is asked to pay via UPI
   customer: CustomerDetails;
+  signals?: OrderSignals;
 }
 
 /** Human-readable, unique-ish ref: #TK-<ddMM>-<4hex>. */
