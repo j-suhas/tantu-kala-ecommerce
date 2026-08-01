@@ -129,17 +129,41 @@ import { SITE } from '../config/site.mjs';
           <p class="text-sm text-ink/70 mt-1">Paying to <span class="font-semibold text-ink">{SITE.upi.payeeName}</span> — please confirm this name shows in your UPI app before paying.</p>
           <p class="mt-1 text-sm font-medium text-maroon">Please pay exactly <span id="pay-amount-2"></span></p>
 
-          <a id="upi-btn" class="btn-accent w-full mt-5 hidden" href="#">Pay with any UPI app</a>
+          <div class="mt-5 flex flex-col gap-4 text-left">
+            <!-- Primary on mobile / secondary on desktop: pay to the UPI ID.
+                 Works on every app and for any amount (bypasses the same-device
+                 ₹2,000 cap that GPay/PhonePe/Paytm apply to tap-to-pay). -->
+            <div id="pay-by-id" class="hidden order-1 sm:order-2 rounded-xl border-2 border-maroon/20 bg-white p-4">
+              <p class="font-semibold text-maroon text-center">Pay to our UPI ID</p>
+              <div class="mt-3 flex items-center justify-between gap-2 rounded-lg bg-sand px-3 py-2">
+                <span class="font-semibold text-ink select-all break-all">{SITE.upi.vpa}</span>
+                <button id="copy-vpa" class="btn-outline !px-3 !py-1.5 text-xs shrink-0">Copy ID</button>
+              </div>
+              <div class="mt-2 flex items-center justify-between gap-2 rounded-lg bg-sand px-3 py-2">
+                <span class="text-sm text-ink/70">Amount</span>
+                <span class="font-semibold text-maroon" id="pay-amount-3"></span>
+                <button id="copy-amt" class="btn-outline !px-3 !py-1.5 text-xs shrink-0">Copy</button>
+              </div>
+              <span id="copied" class="hidden mt-2 block text-leaf text-sm text-center">Copied ✓</span>
+              <ol class="mt-3 text-sm text-ink/80 list-decimal list-inside space-y-1">
+                <li>Open any UPI app — GPay, PhonePe, Paytm…</li>
+                <li>Choose <span class="font-semibold">New payment → Pay to UPI ID</span></li>
+                <li>Paste the ID, enter the amount, add note <span class="font-semibold pay-ref-inline"></span></li>
+                <li>Pay — confirm it shows <span class="font-semibold">{SITE.upi.payeeName}</span></li>
+              </ol>
+            </div>
 
-          <div id="upi-qr-wrap" class="mt-5 hidden">
-            <p class="text-sm text-ink/70 mb-3">Scan with GPay / PhonePe / Paytm / any UPI app</p>
-            <canvas id="upi-qr" class="mx-auto rounded-lg bg-white p-2"></canvas>
-          </div>
+            <!-- Secondary on mobile: quick tap-to-pay (hidden on desktop). -->
+            <div id="tap-pay" class="hidden order-2 sm:order-3">
+              <a id="upi-btn" class="btn-accent w-full" href="#">Or tap to pay with a UPI app</a>
+              <p class="text-xs text-ink/60 mt-1 text-center">Quick — but GPay/PhonePe/Paytm may cap this at ₹2,000 on the same phone. Use the UPI ID above for any amount.</p>
+            </div>
 
-          <div class="mt-4 text-sm">
-            <p class="text-ink/70">UPI ID</p>
-            <button id="copy-vpa" class="font-semibold text-maroon underline">{SITE.upi.vpa}</button>
-            <span id="copied" class="ml-2 text-leaf hidden">copied ✓</span>
+            <!-- QR: primary on desktop; "scan from another phone" on mobile. -->
+            <div id="upi-qr-wrap" class="hidden order-3 sm:order-1">
+              <p id="qr-caption" class="text-sm text-ink/70 mb-3 text-center">Scan with GPay / PhonePe / Paytm / any UPI app</p>
+              <canvas id="upi-qr" class="mx-auto rounded-lg bg-white p-2"></canvas>
+            </div>
           </div>
 
           <DeliveryEstimate class="mt-4 justify-center text-center" />
