@@ -11,7 +11,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/sitemap": "3.2.1",
+    "@astrojs/sitemap": "3.7.3",
     "@astrojs/tailwind": "5.1.5",
     "astro": "^4.16.18",
     "qrcode": "^1.5.4",
