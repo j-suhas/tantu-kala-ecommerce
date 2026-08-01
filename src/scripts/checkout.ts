@@ -446,22 +446,34 @@ function restoreOrder(s: StoredOrder) {
   );
 }
 
-$("copy-vpa").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(SITE.upi.vpa);
-    $("copied").classList.remove("hidden");
-    setTimeout(() => $("copied").classList.add("hidden"), 1500);
-  } catch {}
-});
-
-// Copy the exact amount (plain number) — the customer types it into their UPI app.
-document.getElementById("copy-amt")?.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(String(currentPayable));
-    $("copied").classList.remove("hidden");
-    setTimeout(() => $("copied").classList.add("hidden"), 1500);
-  } catch {}
-});
+// Copy to clipboard with inline feedback on the shared #copied indicator. Works
+// even where the Clipboard API is blocked (old / in-app browsers like Instagram's):
+// the UPI ID and amount are selectable text, so we tell the user to select manually
+// rather than leaving the button feeling dead.
+function copyFeedback(text: string) {
+  const el = document.getElementById("copied");
+  const flash = (msg: string, ms: number) => {
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove("hidden");
+    setTimeout(() => {
+      el.classList.add("hidden");
+      el.textContent = "Copied ✓";
+    }, ms);
+  };
+  if (!navigator.clipboard) {
+    flash("Couldn’t copy — select it manually", 2500);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(
+    () => flash("Copied ✓", 1500),
+    () => flash("Couldn’t copy — select it manually", 2500),
+  );
+}
+$("copy-vpa").addEventListener("click", () => copyFeedback(SITE.upi.vpa));
+document
+  .getElementById("copy-amt")
+  ?.addEventListener("click", () => copyFeedback(String(currentPayable)));
 
 function goNewOrder() {
   try {
