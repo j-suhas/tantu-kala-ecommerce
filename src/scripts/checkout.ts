@@ -17,6 +17,7 @@ import {
   recordOrder,
   claimPaid,
   type OrderPayload,
+  type OrderSignals,
 } from "../lib/order";
 import { autoCoupon } from "../lib/coupon";
 import { upiLink, isMobile } from "../lib/upi";
@@ -247,6 +248,38 @@ const FIELDS = ["name", "phone", "address", "pincode", "city"];
 // Validate each field the moment the user leaves it.
 FIELDS.forEach((f) => fieldEl(f)?.addEventListener("blur", () => validateField(f)));
 
+// Form-fill timing (a very fast fill = bot-like). Stamped on the first real
+// interaction with the checkout form.
+let firstInteraction = 0;
+["focusin", "input"].forEach((ev) =>
+  $("checkout-form").addEventListener(ev, () => {
+    if (!firstInteraction) firstInteraction = Date.now();
+  }),
+);
+
+/** Gather non-PII technical signals for the owner's notification email. */
+function collectSignals(): OrderSignals {
+  let entry = { ref: "", utm: "", landing: "" };
+  try {
+    const raw = sessionStorage.getItem("tk_entry");
+    if (raw) entry = { ...entry, ...JSON.parse(raw) };
+  } catch {}
+  let tz = "";
+  try {
+    tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+  } catch {}
+  return {
+    ua: navigator.userAgent || "",
+    lang: navigator.language || "",
+    tz,
+    screen: `${screen.width}x${screen.height}`,
+    fillMs: firstInteraction ? Date.now() - firstInteraction : 0,
+    entryRef: entry.ref || "",
+    utm: entry.utm || "",
+    landing: entry.landing || "",
+  };
+}
+
 $("checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -293,6 +326,7 @@ $("checkout-form").addEventListener("submit", async (e) => {
       state,
       note,
     },
+    signals: collectSignals(),
   };
 
   const btn = $("submit-btn") as HTMLButtonElement;

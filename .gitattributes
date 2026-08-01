@@ -1,0 +1,4 @@
+# Normalize line endings to LF in the repository so Windows checkouts stop
+# producing phantom whole-file diffs (the CRLF churn we kept fighting in reviews).
+# git stores/compares text as LF; binaries are auto-detected and left untouched.
+* text=auto eol=lf
