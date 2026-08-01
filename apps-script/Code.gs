@@ -341,6 +341,19 @@ function sendEmail(order, expected) {
   // ---- Enrichment: postal location check + browser signals + risk flags ----
   var pin = pinCheck_(c.pincode, c.city, c.state);
   var s = order.signals || {};
+  // signals are client-supplied — clamp string lengths + bound fillMs so a
+  // malformed or oversized payload can't bloat the email or skew a flag.
+  var clip_ = function (v, n) {
+    return String(v == null ? "" : v).slice(0, n);
+  };
+  var sUa = clip_(s.ua, 300);
+  var sLang = clip_(s.lang, 35);
+  var sTz = clip_(s.tz, 40);
+  var sScreen = clip_(s.screen, 20);
+  var sEntry = clip_(s.entryRef, 120);
+  var sUtm = clip_(s.utm, 120);
+  var sFill = Number(s.fillMs);
+  if (!isFinite(sFill) || sFill < 0 || sFill > 3600000) sFill = 0;
   var flags = [];
   if (expected != null && Number(expected) !== Number(order.payable))
     flags.push("Amount mismatch");
@@ -350,8 +363,8 @@ function sendEmail(order, expected) {
     if (pin.match === "mismatch") flags.push("Location mismatch");
     if (pin.delivery === "Non-Delivery") flags.push("Non-delivery area");
   }
-  if (s.fillMs && s.fillMs < 2000)
-    flags.push("Fast submit (" + (s.fillMs / 1000).toFixed(1) + "s)");
+  if (sFill && sFill < 2000)
+    flags.push("Fast submit (" + (sFill / 1000).toFixed(1) + "s)");
 
   var locBlock = "\nLocation (from PIN " + (c.pincode || "?") + ")\n";
   if (pin.state === "ok") {
@@ -382,26 +395,22 @@ function sendEmail(order, expected) {
   }
 
   var devBlock = "\nDevice & source\n";
-  devBlock += "  Device:    " + parseUa_(s.ua) + "\n";
-  if (s.lang || s.tz)
+  devBlock += "  Device:    " + parseUa_(sUa) + "\n";
+  if (sLang || sTz)
     devBlock +=
-      "  Language:  " +
-      (s.lang || "?") +
-      "     Timezone: " +
-      (s.tz || "?") +
-      "\n";
-  if (s.screen) devBlock += "  Screen:    " + s.screen + "\n";
+      "  Language:  " + (sLang || "?") + "     Timezone: " + (sTz || "?") + "\n";
+  if (sScreen) devBlock += "  Screen:    " + sScreen + "\n";
   devBlock +=
     "  Came from: " +
-    refSource_(s.entryRef) +
-    (s.utm ? "  [utm: " + s.utm + "]" : "") +
+    refSource_(sEntry) +
+    (sUtm ? "  [utm: " + sUtm + "]" : "") +
     "\n";
-  if (s.fillMs)
+  if (sFill)
     devBlock +=
       "  Form time: " +
-      (s.fillMs / 1000).toFixed(1) +
+      (sFill / 1000).toFixed(1) +
       "s" +
-      (s.fillMs < 2000 ? "  (bot-like)" : "") +
+      (sFill < 2000 ? "  (bot-like)" : "") +
       "\n";
 
   var body =

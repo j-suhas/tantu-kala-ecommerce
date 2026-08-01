@@ -9,7 +9,9 @@ export const SITE = {
   // Canonical site URL — drives OG images, canonical tags, sitemap, JSON-LD.
   // Env-driven (PUBLIC_SITE_URL): prod domain from .env.production, localhost from
   // .env.development. astro.config reads the same var (via loadEnv) for `site:`.
-  url: import.meta.env.PUBLIC_SITE_URL,
+  // Localhost fallback keeps `astro dev` working on a fresh clone that has no
+  // .env.development (prevents `new URL(SITE.url)` throwing); prod always overrides.
+  url: import.meta.env.PUBLIC_SITE_URL || "http://localhost:4321",
   description:
     "Tantu Kala makes handmade crochet rakhis and gifts — each piece knotted by hand. Book on our site and pay securely via UPI.",
   currency: "INR",
