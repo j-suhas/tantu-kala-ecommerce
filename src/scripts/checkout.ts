@@ -625,7 +625,7 @@ async function runPinLookup() {
   const seq = ++pinSeq;
   setHint("Looking up pincode…", "info");
 
-  const timer = setTimeout(() => ctrl.abort(), 6000);
+  const timer = setTimeout(() => ctrl.abort(), 5000); // give up after 5s so a slow/dead postal API doesn't keep City locked
   try {
     const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, {
       signal: ctrl.signal,
