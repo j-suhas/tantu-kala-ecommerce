@@ -20,7 +20,7 @@ import {
   type OrderSignals,
 } from "../lib/order";
 import { autoCoupon } from "../lib/coupon";
-import { upiLink, isMobile } from "../lib/upi";
+import { upiLink } from "../lib/upi";
 import { products } from "../data/products";
 import { SITE } from "../config/site.mjs";
 
@@ -31,6 +31,7 @@ const LAST_ORDER_KEY = "tk_last_order_v1";
 
 // Pay-screen state used by the "I've completed the payment" confirmation step.
 let currentRef = ""; // the order ref currently shown on the pay screen
+let currentPayable = 0; // amount shown on the pay screen (for the copy-amount button)
 let placedSummary = ""; // one-line summary shown on the "order placed" screen
 let claimed = false; // guards the claim POST against double taps
 
@@ -385,27 +386,38 @@ function renderPayScreen(ref: string, total: number, waText: string) {
     .forEach((el) => (el.textContent = "#" + ref));
 
   const uri = upiLink(total, ref);
-  if (isMobile()) {
-    const b = $("upi-btn") as HTMLAnchorElement;
-    b.href = uri;
-    b.classList.remove("hidden");
-  } else {
-    $("upi-qr-wrap").classList.remove("hidden");
-    // Load the ~30 kB QR library only when a QR is actually shown (desktop pay
-    // screen) — keeps the cart page's initial JS small.
-    void import("qrcode")
-      .then(({ default: QRCode }) =>
-        QRCode.toCanvas($("upi-qr"), uri, { width: 220, margin: 1 }, () => {}),
-      )
-      .catch(() => {
-        // If the QR lib fails to load, fall back to the UPI ID shown just below —
-        // the pay flow stays usable, no blank box.
-        const wrap = $("upi-qr-wrap");
-        wrap.textContent =
-          "Couldn't load the QR — please pay to the UPI ID shown below.";
-        wrap.classList.add("text-sm", "text-ink/70");
-      });
-  }
+  $("pay-amount-3").textContent = money(total);
+  currentPayable = total;
+
+  // The "Pay to UPI ID" panel is always the reliable method (works on every app
+  // and for any amount — no same-device ₹2,000 cap).
+  document.getElementById("pay-by-id")?.classList.remove("hidden");
+
+  // Drive tap-visibility + QR caption off the SAME breakpoint the CSS layout uses
+  // (Tailwind `sm` = 640px), so the order and the behaviour never diverge.
+  const mobile = window.matchMedia("(max-width: 639.98px)").matches;
+  ($("upi-btn") as HTMLAnchorElement).href = uri;
+  document.getElementById("tap-pay")?.classList.toggle("hidden", !mobile);
+
+  // QR now shows on both: primary "scan with your phone" on desktop, and a
+  // "scan from another phone" escape hatch on mobile (bypasses the same-device
+  // cap). The ~30 kB QR lib stays lazy — loaded only once the pay screen renders.
+  const caption = document.getElementById("qr-caption");
+  if (caption)
+    caption.textContent = mobile
+      ? "Or scan from another phone (works for any amount)"
+      : "Scan with GPay / PhonePe / Paytm / any UPI app";
+  $("upi-qr-wrap").classList.remove("hidden");
+  void import("qrcode")
+    .then(({ default: QRCode }) =>
+      QRCode.toCanvas($("upi-qr"), uri, { width: 220, margin: 1 }, () => {}),
+    )
+    .catch(() => {
+      const wrap = $("upi-qr-wrap");
+      wrap.textContent =
+        "Couldn't load the QR — please pay to the UPI ID shown on this page.";
+      wrap.classList.add("text-sm", "text-ink/70");
+    });
 
   const wa = $("wa-confirm") as HTMLAnchorElement;
   wa.href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(waText)}`;
@@ -434,13 +446,34 @@ function restoreOrder(s: StoredOrder) {
   );
 }
 
-$("copy-vpa").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(SITE.upi.vpa);
-    $("copied").classList.remove("hidden");
-    setTimeout(() => $("copied").classList.add("hidden"), 1500);
-  } catch {}
-});
+// Copy to clipboard with inline feedback on the shared #copied indicator. Works
+// even where the Clipboard API is blocked (old / in-app browsers like Instagram's):
+// the UPI ID and amount are selectable text, so we tell the user to select manually
+// rather than leaving the button feeling dead.
+function copyFeedback(text: string) {
+  const el = document.getElementById("copied");
+  const flash = (msg: string, ms: number) => {
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove("hidden");
+    setTimeout(() => {
+      el.classList.add("hidden");
+      el.textContent = "Copied ✓";
+    }, ms);
+  };
+  if (!navigator.clipboard) {
+    flash("Couldn’t copy — select it manually", 2500);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(
+    () => flash("Copied ✓", 1500),
+    () => flash("Couldn’t copy — select it manually", 2500),
+  );
+}
+$("copy-vpa").addEventListener("click", () => copyFeedback(SITE.upi.vpa));
+document
+  .getElementById("copy-amt")
+  ?.addEventListener("click", () => copyFeedback(String(currentPayable)));
 
 function goNewOrder() {
   try {
@@ -592,7 +625,7 @@ async function runPinLookup() {
   const seq = ++pinSeq;
   setHint("Looking up pincode…", "info");
 
-  const timer = setTimeout(() => ctrl.abort(), 6000);
+  const timer = setTimeout(() => ctrl.abort(), 5000); // give up after 5s so a slow/dead postal API doesn't keep City locked
   try {
     const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`, {
       signal: ctrl.signal,
