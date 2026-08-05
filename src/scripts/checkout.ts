@@ -150,19 +150,8 @@ function renderShipping(sub: number, ship: number) {
   }
 }
 
-function renderCart() {
-  if (paid) return;
-  const items = getCart();
-  if (items.length === 0) {
-    emptyEl.classList.remove("hidden");
-    cartSection.classList.add("hidden");
-    return;
-  }
-  emptyEl.classList.add("hidden");
-  cartSection.classList.remove("hidden");
-
-  itemsEl.replaceChildren(...items.map(cartRow));
-
+/** Recompute + redraw subtotal/coupon/shipping/total (no item-list rebuild). */
+function renderTotals() {
   const { sub, coupon, ship } = computeTotals();
   $("subtotal").textContent = money(sub);
 
@@ -192,19 +181,68 @@ function renderCart() {
   }
 }
 
+function renderCart() {
+  if (paid) return;
+  const items = getCart();
+  if (items.length === 0) {
+    emptyEl.classList.remove("hidden");
+    cartSection.classList.add("hidden");
+    return;
+  }
+  emptyEl.classList.add("hidden");
+  cartSection.classList.remove("hidden");
+
+  itemsEl.replaceChildren(...items.map(cartRow));
+  renderTotals();
+}
+
+// Editing a qty field must NOT rebuild the item list — replaceChildren() would
+// destroy and recreate the very <input> being typed into, stealing focus/cursor
+// on every keystroke (the "cursor disappears" bug). So a qty edit only updates
+// totals; the list is rebuilt only for add/remove.
+let qtyLocalEdit = false;
+
 itemsEl.addEventListener("input", (e) => {
+  const el = e.target as HTMLInputElement;
+  if (!el.classList.contains("qty")) return;
+  const raw = el.value.trim();
+  // Let the field sit empty while the user is mid-clear/retype (e.g. backspacing
+  // "1" to type "3" on mobile, where there's no up/down stepper). Snapping to 1
+  // here is what previously made it impossible to type past 1.
+  if (raw === "") return;
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return;
+  const cap = Number(el.max) || Infinity;
+  const q = Math.min(cap, Math.max(1, n));
+  qtyLocalEdit = true;
+  setQty(el.dataset.slug!, q);
+  qtyLocalEdit = false;
+});
+
+// Commit on blur: snap the visible value to the clamped quantity (handles a
+// field left empty, or a multi-digit value that exceeded the stock cap).
+itemsEl.addEventListener("focusout", (e) => {
   const el = e.target as HTMLInputElement;
   if (!el.classList.contains("qty")) return;
   const cap = Number(el.max) || Infinity;
   const q = Math.min(cap, Math.max(1, Number(el.value) || 1));
-  el.value = String(q);
+  if (el.value !== String(q)) el.value = String(q);
+  qtyLocalEdit = true;
   setQty(el.dataset.slug!, q);
+  qtyLocalEdit = false;
 });
+
 itemsEl.addEventListener("click", (e) => {
   const el = (e.target as HTMLElement).closest(".remove") as HTMLElement | null;
   if (el) removeItem(el.dataset.slug!);
 });
-window.addEventListener(CART_EVENT, renderCart);
+window.addEventListener(CART_EVENT, () => {
+  if (qtyLocalEdit) {
+    renderTotals(); // qty edit in progress — totals only, keep the input focused
+    return;
+  }
+  renderCart();
+});
 
 // ---- Validation ----
 function fieldEl(field: string): HTMLInputElement | null {
