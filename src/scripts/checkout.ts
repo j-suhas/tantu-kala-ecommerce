@@ -10,6 +10,7 @@ import {
   itemCount,
   clearCart,
   CART_EVENT,
+  type CartChangeDetail,
 } from "../lib/cart";
 import {
   makeOrderRef,
@@ -171,7 +172,9 @@ function renderTotals() {
 
   // "Add ₹X more to unlock the coupon" nudge (only when below the lowest tier).
   const tiers = SITE.coupons?.autoOrderValue ?? [];
-  const tier = tiers.length ? [...tiers].sort((a, b) => a.minSubtotal - b.minSubtotal)[0] : null;
+  const tier = tiers.length
+    ? [...tiers].sort((a, b) => a.minSubtotal - b.minSubtotal)[0]
+    : null;
   const nudge = $("coupon-nudge");
   if (tier && !coupon && sub < tier.minSubtotal) {
     nudge.textContent = `Add ${money(tier.minSubtotal - sub)} more to unlock Extra ${tier.percentOff}% off 🎁`;
@@ -199,8 +202,17 @@ function renderCart() {
 // Editing a qty field must NOT rebuild the item list — replaceChildren() would
 // destroy and recreate the very <input> being typed into, stealing focus/cursor
 // on every keystroke (the "cursor disappears" bug). So a qty edit only updates
-// totals; the list is rebuilt only for add/remove.
-let qtyLocalEdit = false;
+// totals; the list is rebuilt only for add/remove. Which happened is read off
+// the event's `cause` (set in lib/cart.ts), not a local flag here — so it stays
+// correct even if another code path starts emitting the same event.
+
+/** Clamp a raw qty-field value to [1, cap] (cap = Infinity if uncapped).
+ *  Empty/non-numeric input falls back to 1 — shared by the input and
+ *  focusout handlers so the bounds logic only lives in one place. */
+function clampQty(raw: string, cap: number): number {
+  const n = Number(raw);
+  return Math.min(cap, Math.max(1, Number.isFinite(n) ? n : 1));
+}
 
 itemsEl.addEventListener("input", (e) => {
   const el = e.target as HTMLInputElement;
@@ -210,13 +222,9 @@ itemsEl.addEventListener("input", (e) => {
   // "1" to type "3" on mobile, where there's no up/down stepper). Snapping to 1
   // here is what previously made it impossible to type past 1.
   if (raw === "") return;
-  const n = Number(raw);
-  if (!Number.isFinite(n)) return;
   const cap = Number(el.max) || Infinity;
-  const q = Math.min(cap, Math.max(1, n));
-  qtyLocalEdit = true;
+  const q = clampQty(raw, cap);
   setQty(el.dataset.slug!, q);
-  qtyLocalEdit = false;
 });
 
 // Commit on blur: snap the visible value to the clamped quantity (handles a
@@ -225,28 +233,31 @@ itemsEl.addEventListener("focusout", (e) => {
   const el = e.target as HTMLInputElement;
   if (!el.classList.contains("qty")) return;
   const cap = Number(el.max) || Infinity;
-  const q = Math.min(cap, Math.max(1, Number(el.value) || 1));
+  const q = clampQty(el.value, cap);
   if (el.value !== String(q)) el.value = String(q);
-  qtyLocalEdit = true;
   setQty(el.dataset.slug!, q);
-  qtyLocalEdit = false;
 });
 
 itemsEl.addEventListener("click", (e) => {
   const el = (e.target as HTMLElement).closest(".remove") as HTMLElement | null;
   if (el) removeItem(el.dataset.slug!);
 });
-window.addEventListener(CART_EVENT, () => {
-  if (qtyLocalEdit) {
-    renderTotals(); // qty edit in progress — totals only, keep the input focused
+window.addEventListener(CART_EVENT, ((e: CustomEvent<CartChangeDetail>) => {
+  if (e.detail?.cause === "qty") {
+    renderTotals(); // qty edit — totals only, keep the input focused
     return;
   }
   renderCart();
-});
+}) as EventListener);
 
 // ---- Validation ----
 function fieldEl(field: string): HTMLInputElement | null {
-  const sel = field === "pincode" ? "#pincode" : field === "city" ? "#city" : `[name=${field}]`;
+  const sel =
+    field === "pincode"
+      ? "#pincode"
+      : field === "city"
+        ? "#city"
+        : `[name=${field}]`;
   return document.querySelector(sel);
 }
 function fieldVal(field: string): string {
@@ -273,19 +284,31 @@ function normPhone(raw: string): string {
 function validateField(field: string): boolean {
   const v = fieldVal(field);
   let msg = "";
-  if (field === "name") { if (!NAME_RE.test(v)) msg = "Enter your name (2–50 letters)."; }
-  else if (field === "phone") { if (!PHONE_RE.test(normPhone(v))) msg = "Enter a valid 10-digit Indian mobile number."; }
-  else if (field === "address") { if (v.length < 10) msg = "Please enter your full delivery address."; }
-  else if (field === "pincode") { if (!PINCODE_RE.test(v)) msg = "Enter a valid 6-digit pincode."; }
-  else if (field === "city") { if (v.length < 2) msg = "Enter your city / district."; }
-  if (msg) { showErr(field, msg); return false; }
+  if (field === "name") {
+    if (!NAME_RE.test(v)) msg = "Enter your name (2–50 letters).";
+  } else if (field === "phone") {
+    if (!PHONE_RE.test(normPhone(v)))
+      msg = "Enter a valid 10-digit Indian mobile number.";
+  } else if (field === "address") {
+    if (v.length < 10) msg = "Please enter your full delivery address.";
+  } else if (field === "pincode") {
+    if (!PINCODE_RE.test(v)) msg = "Enter a valid 6-digit pincode.";
+  } else if (field === "city") {
+    if (v.length < 2) msg = "Enter your city / district.";
+  }
+  if (msg) {
+    showErr(field, msg);
+    return false;
+  }
   clearErr(field);
   return true;
 }
 
 const FIELDS = ["name", "phone", "address", "pincode", "city"];
 // Validate each field the moment the user leaves it.
-FIELDS.forEach((f) => fieldEl(f)?.addEventListener("blur", () => validateField(f)));
+FIELDS.forEach((f) =>
+  fieldEl(f)?.addEventListener("blur", () => validateField(f)),
+);
 
 // Form-fill timing (a very fast fill = bot-like). Stamped on the first real
 // interaction with the checkout form.
@@ -323,7 +346,12 @@ $("checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   // honeypot — a filled hidden "company" means a bot; stop silently.
-  if ((document.querySelector("[name=company]") as HTMLInputElement | null)?.value.trim()) return;
+  if (
+    (
+      document.querySelector("[name=company]") as HTMLInputElement | null
+    )?.value.trim()
+  )
+    return;
 
   const ok = FIELDS.map(validateField).every(Boolean);
   if (!ok) return;
@@ -333,8 +361,14 @@ $("checkout-form").addEventListener("submit", async (e) => {
   const address = fieldVal("address");
   const pincode = fieldVal("pincode");
   const city = fieldVal("city");
-  const state = (document.getElementById("state") as HTMLInputElement | null)?.value.trim() ?? "";
-  const note = (document.querySelector("[name=note]") as HTMLInputElement | null)?.value.trim() ?? "";
+  const state =
+    (
+      document.getElementById("state") as HTMLInputElement | null
+    )?.value.trim() ?? "";
+  const note =
+    (
+      document.querySelector("[name=note]") as HTMLInputElement | null
+    )?.value.trim() ?? "";
 
   const items = getCart();
   if (items.length === 0) return;
@@ -532,8 +566,12 @@ document.getElementById("ive-paid")?.addEventListener("click", () => {
 
   const summaryEl = document.getElementById("placed-summary");
   if (summaryEl) summaryEl.textContent = placedSummary;
-  const waPlaced = document.getElementById("wa-placed") as HTMLAnchorElement | null;
-  const waConfirm = document.getElementById("wa-confirm") as HTMLAnchorElement | null;
+  const waPlaced = document.getElementById(
+    "wa-placed",
+  ) as HTMLAnchorElement | null;
+  const waConfirm = document.getElementById(
+    "wa-confirm",
+  ) as HTMLAnchorElement | null;
   if (waPlaced && waConfirm) waPlaced.href = waConfirm.href;
 
   document.getElementById("pay-active")?.classList.add("hidden");
@@ -712,7 +750,10 @@ const totalObserved = document.getElementById("total");
 if (stickyPay && totalObserved && "IntersectionObserver" in window) {
   new IntersectionObserver(
     ([entry]) => {
-      const show = !entry.isIntersecting && !paid && !cartSection.classList.contains("hidden");
+      const show =
+        !entry.isIntersecting &&
+        !paid &&
+        !cartSection.classList.contains("hidden");
       stickyPay.classList.toggle("translate-y-full", !show);
     },
     { threshold: 0 },
