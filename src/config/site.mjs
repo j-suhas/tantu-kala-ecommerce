@@ -29,7 +29,7 @@ export const SITE = {
     // Your UPI VPA, e.g. 'tantukala@okhdfcbank' (placeholder below).
     vpa: "sushama.jaybhaye@oksbi",
     // Payee name shown in the customer's UPI app.
-    payeeName: "Tantu Kala",
+    payeeName: "Sushama Jaybhaye",
   },
 
   // ---- SHIPPING ----
