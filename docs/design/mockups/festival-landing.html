@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Ganesh Chaturthi Festival Page Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!--
+  DESIGN NOTE (for reviewers, not implementation code):
+  This page demonstrates the v2 "campaign" concept for the extensible multi-festival
+  calendar — each active occasion (Raksha Bandhan, Ganesh Chaturthi, Navratri, Diwali,
+  more addable later) gets one instance of this page pattern, conceptually configured as:
+
+    { name: "Ganesh Chaturthi", active: true, cutoffDate: "2026-09-08",
+      bannerText: "Garlands, mandap accents & gifting — made to order",
+      promoTiers: [] }  // no discount tiers in this design — restraint by default
+
+  IMPORTANT — scoping rule this page is built to respect:
+  The Rosewood accent below is a FESTIVAL-SCOPED layer, not a site reskin. Topbar,
+  footer, type/occasion tag structure and product-card anatomy are all pulled unchanged
+  from docs/design/mockups/homepage.html / docs/design/mockups/catalog-nav.html. Only the hero band
+  and the occasion tag chips use Rosewood — everything else on this page stays on the
+  default Umber/Terracotta/Clay-Sand palette, same as every non-festival page.
+-->
+
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+  .eyebrow.on-rosewood { color: var(--mustard); }
+
+  /* ---------- Placeholder photography blocks (same pattern as other mockups) ---------- */
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    padding: 12px 16px;
+    max-width: 80%;
+  }
+  .photo-lifestyle {
+    background: linear-gradient(150deg, #E7C9A8 0%, #D9A876 45%, #B5603A 100%);
+  }
+  .photo-lifestyle::after {
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(51, 24, 14, 0.35);
+    font-weight: 500;
+  }
+  .photo-studio {
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-studio::after { color: #9c8a76; }
+
+  /* Festival-scoped hero photo register — a rosewood/mustard blend used ONLY
+     inside .festival-hero on this page; the shared .photo-lifestyle/.photo-studio
+     registers above are untouched. */
+  .photo-festive {
+    background: linear-gradient(155deg, #8C4A50 0%, #6E2E33 55%, #4D3126 100%);
+  }
+  .photo-festive::after {
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(24, 10, 8, 0.4);
+    font-weight: 500;
+  }
+
+  section { padding: 56px 0; }
+
+  /* ---------- Top bar (unchanged from homepage/catalog mockups) ---------- */
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--umber);
+    letter-spacing: -0.01em;
+  }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .top-nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .top-nav a { color: var(--charcoal-umber); }
+  .top-nav a:hover { color: var(--terracotta); }
+  .top-nav a.current { color: var(--rosewood); }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .icon-btn {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-weight: 600;
+    background: #fff;
+  }
+
+  /* ---------- Breadcrumb ---------- */
+  .breadcrumb {
+    font-size: 12.5px;
+    color: #7a6a5f;
+    padding: 14px 0 0;
+  }
+  .breadcrumb a { color: var(--terracotta); font-weight: 600; }
+  .breadcrumb .sep { margin: 0 6px; color: #c9b9a8; }
+
+  /* ---------- Festival hero (the ONLY rosewood-background section on this page) ---------- */
+  .festival-hero {
+    background: var(--rosewood);
+    color: var(--warm-ivory);
+    margin-top: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .festival-hero-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+  .festival-hero-copy {
+    flex: 1 1 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding: 48px 40px;
+  }
+  .festival-hero-copy h1 {
+    color: var(--warm-ivory);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .festival-hero-copy p.lede {
+    font-size: 15.5px;
+    color: #F1DCDD;
+    max-width: 48ch;
+    margin: 0;
+  }
+  .festival-hero-photo {
+    flex: 1 1 320px;
+    min-height: 280px;
+  }
+  .festival-cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-on-rosewood-fill { background: var(--warm-ivory); color: var(--rosewood); }
+  .btn-on-rosewood-outline { background: transparent; border-color: rgba(250,243,231,0.55); color: var(--warm-ivory); }
+
+  /* ---------- Cutoff callout ---------- */
+  .cutoff-callout {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: rgba(250, 243, 231, 0.10);
+    border: 1px solid rgba(250, 243, 231, 0.28);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-top: 8px;
+  }
+  .cutoff-callout .icon-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--mustard);
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+  .cutoff-callout strong { color: var(--warm-ivory); font-weight: 700; }
+  .cutoff-callout p { margin: 0; font-size: 14px; color: #F6E9EA; }
+  .cutoff-callout .cutoff-fineprint {
+    display: block;
+    margin-top: 5px;
+    font-size: 11.5px;
+    color: #E3B9BD;
+  }
+
+  /* ---------- Section headers (same as homepage) ---------- */
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .section-head h2 {
+    font-weight: 600;
+    font-size: clamp(24px, 4vw, 30px);
+  }
+  .section-head .see-all {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--terracotta);
+    white-space: nowrap;
+  }
+  .section-intro {
+    font-size: 15px;
+    color: var(--charcoal-umber);
+    max-width: 64ch;
+    margin: 10px 0 28px;
+  }
+
+  /* ---------- Product grid (identical anatomy to catalog-nav mockup) ---------- */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
+  }
+  .product-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .product-card .photo-placeholder { aspect-ratio: 1 / 1; width: 100%; }
+  .product-body { padding: 14px; }
+  .product-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .product-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 5px;
+  }
+  .product-tag.type { color: var(--umber); background: var(--clay-sand); }
+  .product-tag.occasion { color: #fff; background: var(--rosewood); }
+  .product-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--charcoal-umber);
+    margin: 0 0 4px;
+  }
+  .product-meta {
+    font-size: 12px;
+    color: #7a6a5f;
+    margin: 0;
+  }
+  .product-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .product-price { font-weight: 700; font-size: 16px; color: var(--terracotta); }
+  .product-cta {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--umber);
+    border: 1px solid var(--umber);
+    border-radius: 999px;
+    padding: 5px 12px;
+    background: transparent;
+  }
+
+  /* ---------- Closing / "one of many festivals" panel ---------- */
+  .festival-closing {
+    background: var(--clay-sand);
+    border-radius: 18px;
+    padding: 32px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .festival-closing-text { flex: 1 1 320px; }
+  .festival-closing-text h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .festival-closing-text p {
+    font-size: 14px;
+    color: #6b5b4f;
+    max-width: 52ch;
+    margin: 0;
+  }
+  .festival-pill-row {
+    flex: 1 1 320px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .festival-pill {
+    background: #fff;
+    border: 1px solid #DDCCB4;
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal-umber);
+  }
+  .festival-pill.current {
+    background: var(--rosewood);
+    color: #fff;
+    border-color: var(--rosewood);
+  }
+  .festival-pill.upcoming {
+    color: #a08d7c;
+    border-style: dashed;
+  }
+  .festival-pill.current {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .festival-pill.current .pulse-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--mustard);
+    animation: pillPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pillPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.6); opacity: 0.55; }
+  }
+  .festival-closing .catalog-link {
+    display: block;
+    margin-top: 14px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--umber);
+  }
+
+  /* ---------- Footer (unchanged from homepage) ---------- */
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 44px 0 28px;
+    margin-top: 20px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 28px;
+    margin-bottom: 28px;
+  }
+  .footer-grid h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mustard);
+    margin: 0 0 12px;
+  }
+  .footer-grid a, .footer-grid p {
+    display: block;
+    font-size: 13.5px;
+    color: #D9CBBD;
+    margin: 0 0 8px;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(217, 203, 189, 0.15);
+    padding-top: 18px;
+    font-size: 12px;
+    color: #A6968A;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 36px 0; }
+    .festival-hero-copy, .festival-hero-photo { min-height: 240px; padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+      <nav class="top-nav">
+        <a href="#">Collections</a>
+        <a href="#">Jewelry</a>
+        <a href="#">Decor</a>
+        <a href="#" class="current">Festive</a>
+        <a href="#">Custom Orders</a>
+      </nav>
+      <div class="top-actions">
+        <a href="#" class="icon-btn">Cart (0)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="breadcrumb"><a href="#">Home</a><span class="sep">/</span><a href="#">Festivals</a><span class="sep">/</span>Ganesh Chaturthi</p>
+
+    <!-- ================= FESTIVAL HERO (scoped rosewood layer) ================= -->
+    <section aria-label="Ganesh Chaturthi festival hero" style="padding-bottom: 0;">
+      <div class="festival-hero">
+        <div class="festival-hero-inner">
+          <div class="festival-hero-copy">
+            <p class="eyebrow on-rosewood">This Season · Festival Edit</p>
+            <h1>Ganesh Chaturthi,<br>made by hand.</h1>
+            <p class="lede">Garlands, mandap accents and gifting for the days around Ganesh Chaturthi — worked in the same crochet thread and pipe cleaner as everything else we make, just dressed for the occasion.</p>
+
+            <div class="cutoff-callout">
+              <span class="icon-badge"></span>
+              <p>
+                <strong>Order by 8 September 2026</strong> to receive your pieces before Ganesh Chaturthi (14 September 2026) — everything is handmade to order.
+                <span class="cutoff-fineprint">Illustrative placeholder date for this mockup; the real cutoff is confirmed closer to the season.</span>
+              </p>
+            </div>
+
+            <div class="festival-cta-row">
+              <a href="#ganesh-grid" class="btn btn-on-rosewood-fill">Shop the Ganesh Chaturthi edit</a>
+              <a href="#more-festivals" class="btn btn-on-rosewood-outline">See all festivals</a>
+            </div>
+          </div>
+          <div class="festival-hero-photo photo-placeholder photo-festive" data-label="styled lifestyle photo —&#10;garland on a home mandap,&#10;warm ambient light"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRODUCT GRID — curated by Occasion ================= -->
+    <section id="ganesh-grid" aria-label="Ganesh Chaturthi product edit">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Curated by Occasion</p>
+          <h2>This Year's Ganesh Chaturthi Edit</h2>
+        </div>
+        <a href="#" class="see-all">View all in catalog →</a>
+      </div>
+      <p class="section-intro">Six pieces pulled from across the catalog — jewelry, home décor, car décor and gifting — each one carrying its everyday Type tag alongside the Ganesh Chaturthi occasion tag. Browsing by occasion just filters the same catalog; nothing here is a separate product line.</p>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Terracotta Modak Charm Earrings</p>
+            <p class="product-meta">Handmade · Ships in 3–5 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹399</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Home Decor</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Marigold Mandap Garland — Wall Hoop</p>
+            <p class="product-meta">Handmade · Ships in 4–6 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹549</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Car Decor</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Mini Marigold Garland — Rear View Mirror</p>
+            <p class="product-meta">Handmade · Ships in 3–5 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹199</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Office Decor</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Modak Motif Desk Coaster Set</p>
+            <p class="product-meta">Handmade · Set of 4</p>
+            <div class="product-price-row">
+              <span class="product-price">₹479</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Gifting / Combos</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Ganpati Gifting Box — Garland &amp; Coaster Duo</p>
+            <p class="product-meta">Handmade · Boxed, ready to give</p>
+            <div class="product-price-row">
+              <span class="product-price">₹649</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Mustard Marigold Jhumkas</p>
+            <p class="product-meta">Handmade · Ships in 3–5 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹359</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CLOSING — one instance of a repeatable pattern ================= -->
+    <section id="more-festivals" aria-label="Other festivals" style="padding-top: 0;">
+      <div class="festival-closing">
+        <div class="festival-closing-text">
+          <h3>One festival, out of several.</h3>
+          <p>This page is one instance of a repeatable pattern — every active occasion in the calendar gets its own edit, same layout, same restraint. The rest of the site keeps its everyday look outside of these windows.</p>
+          <a href="#" class="catalog-link">Browse the full catalog →</a>
+        </div>
+        <div class="festival-pill-row">
+          <a href="#" class="festival-pill">Raksha Bandhan</a>
+          <span class="festival-pill current"><span class="pulse-dot"></span>Ganesh Chaturthi — now</span>
+          <a href="#" class="festival-pill upcoming">Navratri — coming next</a>
+          <a href="#" class="festival-pill upcoming">Diwali — coming next</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Jewelry</a>
+          <a href="#">Home Decor</a>
+          <a href="#">Car &amp; Office Decor</a>
+          <a href="#">Gifting / Combos</a>
+        </div>
+        <div>
+          <h4>Festive</h4>
+          <a href="#">Raksha Bandhan</a>
+          <a href="#">Ganesh Chaturthi</a>
+          <a href="#">Navratri</a>
+          <a href="#">Diwali</a>
+        </div>
+        <div>
+          <h4>Tantu Kala</h4>
+          <a href="#">Custom Orders</a>
+          <a href="#">Our Story</a>
+          <a href="#">Contact on WhatsApp</a>
+        </div>
+        <div>
+          <h4>Say hello</h4>
+          <p>hello@tantukala.in</p>
+          <p>@tantu.kala on Instagram</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Tantu Kala. Handmade in India.</span>
+        <span>Mockup for design review — not a live page.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — About / Brand Story Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+
+  .eyebrow.on-dark { color: var(--mustard); }
+
+  /* ---------- Placeholder photography blocks ---------- */
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    padding: 12px 16px;
+    max-width: 80%;
+  }
+  .photo-lifestyle {
+    background: linear-gradient(150deg, #E7C9A8 0%, #D9A876 45%, #B5603A 100%);
+  }
+  .photo-lifestyle::after {
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(51, 24, 14, 0.35);
+    font-weight: 500;
+  }
+  .photo-studio {
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-studio::after {
+    color: #9c8a76;
+  }
+
+  section { padding: 56px 0; }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--umber);
+    letter-spacing: -0.01em;
+  }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .top-nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .top-nav a { color: var(--charcoal-umber); }
+  .top-nav a:hover { color: var(--terracotta); }
+  .top-nav a.active { color: var(--terracotta); }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .icon-btn {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-weight: 600;
+    background: #fff;
+  }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--umber); color: var(--warm-ivory); }
+  .btn-secondary { background: transparent; border-color: var(--umber); color: var(--umber); }
+  .btn-rosewood { background: var(--rosewood); color: #fff; }
+
+  /* ---------- Section headers ---------- */
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .section-head h2 {
+    font-weight: 600;
+    font-size: clamp(24px, 4vw, 32px);
+  }
+  .section-intro {
+    font-size: 15px;
+    color: var(--charcoal-umber);
+    max-width: 60ch;
+    margin: 10px 0 0;
+  }
+
+  /* ---------- About hero ---------- */
+  .about-hero { padding: 0; }
+  .about-hero-inner {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: stretch;
+  }
+  .about-hero-copy {
+    flex: 1 1 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: 56px 24px;
+    background: var(--warm-ivory);
+  }
+  .about-hero-copy h1 {
+    font-weight: 600;
+    font-size: clamp(30px, 5.4vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+  .about-hero-copy p.lede {
+    font-size: 17px;
+    color: var(--charcoal-umber);
+    max-width: 48ch;
+    margin: 0;
+  }
+  .about-hero-photo {
+    flex: 1 1 360px;
+    min-height: 340px;
+  }
+
+  /* ---------- How it's made ---------- */
+  .made-intro {
+    font-size: 15.5px;
+    max-width: 68ch;
+    margin: 10px 0 32px;
+  }
+  .made-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .made-card {
+    background: var(--clay-sand);
+    border-radius: 16px;
+    padding: 24px 22px;
+  }
+  .made-card .dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--mustard);
+    margin-bottom: 14px;
+  }
+  .made-card h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--charcoal-umber);
+    margin-bottom: 8px;
+  }
+  .made-card p {
+    font-size: 13.5px;
+    color: #7a6a5f;
+    margin: 0;
+  }
+  .made-rule {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--umber);
+    color: var(--warm-ivory);
+    border-radius: 16px;
+    padding: 22px 24px;
+  }
+  .made-rule .mark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 28px;
+    color: var(--mustard);
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+  .made-rule p {
+    margin: 0;
+    font-size: 14.5px;
+    color: #F1E4D3;
+    max-width: 62ch;
+  }
+  .made-rule strong { color: var(--warm-ivory); font-weight: 600; }
+  .made-rule .fact-trigger {
+    border-bottom: 1px dashed var(--mustard);
+    cursor: default;
+    position: relative;
+  }
+  .made-rule .fact-trigger:hover::after {
+    content: attr(data-fact);
+    position: absolute;
+    bottom: 130%;
+    left: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-size: 11.5px;
+    line-height: 1.4;
+    padding: 8px 10px;
+    border-radius: 8px;
+    width: 220px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  }
+  .stat-strip {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--clay-sand);
+  }
+  .stat-strip .stat { text-align: center; }
+  .stat-strip .stat .num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--terracotta);
+  }
+  .stat-strip .stat .label {
+    font-size: 11px;
+    color: #7a6a5f;
+  }
+  .stat-strip-note {
+    text-align: center;
+    font-size: 11px;
+    color: #a08d7c;
+    margin-top: 6px;
+  }
+  .made-photo {
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    margin-top: 24px;
+  }
+
+  /* ---------- Founder story ---------- */
+  .founder-story {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+  }
+  .founder-photo {
+    flex: 1 1 320px;
+    aspect-ratio: 5 / 4;
+    border-radius: 18px;
+  }
+  .founder-text { flex: 1 1 340px; }
+  .founder-text p {
+    font-size: 15.5px;
+    max-width: 54ch;
+    margin: 14px 0 0;
+  }
+  .founder-quote {
+    border-left: 3px solid var(--rosewood);
+    padding-left: 18px;
+    margin: 20px 0 0;
+  }
+  .founder-quote p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--umber);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* ---------- What we make ---------- */
+  .make-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+  }
+  .make-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 14px;
+    padding: 22px 20px;
+  }
+  .make-card .photo-placeholder {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .make-card .tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    background: #F3E4D8;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .make-card h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16.5px;
+    color: var(--charcoal-umber);
+    margin-bottom: 6px;
+  }
+  .make-card p {
+    font-size: 13.5px;
+    color: #7a6a5f;
+    margin: 0;
+  }
+
+  /* ---------- Closing CTA ---------- */
+  .about-cta {
+    background: var(--rosewood);
+    border-radius: 20px;
+    color: var(--warm-ivory);
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .about-cta h2 { color: var(--warm-ivory); font-weight: 600; font-size: clamp(22px, 3.6vw, 28px); }
+  .about-cta p {
+    color: #F1DCDD;
+    max-width: 54ch;
+    margin: 12px auto 22px;
+    font-size: 15px;
+  }
+  .about-cta .btn-primary { background: var(--warm-ivory); color: var(--rosewood); }
+  .about-cta .btn-secondary { border-color: var(--warm-ivory); color: var(--warm-ivory); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 44px 0 28px;
+    margin-top: 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 28px;
+    margin-bottom: 28px;
+  }
+  .footer-grid h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mustard);
+    margin: 0 0 12px;
+  }
+  .footer-grid a, .footer-grid p {
+    display: block;
+    font-size: 13.5px;
+    color: #D9CBBD;
+    margin: 0 0 8px;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(217, 203, 189, 0.15);
+    padding-top: 18px;
+    font-size: 12px;
+    color: #A6968A;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 40px 0; }
+    .about-hero-copy, .about-hero-photo { min-height: 280px; }
+    .about-cta { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner wrap" style="padding-left:0; padding-right:0;">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+      <nav class="top-nav">
+        <a href="#">Collections</a>
+        <a href="#">Jewelry</a>
+        <a href="#">Decor</a>
+        <a href="#">Festive</a>
+        <a href="#">Custom Orders</a>
+        <a href="#" class="active">Our Story</a>
+      </nav>
+      <div class="top-actions">
+        <a href="#" class="icon-btn">Cart (0)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ABOUT HERO ================= -->
+  <section class="about-hero">
+    <div class="about-hero-inner">
+      <div class="about-hero-copy">
+        <p class="eyebrow">Tantu, meaning thread</p>
+        <h1>A small thread-and-wire studio, growing one festival at a time.</h1>
+        <p class="lede">Tantu Kala began as a Raksha Bandhan rakhi shop. It's since grown into a year-round handmade jewelry, décor and gifting studio — but the way we work hasn't changed: everything is still built by hand, from crochet thread or pipe cleaner, nothing else.</p>
+      </div>
+      <div class="about-hero-photo photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;founder's worktable, thread&#10;spools &amp; hook, natural window light"></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <!-- ================= HOW IT'S MADE ================= -->
+    <section aria-label="How it's made">
+      <div class="section-head" style="margin-bottom:0;">
+        <div>
+          <p class="eyebrow">How it's made</p>
+          <h2>One material rule, no exceptions</h2>
+          <p class="made-intro">Every product in the Tantu Kala catalog — jewelry, home décor, car décor, office décor, gifting combos, rakhis, all of it — is made using only crochet thread or pipe cleaner. Not a mix of materials with a bit of crochet on top: those two, and nothing else. It's a deliberate constraint, not a limitation, and it's the reason two very different-looking pieces still feel like they came from the same hand.</p>
+        </div>
+      </div>
+      <div class="made-grid">
+        <div class="made-card">
+          <div class="dot"></div>
+          <h3>Crochet thread</h3>
+          <p>Worked stitch by stitch into jewelry, coasters, wall hoops, garlands and more — the same technique whether it's a pair of jhumkas or a mandap accent.</p>
+        </div>
+        <div class="made-card">
+          <div class="dot"></div>
+          <h3>Pipe cleaner</h3>
+          <p>Shaped and wrapped by hand for car charms, keychains, small figures and detailing — sturdier where a piece needs to hold its form.</p>
+        </div>
+      </div>
+      <div class="made-rule">
+        <span class="mark">＋</span>
+        <p><strong>No metal, no resin, no factory line.</strong> If it's in the Tantu Kala catalog, it was made from <span class="fact-trigger" data-fact="a single jhumka takes roughly 900+ stitches — give or take how chatty we were that afternoon">crochet thread or pipe cleaner</span>, by hand, one piece at a time. That's also why sizes and colours can be adjusted on most listings — and why a fully custom piece is always on the table.</p>
+      </div>
+
+      <!-- Illustrative "by the numbers" stat strip — playful, not audited figures -->
+      <div class="stat-strip">
+        <div class="stat"><div class="num">900+</div><div class="label">stitches in one jhumka</div></div>
+        <div class="stat"><div class="num">4</div><div class="label">festivals a year, and counting</div></div>
+        <div class="stat"><div class="num">1</div><div class="label">material rule, always</div></div>
+        <div class="stat"><div class="num">0</div><div class="label">factory lines involved</div></div>
+      </div>
+      <p class="stat-strip-note">Illustrative numbers, for a bit of personality — not an audited count.</p>
+
+      <div class="made-photo photo-placeholder photo-studio" data-label="studio product photo —&#10;close crop of crochet stitches&#10;and pipe-cleaner detail, side by side"></div>
+    </section>
+
+    <!-- ================= FOUNDER STORY ================= -->
+    <section aria-label="Why we started">
+      <div class="founder-story">
+        <div class="founder-photo photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;hands mid-crochet, thread &amp;&#10;hook, natural window light"></div>
+        <div class="founder-text">
+          <p class="eyebrow">Why we started</p>
+          <h2>A rakhi order list that grew into a small studio</h2>
+          <p>Tantu Kala started small, the way most handmade shops do — a handful of rakhi orders for family and friends around one Raksha Bandhan, made because storebought options felt generic. The response was enough to keep going the next year, and the year after that.</p>
+          <p>Somewhere along the way it stopped being a once-a-year thing. People started asking for jewelry, for something for their desk, for a gift box that didn't feel mass-produced. So we kept the same approach — crochet thread, pipe cleaner, made to order — and slowly widened what we made with it.</p>
+          <div class="founder-quote">
+            <p>"We're still a small, handmade operation — not a factory, not a big team. That's less an apology and more the point."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHAT WE MAKE ================= -->
+    <section aria-label="What we make">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">What we make</p>
+          <h2>From rakhis to a year-round gifting studio</h2>
+          <p class="section-intro">The material never changes; what we make with it keeps growing — across everyday wear, everyday spaces, and the festival calendar.</p>
+        </div>
+        <a href="#" class="see-all" style="font-size:13.5px; font-weight:600; color:var(--terracotta); white-space:nowrap;">Browse the catalog →</a>
+      </div>
+      <div class="make-grid">
+        <div class="make-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <span class="tag">Jewelry</span>
+          <h3>Everyday &amp; occasion jewelry</h3>
+          <p>Jhumkas, earrings, bracelets and latkans worked in crochet thread — made to wear often, not just for one festival.</p>
+        </div>
+        <div class="make-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <span class="tag">Home / Car / Office Decor</span>
+          <h3>Décor for where you actually are</h3>
+          <p>Wall hoops and coasters for home, charms for the rearview mirror, small pieces for a desk — same craft, different rooms.</p>
+        </div>
+        <div class="make-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <span class="tag">Gifting / Combos</span>
+          <h3>Boxed gifting combos</h3>
+          <p>Jewelry and décor paired into ready-to-give sets — birthdays, housewarmings, thank-yous, and the festival calendar: Raksha Bandhan, Ganesh Chaturthi, Navratri, Diwali.</p>
+        </div>
+        <div class="make-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;reference sketch &amp; thread&#10;swatches on a worktable"></div>
+          <span class="tag">Made to your brief</span>
+          <h3>Custom orders</h3>
+          <p>Describe what you have in mind or send a reference photo — we talk it through with you before anything is priced or made.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CLOSING CTA ================= -->
+    <section aria-label="Explore the catalog">
+      <div class="about-cta">
+        <h2>Made by hand. Meant to be used.</h2>
+        <p>Every piece in the catalog carries the same rule — crochet thread or pipe cleaner, nothing else. Have a look, or tell us what you're picturing.</p>
+        <div class="hero-cta-row" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a href="#" class="btn btn-primary">Shop the collections</a>
+          <a href="#" class="btn btn-secondary">Start a custom order</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Jewelry</a>
+          <a href="#">Home Decor</a>
+          <a href="#">Car &amp; Office Decor</a>
+          <a href="#">Gifting / Combos</a>
+        </div>
+        <div>
+          <h4>Festive</h4>
+          <a href="#">Raksha Bandhan</a>
+          <a href="#">Ganesh Chaturthi</a>
+          <a href="#">Navratri</a>
+          <a href="#">Diwali</a>
+        </div>
+        <div>
+          <h4>Tantu Kala</h4>
+          <a href="#">Custom Orders</a>
+          <a href="#">Our Story</a>
+          <a href="#">Contact on WhatsApp</a>
+        </div>
+        <div>
+          <h4>Say hello</h4>
+          <p>hello@tantukala.in</p>
+          <p>@tantu.kala on Instagram</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Tantu Kala. Handmade in India.</span>
+        <span>Mockup for design review — not a live page.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

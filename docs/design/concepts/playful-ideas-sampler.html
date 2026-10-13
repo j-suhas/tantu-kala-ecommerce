@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Playful Ideas Sampler (exploratory)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+
+  .concept-flag {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+  }
+
+  header.page-head {
+    padding: 44px 0 8px;
+    text-align: center;
+  }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+  header.page-head h1 {
+    font-weight: 600;
+    font-size: clamp(26px, 4.5vw, 36px);
+    margin-bottom: 10px;
+  }
+  header.page-head p {
+    font-size: 14.5px;
+    color: #6b5d51;
+    max-width: 58ch;
+    margin: 0 auto;
+  }
+
+  .idea-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    padding: 40px 0 60px;
+  }
+  .idea-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .idea-card .idea-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--mustard);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .idea-card h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .idea-card p.desc {
+    font-size: 13.5px;
+    color: #6b5d51;
+    margin: 0 0 18px;
+  }
+  .demo-box {
+    background: var(--warm-ivory);
+    border: 1px dashed var(--clay-sand);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+    text-align: center;
+  }
+
+  /* ---- Idea 1: logo thread-wiggle hover ---- */
+  .demo-logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--umber);
+    display: inline-block;
+    cursor: default;
+  }
+  .demo-logo span {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+  .demo-logo:hover span:nth-child(1) { transform: translateY(-3px) rotate(-4deg); }
+  .demo-logo:hover span:nth-child(2) { transform: translateY(2px) rotate(3deg); }
+  .demo-logo:hover span:nth-child(3) { transform: translateY(-2px) rotate(-2deg); }
+  .demo-logo:hover span:nth-child(4) { transform: translateY(3px) rotate(4deg); }
+  .demo-hint { font-size: 11px; color: #a08d7c; margin-top: 10px; }
+
+  /* ---- Idea 2: handmade "by the numbers" strip ---- */
+  .stat-strip { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+  .stat { text-align: center; }
+  .stat .num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--terracotta);
+  }
+  .stat .label { font-size: 11px; color: #7a6a5f; }
+
+  /* ---- Idea 3: empty cart with personality ---- */
+  .empty-cart-demo { text-align: center; }
+  .empty-cart-demo .basket {
+    width: 50px; height: 40px;
+    margin: 0 auto 10px;
+    border: 3px solid var(--clay-sand);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+  }
+  .empty-cart-demo .basket::before {
+    content: "";
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%);
+    width: 24px; height: 14px;
+    border: 3px solid var(--clay-sand);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+  }
+  .empty-cart-demo p { font-size: 13px; color: #6b5d51; margin: 0; font-style: italic; }
+
+  /* ---- Idea 4: order-confirmation confetti-of-thread (concept only, not wired into real checkout) ---- */
+  .confetti-demo {
+    position: relative;
+    width: 100%;
+    height: 90px;
+    overflow: hidden;
+  }
+  .confetti-demo .piece {
+    position: absolute;
+    top: -10px;
+    width: 5px;
+    height: 12px;
+    border-radius: 3px;
+    animation: fall 2.6s linear infinite;
+  }
+  @keyframes fall {
+    to { transform: translateY(110px) rotate(200deg); opacity: 0; }
+  }
+
+  /* ---- Idea 5: festival pill pulse ---- */
+  .pill-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--rosewood);
+    color: #fff;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: default;
+  }
+  .pill-demo .pulse-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--mustard);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.6; }
+  }
+
+  /* ---- Idea 6: "handmade math" fun-fact tooltip on material callout ---- */
+  .material-demo {
+    background: var(--clay-sand);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--charcoal-umber);
+    position: relative;
+    cursor: default;
+  }
+  .material-demo .fact-trigger {
+    border-bottom: 1px dashed var(--rosewood);
+    font-weight: 600;
+    position: relative;
+  }
+  .material-demo .fact-trigger:hover::after {
+    content: "a single jhumka takes roughly 900+ stitches — give or take how chatty we were that afternoon";
+    position: absolute;
+    bottom: 130%;
+    left: 0;
+    background: var(--charcoal-umber);
+    color: var(--warm-ivory);
+    font-size: 11px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    width: 220px;
+    line-height: 1.4;
+  }
+
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 24px 0;
+    text-align: center;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="concept-flag">Creative exploration only — playful micro-interaction ideas, not wired into any of the 9 approved page mockups</div>
+
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">Playful ideas sampler</p>
+      <h1>A few small, optional bits of personality</h1>
+      <p>Six tiny interactions that could be sprinkled into the real pages later — none of them touch the approved mockups, and all stay inside the existing palette so they'd still read as "quiet premium," just with a wink. Hover each demo below.</p>
+    </header>
+
+    <div class="idea-grid">
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 1</p>
+        <h3>Logo gives a little wiggle on hover</h3>
+        <p class="desc">Each letter of the wordmark nudges slightly, like a loose thread settling — a small "made by hand" wink on the header logo, everywhere it appears.</p>
+        <div class="demo-box">
+          <div>
+            <span class="demo-logo"><span>T</span><span>a</span><span>n</span><span>t</span>u Kala</span>
+            <p class="demo-hint">↑ hover the logo</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 2</p>
+        <h3>"By the numbers" stat strip for About</h3>
+        <p class="desc">A light, honest-sounding strip of handmade stats on the About page — illustrative placeholder numbers, not audited, just for texture and personality.</p>
+        <div class="demo-box">
+          <div class="stat-strip">
+            <div class="stat"><div class="num">900+</div><div class="label">stitches per jhumka</div></div>
+            <div class="stat"><div class="num">4</div><div class="label">festivals a year</div></div>
+            <div class="stat"><div class="num">1</div><div class="label">material rule, always</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 3</p>
+        <h3>Empty cart with a bit of personality</h3>
+        <p class="desc">Instead of a flat "your cart is empty," a small line of brand voice — still calm, not jokey enough to undercut the premium tone.</p>
+        <div class="demo-box">
+          <div class="empty-cart-demo">
+            <div class="basket"></div>
+            <p>Your cart's as empty as our spool right now.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 4</p>
+        <h3>A little "thread confetti" on order confirmation</h3>
+        <p class="desc">A brief, restrained burst of thread-colored confetti behind the "Order placed!" moment — concept only, not added to the real cart-checkout mockup per your instruction.</p>
+        <div class="demo-box" style="padding:0;">
+          <div class="confetti-demo" id="confettiDemo"></div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 5</p>
+        <h3>A gentle pulse on the "current" festival pill</h3>
+        <p class="desc">On the festival-landing closing panel, the active festival's pill gets a slow, subtle pulse dot — signals "happening now" without shouting or using a discount-style badge.</p>
+        <div class="demo-box">
+          <span class="pill-demo"><span class="pulse-dot"></span>Ganesh Chaturthi — now</span>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 6</p>
+        <h3>A hidden "handmade math" fact on the material rule</h3>
+        <p class="desc">A small hover tooltip on the About page's material callout — a tiny reward for someone reading closely, in the brand's own voice.</p>
+        <div class="demo-box">
+          <div class="material-demo">
+            Every piece is crochet thread or pipe cleaner — <span class="fact-trigger">no exceptions</span>.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>Exploratory concept sampler — none of these are implemented in the real site or the approved mockups.</footer>
+
+  <script>
+    // Idea 4 demo: spawn a few thread-colored confetti pieces on load, looping
+    (function () {
+      var host = document.getElementById('confettiDemo');
+      var colors = ['#B5603A', '#C99A44', '#6E2E33', '#6B7A5E'];
+      for (var i = 0; i < 14; i++) {
+        var piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.left = (Math.random() * 100) + '%';
+        piece.style.background = colors[i % colors.length];
+        piece.style.animationDelay = (Math.random() * 2.6) + 's';
+        host.appendChild(piece);
+      }
+    })();
+  </script>
+
+</body>
+</html>

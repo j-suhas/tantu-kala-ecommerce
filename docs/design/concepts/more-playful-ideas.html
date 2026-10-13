@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — More Playful Ideas, Round 2 (exploratory)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  .concept-flag {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+  }
+
+  header.page-head { padding: 44px 0 8px; text-align: center; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+  header.page-head h1 { font-weight: 600; font-size: clamp(26px, 4.5vw, 36px); margin-bottom: 10px; }
+  header.page-head p { font-size: 14.5px; color: #6b5d51; max-width: 62ch; margin: 0 auto; }
+
+  .idea-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px;
+    padding: 40px 0 60px;
+  }
+  .idea-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .idea-card .idea-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--mustard);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .idea-card h3 { font-family: var(--font-body); font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+  .idea-card p.desc { font-size: 13.5px; color: #6b5d51; margin: 0 0 18px; }
+  .demo-box {
+    background: var(--warm-ivory);
+    border: 1px dashed var(--clay-sand);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* ---- Idea 1: "how it's made" lite animated storyboard ---- */
+  .story-strip { display: flex; gap: 10px; width: 100%; overflow-x: auto; padding: 4px; }
+  .story-step {
+    flex: 0 0 auto;
+    width: 88px;
+    text-align: center;
+  }
+  .story-step .ring {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--clay-sand);
+    position: relative;
+  }
+  .story-step .ring svg { width: 34px; height: 34px; }
+  .story-step .ring path {
+    fill: none;
+    stroke: var(--terracotta);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    animation: drawLine 1.4s ease forwards;
+  }
+  .story-step:nth-child(1) .ring path { animation-delay: 0.1s; }
+  .story-step:nth-child(2) .ring path { animation-delay: 0.9s; }
+  .story-step:nth-child(3) .ring path { animation-delay: 1.7s; }
+  .story-step:nth-child(4) .ring path { animation-delay: 2.5s; }
+  @keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+  }
+  .story-step .label { font-size: 11px; color: #7a6a5f; }
+  .story-step .arrow { font-size: 11px; color: var(--mustard); align-self: center; padding-top: 20px; }
+
+  /* ---- Idea 2: fun-facts marquee ---- */
+  .marquee-track {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 10px;
+    background: var(--clay-sand);
+    padding: 10px 0;
+  }
+  .marquee-inner {
+    display: inline-block;
+    animation: scrollLeft 18s linear infinite;
+    font-size: 12.5px;
+    color: var(--umber);
+    font-weight: 600;
+  }
+  .marquee-inner span { margin: 0 22px; }
+  @keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---- Idea 3: maker's mark / piece number ---- */
+  .maker-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--warm-ivory);
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+  }
+  .maker-mark .stamp {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--umber);
+    color: var(--warm-ivory);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .maker-mark strong { color: var(--umber); }
+
+  /* ---- Idea 4: thread-color story tooltip ---- */
+  .swatch-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .swatch {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--clay-sand);
+    cursor: default;
+    position: relative;
+  }
+  .swatch:hover::after {
+    content: attr(data-story);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--charcoal-umber);
+    color: var(--warm-ivory);
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 8px 10px;
+    border-radius: 8px;
+    width: 170px;
+    white-space: normal;
+  }
+
+  /* ---- Idea 5: festival countdown ticker ---- */
+  .countdown-row { display: flex; gap: 12px; justify-content: center; }
+  .countdown-unit {
+    background: var(--rosewood);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+    min-width: 56px;
+  }
+  .countdown-unit .n { font-family: var(--font-display); font-weight: 700; font-size: 20px; }
+  .countdown-unit .u { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
+
+  /* ---- Idea 6: corkboard of tiny thank-you notes ---- */
+  .corkboard { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .note-card {
+    background: #FFFDF6;
+    border: 1px solid var(--clay-sand);
+    border-radius: 4px;
+    box-shadow: 0 3px 8px rgba(51,36,30,0.14);
+    padding: 12px 14px;
+    width: 130px;
+    font-size: 11px;
+    color: var(--charcoal-umber);
+    font-family: var(--font-display);
+    font-style: italic;
+    transform: rotate(-3deg);
+  }
+  .note-card:nth-child(2) { transform: rotate(2deg); }
+  .note-card:nth-child(3) { transform: rotate(-1.5deg); }
+  .note-card .pin {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    margin: 0 auto 6px;
+  }
+  .note-card .who { font-family: var(--font-body); font-style: normal; font-weight: 600; font-size: 10px; color: var(--rosewood); margin-top: 6px; }
+
+  /* ---- Idea 7: "spot the handmade variation" ---- */
+  .variation-pair { display: flex; gap: 16px; justify-content: center; }
+  .variation-item {
+    width: 80px; height: 80px;
+    border-radius: 12px;
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+    position: relative;
+    cursor: default;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    color: #9c8a76;
+    text-align: center;
+    padding: 6px;
+  }
+  .variation-item:hover::after {
+    content: attr(data-note);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--charcoal-umber);
+    color: var(--warm-ivory);
+    font-size: 10.5px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    width: 150px;
+    white-space: normal;
+  }
+
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 24px 0;
+    text-align: center;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="concept-flag">Creative exploration, round 2 — new brainstormed ideas only, not wired into any real page yet</div>
+
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">More playful ideas — brainstorm round 2</p>
+      <h1>Fun facts, a lite animated story, and a few more engagement ideas</h1>
+      <p>A fresh batch, separate from the six already wired into the approved pages. Nothing here is implemented anywhere yet — this is a sampler for you to react to. Hover/scroll each demo below.</p>
+    </header>
+
+    <div class="idea-grid">
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 1 · Lite animated story</p>
+        <h3>"How it's made" mini storyboard</h3>
+        <p class="desc">A small four-step animated line-drawing strip — thread, stitch, shape, finished piece — looping gently on the About or a product page. Quiet motion, not a full video.</p>
+        <div class="demo-box">
+          <div class="story-strip">
+            <div class="story-step">
+              <div class="ring"><svg viewBox="0 0 24 24"><path d="M4 12c4-8 12-8 16 0"/></svg></div>
+              <div class="label">Spool of thread</div>
+            </div>
+            <span class="arrow">→</span>
+            <div class="story-step">
+              <div class="ring"><svg viewBox="0 0 24 24"><path d="M4 4l16 16M4 20L20 4"/></svg></div>
+              <div class="label">Stitch by stitch</div>
+            </div>
+            <span class="arrow">→</span>
+            <div class="story-step">
+              <div class="ring"><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 4 9 9s-4 9-9 9-9-4-9-9"/></svg></div>
+              <div class="label">Takes shape</div>
+            </div>
+            <span class="arrow">→</span>
+            <div class="story-step">
+              <div class="ring"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              <div class="label">Finished, by hand</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 2 · Fun facts</p>
+        <h3>A scrolling fun-facts ribbon</h3>
+        <p class="desc">A slow auto-scrolling strip of bite-sized handmade facts — could sit in the footer or between homepage sections, always moving gently in the background.</p>
+        <div class="demo-box" style="padding: 0;">
+          <div class="marquee-track">
+            <div class="marquee-inner">
+              <span>🧵 Every rakhi is tied off by hand, not machine-sealed</span>
+              <span>🧵 No two garlands are ever exactly identical</span>
+              <span>🧵 Pipe-cleaner pieces are shaped, not molded</span>
+              <span>🧵 Every rakhi is tied off by hand, not machine-sealed</span>
+              <span>🧵 No two garlands are ever exactly identical</span>
+              <span>🧵 Pipe-cleaner pieces are shaped, not molded</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 3 · Authenticity touch</p>
+        <h3>A small maker's mark on product pages</h3>
+        <p class="desc">A quiet "Piece No. 048 of this design" style stamp near the product title — reinforces handmade-not-mass-produced without shouting about it.</p>
+        <div class="demo-box">
+          <span class="maker-mark"><span class="stamp">TK</span> <strong>Piece No. 048</strong> of this design</span>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 4 · Fun facts + storytelling</p>
+        <h3>Thread-colour name stories</h3>
+        <p class="desc">Hovering a colour swatch on a product page reveals a one-line story behind that shade's name — small, optional delight for someone who lingers.</p>
+        <div class="demo-box">
+          <div class="swatch-row">
+            <span class="swatch" style="background:#B5603A;" data-story="Terracotta — the shade of our very first rakhi batch"></span>
+            <span class="swatch" style="background:#C99A44;" data-story="Mustard — named after the marigolds outside the workshop"></span>
+            <span class="swatch" style="background:#6E2E33;" data-story="Rosewood — reserved for festival pieces only"></span>
+            <span class="swatch" style="background:#6B7A5E;" data-story="Sage — the newest colour in the thread box"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 5 · Engagement</p>
+        <h3>A festival countdown ticker</h3>
+        <p class="desc">On a festival landing page, a small live-feeling countdown to the order cutoff — adds urgency without discount-badge clutter, and stays inside the existing rosewood accent.</p>
+        <div class="demo-box">
+          <div class="countdown-row">
+            <div class="countdown-unit"><div class="n">05</div><div class="u">days</div></div>
+            <div class="countdown-unit"><div class="n">14</div><div class="u">hrs</div></div>
+            <div class="countdown-unit"><div class="n">32</div><div class="u">min</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 6 · Warmth / social proof</p>
+        <h3>A corkboard of tiny thank-you notes</h3>
+        <p class="desc">Real customer quotes styled like small pinned handwritten notes, gently tilted — a warmer alternative to a standard star-rating review block, for the About or homepage.</p>
+        <div class="demo-box">
+          <div class="corkboard">
+            <div class="note-card"><div class="pin"></div>"Smaller than I imagined, in the best way." <div class="who">— Priya</div></div>
+            <div class="note-card"><div class="pin"></div>"Could tell it was handmade the second I opened it." <div class="who">— Rohan</div></div>
+            <div class="note-card"><div class="pin"></div>"Ordered again for Diwali." <div class="who">— Meera</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="idea-card">
+        <p class="idea-num">Idea 7 · Playful education</p>
+        <h3>"Spot the handmade variation"</h3>
+        <p class="desc">Two nearly-identical thumbnails with a hover reveal pointing out a tiny natural difference — reinforces the Shipping &amp; Returns note that small variation is a handmade trait, not a flaw, in a lighter way than a policy paragraph.</p>
+        <div class="demo-box">
+          <div class="variation-pair">
+            <div class="variation-item" data-note="Piece A — slightly tighter stitch tension">Piece A</div>
+            <div class="variation-item" data-note="Piece B — a touch more thread showing at the base">Piece B</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>Exploratory concept sampler, round 2 — none of these are implemented in the real site or any approved mockup yet.</footer>
+
+</body>
+</html>

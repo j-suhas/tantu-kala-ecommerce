@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Cart &amp; Checkout Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font-family: var(--font-body); cursor: pointer; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+
+  /* ---------- Placeholder photography blocks (same pattern as homepage) ---------- */
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    padding: 8px 10px;
+    max-width: 90%;
+  }
+  .photo-lifestyle {
+    background: linear-gradient(150deg, #E7C9A8 0%, #D9A876 45%, #B5603A 100%);
+  }
+  .photo-lifestyle::after {
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(51, 24, 14, 0.35);
+    font-weight: 500;
+  }
+  .photo-studio {
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-studio::after {
+    color: #9c8a76;
+  }
+
+  section { padding: 40px 0; }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+
+  /* ---------- Top bar (same structure as homepage) ---------- */
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--umber);
+    letter-spacing: -0.01em;
+  }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .top-nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .top-nav a { color: var(--charcoal-umber); }
+  .top-nav a:hover { color: var(--terracotta); }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .icon-btn {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-weight: 600;
+    background: #fff;
+  }
+  .icon-btn.active {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    border-color: var(--umber);
+  }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn-primary { background: var(--umber); color: var(--warm-ivory); }
+  .btn-secondary { background: transparent; border-color: var(--umber); color: var(--umber); }
+  .btn-rosewood { background: var(--rosewood); color: #fff; }
+  .btn-sage { background: var(--sage); color: #fff; }
+  .btn-block { display: block; width: 100%; }
+  .btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+  /* ---------- Page header ---------- */
+  .page-header { padding: 32px 0 8px; }
+  .page-header h1 {
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 38px);
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 14.5px;
+    color: #7a6a5f;
+    margin: 0;
+  }
+
+  /* ---------- Step divider ---------- */
+  .step-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 48px 0 24px;
+  }
+  .step-divider .step-label {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--umber);
+    background: var(--clay-sand);
+    padding: 7px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .step-divider .step-note {
+    font-size: 12.5px;
+    color: #7a6a5f;
+  }
+  .step-divider::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--clay-sand);
+  }
+
+  /* ---------- Layout: cart + summary ---------- */
+  .checkout-layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .checkout-main { flex: 1 1 480px; min-width: 0; }
+  .checkout-aside { flex: 0 1 340px; min-width: 280px; position: sticky; top: 90px; }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .card + .card { margin-top: 18px; }
+  .card h2 {
+    font-weight: 600;
+    font-size: 19px;
+    margin-bottom: 4px;
+  }
+  .card .card-sub {
+    font-size: 13px;
+    color: #7a6a5f;
+    margin: 0 0 16px;
+  }
+
+  /* ---------- Cart line items ---------- */
+  .cart-item {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--clay-sand);
+  }
+  .cart-item:last-child { border-bottom: none; padding-bottom: 4px; }
+  .cart-item:first-child { padding-top: 4px; }
+  .cart-item-thumb {
+    flex: 0 0 auto;
+    width: 76px;
+    height: 76px;
+    border-radius: 10px;
+  }
+  .cart-item-thumb .photo-placeholder::after { font-size: 9px; padding: 4px; }
+  .cart-item-info { flex: 1 1 auto; min-width: 0; }
+  .item-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    background: #F3E4D8;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin-bottom: 6px;
+  }
+  .cart-item-name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--charcoal-umber);
+    margin: 0 0 4px;
+  }
+  .cart-item-unit {
+    font-size: 12.5px;
+    color: #7a6a5f;
+    margin: 0 0 8px;
+  }
+  .item-note-toggle {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--sage);
+    border-bottom: 1px dashed var(--sage);
+    line-height: 1.3;
+    padding-bottom: 1px;
+  }
+  .item-note-field {
+    margin-top: 8px;
+    display: none;
+  }
+  .item-note-field.open { display: block; }
+  .item-note-field textarea {
+    width: 100%;
+    max-width: 320px;
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    padding: 8px 10px;
+    border: 1px solid var(--clay-sand);
+    border-radius: 8px;
+    resize: vertical;
+    color: var(--charcoal-umber);
+    background: var(--warm-ivory);
+  }
+  .item-note-field .hint {
+    font-size: 11px;
+    color: #9c8a76;
+    margin: 4px 0 0;
+  }
+  .cart-item-controls {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 88px;
+  }
+  .qty-stepper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .qty-stepper button {
+    border: none;
+    background: var(--clay-sand);
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--umber);
+  }
+  .qty-stepper .qty-val {
+    width: 28px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .line-total {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--terracotta);
+  }
+  .remove-link {
+    font-size: 11.5px;
+    color: #9c8a76;
+    border-bottom: 1px solid transparent;
+  }
+  .remove-link:hover { color: var(--rosewood); border-color: var(--rosewood); }
+
+  /* ---------- Order summary ---------- */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 7px 0;
+    color: var(--charcoal-umber);
+  }
+  .summary-row.muted { color: #7a6a5f; font-size: 13px; }
+  .summary-row.total {
+    border-top: 1px solid var(--clay-sand);
+    margin-top: 6px;
+    padding-top: 14px;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--umber);
+  }
+  .summary-row.total .amount { color: var(--terracotta); }
+  .summary-note {
+    font-size: 12px;
+    color: #7a6a5f;
+    margin: 10px 0 0;
+  }
+
+  /* ---------- Checkout form ---------- */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--umber);
+  }
+  .form-field .optional {
+    font-weight: 400;
+    color: #9c8a76;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .form-field input, .form-field textarea {
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 11px 13px;
+    border: 1px solid var(--clay-sand);
+    border-radius: 10px;
+    color: var(--charcoal-umber);
+    background: var(--warm-ivory);
+  }
+  .form-field input:focus, .form-field textarea:focus {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 1px;
+  }
+  .form-field .field-hint {
+    font-size: 11px;
+    color: #9c8a76;
+  }
+  .form-field input[readonly] {
+    color: #7a6a5f;
+    background: var(--clay-sand);
+  }
+  .guest-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--sage);
+    background: #EEF1EA;
+    border: 1px solid #DCE3D4;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+  }
+
+  .place-order-row {
+    margin-top: 20px;
+  }
+  .place-order-row .btn { padding: 15px 24px; font-size: 15px; }
+  .place-order-fineprint {
+    font-size: 11.5px;
+    color: #9c8a76;
+    text-align: center;
+    margin: 10px 0 0;
+  }
+
+  /* ================= STEP 2 — CONFIRMATION ================= */
+  .confirmation-banner {
+    background: linear-gradient(155deg, #F3F5EF 0%, #EAEEE3 100%);
+    border: 2px solid var(--sage);
+    border-radius: 20px;
+    padding: 40px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Thread-confetti: a brief, restrained burst behind the checkmark on order confirmation */
+  .confetti-piece {
+    position: absolute;
+    top: -10px;
+    width: 5px;
+    height: 12px;
+    border-radius: 3px;
+    animation: confettiFall 2.6s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes confettiFall {
+    to { transform: translateY(340px) rotate(220deg); opacity: 0; }
+  }
+  .empty-cart-card {
+    text-align: center;
+    padding: 32px 20px;
+  }
+  .empty-cart-card .basket {
+    width: 52px; height: 42px;
+    margin: 0 auto 14px;
+    border: 3px solid var(--clay-sand);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+  }
+  .empty-cart-card .basket::before {
+    content: "";
+    position: absolute;
+    top: -15px; left: 50%;
+    transform: translateX(-50%);
+    width: 26px; height: 15px;
+    border: 3px solid var(--clay-sand);
+    border-bottom: none;
+    border-radius: 13px 13px 0 0;
+  }
+  .empty-cart-card p.empty-line {
+    font-size: 14px;
+    color: #6b5d51;
+    font-style: italic;
+    margin: 0 0 16px;
+  }
+  .confirmation-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--sage);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto 18px;
+  }
+  .confirmation-banner .eyebrow {
+    color: var(--sage);
+    justify-content: center;
+    display: flex;
+  }
+  .confirmation-banner h2 {
+    font-weight: 700;
+    font-size: clamp(26px, 5vw, 36px);
+    margin-bottom: 10px;
+  }
+  .confirmation-banner .sub {
+    font-size: 14.5px;
+    color: var(--charcoal-umber);
+    max-width: 44ch;
+    margin: 0 auto 22px;
+  }
+  .order-ref-box {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    background: #fff;
+    border: 2px dashed var(--terracotta);
+    border-radius: 14px;
+    padding: 14px 28px;
+    margin: 0 auto;
+  }
+  .order-ref-box .ref-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9c8a76;
+  }
+  .order-ref-box .ref-value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--terracotta);
+    letter-spacing: 0.03em;
+  }
+
+  .confirmation-recap {
+    text-align: left;
+    max-width: 480px;
+    margin: 28px auto 0;
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .confirmation-recap h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--umber);
+    margin-bottom: 10px;
+  }
+  .recap-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13.5px;
+    padding: 5px 0;
+    color: var(--charcoal-umber);
+  }
+  .recap-line .qty { color: #9c8a76; }
+  .recap-total {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--clay-sand);
+    margin-top: 8px;
+    padding-top: 10px;
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--umber);
+  }
+  .recap-total .amount { color: var(--terracotta); }
+
+  /* ---------- Payment action (clearly after / below confirmation) ---------- */
+  .payment-step {
+    margin-top: 28px;
+    padding-top: 0;
+  }
+  .payment-step-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--umber);
+    color: var(--warm-ivory);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-align: left;
+  }
+  .payment-step-inner .eyebrow { color: var(--mustard); margin-bottom: 6px; }
+  .payment-step-inner h3 {
+    color: var(--warm-ivory);
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .payment-step-inner p.lede {
+    color: #E9DAC8;
+    font-size: 13.5px;
+    margin: 0 0 20px;
+  }
+  .pay-amount {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--warm-ivory);
+    margin-bottom: 18px;
+  }
+  .pay-amount span {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12.5px;
+    color: #C9B8A5;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .upi-button-mobile { display: block; }
+  .upi-button-mobile .btn {
+    background: var(--terracotta);
+    color: #fff;
+    width: 100%;
+    padding: 15px;
+    font-size: 15px;
+  }
+  .upi-button-mobile .apps-hint {
+    font-size: 11.5px;
+    color: #C9B8A5;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .qr-desktop { display: none; }
+  .qr-box {
+    width: 168px;
+    height: 168px;
+    background: repeating-linear-gradient(45deg, #F3E9D8, #F3E9D8 6px, #E9DAC8 6px, #E9DAC8 12px);
+    border: 2px solid var(--mustard);
+    border-radius: 12px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 11px;
+    color: var(--umber);
+    padding: 10px;
+    font-weight: 600;
+  }
+  .qr-desktop .vpa {
+    text-align: center;
+    font-size: 12.5px;
+    color: #E9DAC8;
+  }
+
+  .verify-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: rgba(250, 243, 231, 0.08);
+    border: 1px solid rgba(250, 243, 231, 0.18);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 20px;
+  }
+  .verify-note .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--mustard);
+    margin-top: 6px;
+    flex: 0 0 auto;
+  }
+  .verify-note p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #F1E4D3;
+  }
+
+  /* ---------- Footer (same as homepage) ---------- */
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 44px 0 28px;
+    margin-top: 48px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 28px;
+    margin-bottom: 28px;
+  }
+  .footer-grid h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mustard);
+    margin: 0 0 12px;
+  }
+  .footer-grid a, .footer-grid p {
+    display: block;
+    font-size: 13.5px;
+    color: #D9CBBD;
+    margin: 0 0 8px;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(217, 203, 189, 0.15);
+    padding-top: 18px;
+    font-size: 12px;
+    color: #A6968A;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .upi-button-mobile { display: none; }
+    .qr-desktop { display: block; }
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 28px 0; }
+    .form-grid { grid-template-columns: 1fr; }
+    .checkout-aside { position: static; flex-basis: 100%; }
+    .cart-item { flex-wrap: wrap; }
+    .cart-item-controls { flex-direction: row; align-items: center; min-width: 0; width: 100%; justify-content: space-between; margin-top: 8px; }
+    .payment-step-inner { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner wrap" style="padding-left:0; padding-right:0;">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+      <nav class="top-nav">
+        <a href="#">Collections</a>
+        <a href="#">Jewelry</a>
+        <a href="#">Decor</a>
+        <a href="#">Festive</a>
+        <a href="#">Custom Orders</a>
+      </nav>
+      <div class="top-actions">
+        <a href="#" class="icon-btn active">Cart (3)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="page-header">
+      <p class="eyebrow">Cart &amp; Checkout</p>
+      <h1>Review your order</h1>
+      <p>Guest checkout — no account needed. Payment happens after your order is recorded, in the step below.</p>
+    </div>
+
+    <!-- ================= STEP 1 ================= -->
+    <div class="step-divider">
+      <span class="step-label">Step 1 — Cart &amp; details</span>
+      <span class="step-note">Review items, then fill in your delivery details</span>
+    </div>
+
+    <div class="checkout-layout">
+      <div class="checkout-main">
+
+        <!-- ---- Cart items ---- -->
+        <div class="card">
+          <h2>Your items</h2>
+          <p class="card-sub">3 items</p>
+
+          <div class="cart-item">
+            <div class="cart-item-thumb photo-placeholder photo-studio" data-label="studio photo"></div>
+            <div class="cart-item-info">
+              <span class="item-tag">Jewelry</span>
+              <p class="cart-item-name">Terracotta Crochet Jhumkas</p>
+              <p class="cart-item-unit">₹379 each</p>
+              <span class="item-note-toggle">+ Add a note for this item</span>
+              <div class="item-note-field">
+                <textarea rows="2" placeholder="e.g. please make the hooks slightly smaller"></textarea>
+                <p class="hint">Small customisation requests only — for a fully custom piece, use Custom Orders instead.</p>
+              </div>
+            </div>
+            <div class="cart-item-controls">
+              <span class="line-total">₹379</span>
+              <div class="qty-stepper">
+                <button type="button" aria-label="Decrease quantity">–</button>
+                <span class="qty-val">1</span>
+                <button type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <span class="remove-link">Remove</span>
+            </div>
+          </div>
+
+          <div class="cart-item">
+            <div class="cart-item-thumb photo-placeholder photo-studio" data-label="studio photo"></div>
+            <div class="cart-item-info">
+              <span class="item-tag">Office Decor</span>
+              <p class="cart-item-name">Sage Knot Desk Coaster Set</p>
+              <p class="cart-item-unit">₹549 each</p>
+              <span class="item-note-toggle open-example">+ Add a note for this item</span>
+              <div class="item-note-field open">
+                <textarea rows="2" placeholder="e.g. please make the earrings 1cm smaller">Could you use the darker sage shade if in stock?</textarea>
+                <p class="hint">Small customisation requests only — for a fully custom piece, use Custom Orders instead.</p>
+              </div>
+            </div>
+            <div class="cart-item-controls">
+              <span class="line-total">₹549</span>
+              <div class="qty-stepper">
+                <button type="button" aria-label="Decrease quantity">–</button>
+                <span class="qty-val">1</span>
+                <button type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <span class="remove-link">Remove</span>
+            </div>
+          </div>
+
+          <div class="cart-item">
+            <div class="cart-item-thumb photo-placeholder photo-studio" data-label="studio photo"></div>
+            <div class="cart-item-info">
+              <span class="item-tag">Car Decor</span>
+              <p class="cart-item-name">Mini Marigold Garland — Rear View Mirror</p>
+              <p class="cart-item-unit">₹199 each</p>
+              <span class="item-note-toggle">+ Add a note for this item</span>
+              <div class="item-note-field">
+                <textarea rows="2" placeholder="e.g. please make the earrings 1cm smaller"></textarea>
+                <p class="hint">Small customisation requests only — for a fully custom piece, use Custom Orders instead.</p>
+              </div>
+            </div>
+            <div class="cart-item-controls">
+              <span class="line-total">₹398</span>
+              <div class="qty-stepper">
+                <button type="button" aria-label="Decrease quantity">–</button>
+                <span class="qty-val">2</span>
+                <button type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <span class="remove-link">Remove</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- Checkout form ---- -->
+        <div class="card">
+          <h2>Delivery details</h2>
+          <p class="card-sub">We'll use this to ship your order and to send you updates.</p>
+
+          <div class="guest-note">
+            <span>●</span>
+            <span>Guest checkout — Tantu Kala doesn't use accounts or logins. Your details are only used for this order.</span>
+          </div>
+
+          <form>
+            <div class="form-grid">
+              <div class="form-field full">
+                <label for="name">Full name</label>
+                <input id="name" type="text" placeholder="e.g. Ananya Rao">
+              </div>
+              <div class="form-field full">
+                <label for="phone">Phone number</label>
+                <input id="phone" type="tel" placeholder="10-digit mobile number">
+                <span class="field-hint">Used for order updates and delivery coordination.</span>
+              </div>
+              <div class="form-field full">
+                <label for="addr1">Address line 1</label>
+                <input id="addr1" type="text" placeholder="Flat / House no., building, street">
+              </div>
+              <div class="form-field full">
+                <label for="addr2">Address line 2 <span class="optional">(optional)</span></label>
+                <input id="addr2" type="text" placeholder="Landmark, area">
+              </div>
+              <div class="form-field">
+                <label for="pincode">Pincode</label>
+                <input id="pincode" type="text" placeholder="e.g. 411001">
+                <span class="field-hint">City &amp; state auto-fill from this</span>
+              </div>
+              <div class="form-field">
+                <label for="city">City</label>
+                <input id="city" type="text" value="Pune" readonly>
+              </div>
+              <div class="form-field">
+                <label for="state">State</label>
+                <input id="state" type="text" value="Maharashtra" readonly>
+              </div>
+              <div class="form-field">
+                <label for="landmark">Alt. contact <span class="optional">(optional)</span></label>
+                <input id="landmark" type="tel" placeholder="Backup phone number">
+              </div>
+              <div class="form-field full">
+                <label for="ordernote">Order note <span class="optional">(optional)</span></label>
+                <textarea id="ordernote" rows="2" placeholder="Anything else we should know about delivery or this order"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- ---- Order summary ---- -->
+      <div class="checkout-aside">
+        <div class="card">
+          <h2>Order summary</h2>
+          <div class="summary-row">
+            <span>Subtotal (3 items)</span>
+            <span>₹1,326</span>
+          </div>
+          <div class="summary-row muted">
+            <span>Shipping</span>
+            <span>Calculated by owner, added at confirmation</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span class="amount">₹1,326</span>
+          </div>
+          <p class="summary-note">Payment is not taken here — you'll pay via UPI in the next step, after this order is recorded.</p>
+
+          <div class="place-order-row">
+            <button type="button" class="btn btn-primary btn-block">Place Order</button>
+            <p class="place-order-fineprint">By placing this order you agree to be contacted about it on WhatsApp / phone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STEP 2 — CONFIRMATION ================= -->
+    <div class="step-divider">
+      <span class="step-label">Step 2 — After you submit</span>
+      <span class="step-note">This full-width screen replaces the form the moment your order is recorded</span>
+    </div>
+
+    <section aria-label="Order confirmation" style="padding-top:0;">
+      <div class="confirmation-banner">
+        <p class="eyebrow">Order recorded</p>
+        <div class="confetti-host" aria-hidden="true"></div>
+        <div class="confirmation-icon">✓</div>
+        <h2>Order placed!</h2>
+        <p class="sub">Your order has been recorded — we've got it in our sheet and I've been emailed. One last step below: pay via UPI so we can start making it.</p>
+        <div class="order-ref-box">
+          <span class="ref-label">Order reference</span>
+          <span class="ref-value">TK-2026-04831</span>
+        </div>
+
+        <div class="confirmation-recap">
+          <h3>What you ordered</h3>
+          <div class="recap-line"><span>Terracotta Crochet Jhumkas <span class="qty">× 1</span></span><span>₹379</span></div>
+          <div class="recap-line"><span>Sage Knot Desk Coaster Set <span class="qty">× 1</span></span><span>₹549</span></div>
+          <div class="recap-line"><span>Mini Marigold Garland <span class="qty">× 2</span></span><span>₹398</span></div>
+          <div class="recap-total"><span>Total to pay</span><span class="amount">₹1,326</span></div>
+        </div>
+      </div>
+
+      <!-- ---- Payment action, clearly separated and after confirmation ---- -->
+      <div class="payment-step">
+        <div class="payment-step-inner">
+          <p class="eyebrow">Next — complete payment</p>
+          <h3>Pay via UPI</h3>
+          <p class="lede">Order TK-2026-04831 is recorded, but not yet paid. Complete payment below so we can confirm and start on it.</p>
+
+          <div class="pay-amount"><span>Amount to pay</span>₹1,326</div>
+
+          <!-- Mobile: UPI deep-link button -->
+          <div class="upi-button-mobile">
+            <button type="button" class="btn">Pay ₹1,326 via UPI app</button>
+            <p class="apps-hint">Opens your UPI app (GPay, PhonePe, Paytm…) pre-filled with the amount and reference TK-2026-04831</p>
+          </div>
+
+          <!-- Desktop: QR placeholder -->
+          <div class="qr-desktop">
+            <div class="qr-box">QR code placeholder — UPI VPA prefilled, ₹1,326, ref TK-2026-04831</div>
+            <p class="vpa">Scan with any UPI app · tantukala@upi</p>
+          </div>
+
+          <div class="verify-note">
+            <span class="dot"></span>
+            <p>We manually verify each payment against its order reference and ship once confirmed — usually within a few hours. No separate confirmation page will load after you pay; if you don't hear from us by the next day, message us on WhatsApp with your order reference.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Jewelry</a>
+          <a href="#">Home Decor</a>
+          <a href="#">Car &amp; Office Decor</a>
+          <a href="#">Gifting / Combos</a>
+        </div>
+        <div>
+          <h4>Festive</h4>
+          <a href="#">Raksha Bandhan</a>
+          <a href="#">Ganesh Chaturthi</a>
+          <a href="#">Navratri</a>
+          <a href="#">Diwali</a>
+        </div>
+        <div>
+          <h4>Tantu Kala</h4>
+          <a href="#">Custom Orders</a>
+          <a href="#">Our Story</a>
+          <a href="#">Contact on WhatsApp</a>
+        </div>
+        <div>
+          <h4>Say hello</h4>
+          <p>hello@tantukala.in</p>
+          <p>@tantu.kala on Instagram</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Tantu Kala. Handmade in India.</span>
+        <span>Mockup for design review — not a live page.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= WIRED-IN ENHANCEMENT: empty-cart alternate state ================= -->
+  <!-- Shown here as a separate labeled example screen, not the default state above -->
+  <div class="wrap" style="padding-bottom: 60px;">
+    <div class="step-divider">
+      <span class="step-label">Alternate state — empty cart</span>
+      <span class="step-note">Shown here for review only; not the default view above</span>
+    </div>
+    <div class="card empty-cart-card">
+      <div class="basket"></div>
+      <p class="empty-line">Your cart's as empty as our spool right now.</p>
+      <a href="#" class="btn btn-primary">Browse the collections</a>
+    </div>
+  </div>
+
+  <script>
+    // Thread-confetti: a brief burst behind the order-confirmation checkmark, using the palette's own colors
+    (function () {
+      var host = document.querySelector('.confetti-host');
+      if (!host) return;
+      host.style.position = 'absolute';
+      host.style.inset = '0';
+      var colors = ['#B5603A', '#C99A44', '#6E2E33', '#6B7A5E'];
+      for (var i = 0; i < 18; i++) {
+        var piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = (Math.random() * 100) + '%';
+        piece.style.background = colors[i % colors.length];
+        piece.style.animationDelay = (Math.random() * 2.6) + 's';
+        host.appendChild(piece);
+      }
+    })();
+  </script>
+
+</body>
+</html>

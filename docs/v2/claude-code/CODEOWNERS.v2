@@ -1,0 +1,23 @@
+# DRAFT — install as .github/CODEOWNERS on the v2 branch (task S-3, see INSTALL.md) and enable
+# "Require review from Code Owners" in the main and v2 rulesets. Last matching line wins.
+*                                   @j-suhas
+# Rules and agent configuration
+/CLAUDE.md                          @j-suhas
+/AGENTS.md                          @j-suhas
+/.claude/                           @j-suhas
+/.github/                           @j-suhas
+/docs/v2/claude-code/               @j-suhas
+/docs/v2/process/AGENT-WORKFLOW.md  @j-suhas
+/docs/v2/process/AGENT-GUARDRAILS.md @j-suhas
+/docs/v2/process/GIT-STRATEGY.md    @j-suhas
+/docs/v2/DECISIONS-LOG.md           @j-suhas
+# Money, security and deploy paths
+/src/config/                        @j-suhas   # UPI ID, prices, shipping — a changed UPI ID diverts payments
+/public/_headers                    @j-suhas   # CSP/HSTS security headers
+/wrangler.jsonc                     @j-suhas   # Cloudflare deploy config
+/.env.production                    @j-suhas
+/apps-script/                       @j-suhas
+# Guardrail checks and dependencies
+/scripts/ci/                        @j-suhas
+/package.json                       @j-suhas
+/package-lock.json                  @j-suhas

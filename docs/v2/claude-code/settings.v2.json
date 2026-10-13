@@ -1,0 +1,95 @@
+{
+  "$comment": "DRAFT for the v2 branch: install as .claude/settings.json (task S-3, see INSTALL.md). Hooks are Node scripts so they work on Windows without jq. Role rules live in .claude/hooks/policy.mjs. Test each hook on the owner's machine (S-6) before relying on it.",
+  "worktree": { "baseRef": "head" },
+  "$comment_worktree": "Claude-created worktrees branch from the repo default branch (main = v1) unless baseRef is 'head'. The lead session must be on an up-to-date v2 branch before spawning workers.",
+  "permissions": {
+    "disableBypassPermissionsMode": "disable",
+    "deny": [
+      "Bash(git push origin main*)",
+      "Bash(git push origin v2 *)",
+      "Bash(git push origin v2)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git tag *)",
+      "Bash(git remote *)",
+      "Bash(gh pr merge *)",
+      "Bash(wrangler deploy*)",
+      "Bash(npx wrangler deploy*)",
+      "Bash(clasp push*)",
+      "Bash(clasp deploy*)",
+      "Bash(npm publish*)",
+      "PowerShell(git push origin main*)",
+      "PowerShell(git push origin v2 *)",
+      "PowerShell(git push origin v2)",
+      "PowerShell(git push --force *)",
+      "PowerShell(git push -f *)",
+      "PowerShell(git tag *)",
+      "PowerShell(git remote *)",
+      "PowerShell(gh pr merge *)",
+      "PowerShell(wrangler deploy*)",
+      "PowerShell(npx wrangler deploy*)",
+      "PowerShell(clasp push*)",
+      "PowerShell(clasp deploy*)",
+      "PowerShell(npm publish*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./.dev.vars)",
+      "Read(./.claude/settings.local.json)",
+      "Edit(/CLAUDE.md)",
+      "Edit(/AGENTS.md)",
+      "Edit(/.claude/settings.json)",
+      "Edit(/.claude/settings.local.json)",
+      "Edit(/.claude/agents/**)",
+      "Edit(/.claude/hooks/**)",
+      "Edit(/.claude/skills/**)",
+      "Edit(/.github/**)",
+      "Edit(/wrangler.jsonc)",
+      "Edit(/docs/v2/claude-code/**)"
+    ]
+  },
+  "$comment_permissions": "Deny rules apply to the lead and every subagent. Edit(...) rules also cover the Write tool. .claude/ is denied path by path (not .claude/**) so Claude-managed worktrees under .claude/worktrees/ stay writable. Per-role scopes are enforced by the hooks below.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-files.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.mjs\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/rules-reminder.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
