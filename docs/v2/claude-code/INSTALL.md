@@ -1,6 +1,6 @@
 # Installing the agent kit on `v2` (tasks S-1b, S-2, S-3, S-6, S-8)
 
-Version 0.1 · 12 Oct 2026 · For the owner, by hand, in PowerShell from the repo root
+Version 0.2 · 13 Oct 2026 · For the owner, by hand, in PowerShell from the repo root
 (`C:\Users\suhas\global-workspace\project-tantu-kala`).
 
 ## 0. What "installing" means
@@ -146,20 +146,33 @@ the template text themselves until v2 ships.
 
 ## 3. Check Claude Code sees it (S-6)
 
+Use the standalone CLI for these checks (install: `irm https://claude.ai/install.ps1 | iex`, then a
+new terminal). The VS Code extension runs the same engine but offers only some slash commands.
+
 ```powershell
-claude update                   # or: claude --version, and update if old
+claude --version                # must be 2.1.295 or newer (needed for the hooks' onFailure: block)
+claude doctor                   # read-only: install health + settings-file validation errors
 claude                          # start the lead session from the repo root, on v2
 ```
 
 Inside the session:
 
-1. Accept the **workspace trust** prompt — project hooks don't run until you do.
-2. `/agents` → 12 `tk-*` agents under Project.
-3. `/hooks` → PreToolUse `Bash|PowerShell` and `Edit|Write|NotebookEdit`, PostToolUse, SessionStart.
-4. `/permissions` → the deny rules (pushes, tags, deploys, `.env`, owner-only files).
-5. Ask the lead: "Run `gh api user --jq .login`." → must print `tantu-kala-bot`. If it prints
-   your name or the hook blocks it as "token not loaded", fix §1b before going on.
-6. If an agent fails with a model error on your plan, change `model: opus` to `model: inherit` in
+1. Accept the **workspace trust** prompt — project hooks and the bot `env` don't apply until you do.
+2. **Agents:** ask the lead "List the project subagents you can delegate to." → 12 `tk-*` names.
+   (`/agents` now only prints a reminder to edit `.claude/agents/` — that's expected since Claude
+   Code v2.1.198. If an agent is missing, restart with `claude --debug`: skipped agent files are
+   logged with the reason.)
+3. **Hooks loaded:** `/hooks` (CLI) — or, in the VS Code extension, the **Customize → Hooks** section
+   → PreToolUse `Bash|PowerShell` and `Edit|Write|NotebookEdit`, PostToolUse, SessionStart, all from
+   project settings.
+4. **Hooks actually run:** ask the lead "Run `printenv GIT_AUTHOR_NAME`." → must be **blocked**
+   ("Blocked by Tantu Kala guardrails: printing environment variables…"). If it prints
+   `tantu-kala-bot`, the bot identity loaded but the hooks did **not** run — stop and tell me.
+5. **Permissions:** `/permissions` (CLI) → the deny rules (pushes, tags, deploys, `.env`,
+   owner-only files).
+6. **Bot identity:** ask the lead "Run `gh api user --jq .login`." → `tantu-kala-bot`. (This alone
+   doesn't prove the hooks run — step 4 does.)
+7. If an agent fails with a model error on your plan, change `model: opus` to `model: inherit` in
    the kit's agent files and reinstall (section 5).
 
 ## 4. Smoke-test the permissions (S-8) — say these to the lead
