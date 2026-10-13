@@ -1,6 +1,8 @@
 {
   "$comment": "DRAFT for the v2 branch: install as .claude/settings.json (task S-3, see INSTALL.md). Hooks are Node scripts so they work on Windows without jq. Role rules live in .claude/hooks/policy.mjs. Test each hook on the owner's machine (S-6) before relying on it.",
-  "worktree": { "baseRef": "head" },
+  "worktree": {
+    "baseRef": "head"
+  },
   "$comment_worktree": "Claude-created worktrees branch from the repo default branch (main = v1) unless baseRef is 'head'. The lead session must be on an up-to-date v2 branch before spawning workers.",
   "permissions": {
     "disableBypassPermissionsMode": "disable",
@@ -48,6 +50,7 @@
     ]
   },
   "$comment_permissions": "Deny rules apply to the lead and every subagent. Edit(...) rules also cover the Write tool. .claude/ is denied path by path (not .claude/**) so Claude-managed worktrees under .claude/worktrees/ stay writable. Per-role scopes are enforced by the hooks below.",
+  "$comment_hooks": "Exec form (command + args): Claude Code substitutes ${CLAUDE_PROJECT_DIR} itself and spawns node directly, so no shell is involved and it works the same with Git Bash or PowerShell on Windows. Guard hooks use onFailure 'block' (Claude Code v2.1.295+): if a guard crashes, the action is blocked, not allowed.",
   "hooks": {
     "PreToolUse": [
       {
@@ -55,7 +58,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.mjs\""
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-bash.mjs"],
+            "onFailure": "block"
           }
         ]
       },
@@ -64,7 +69,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-files.mjs\""
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-files.mjs"],
+            "onFailure": "block"
           }
         ]
       }
@@ -75,7 +82,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.mjs\""
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/format-file.mjs"]
           }
         ]
       }
@@ -86,7 +94,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/rules-reminder.mjs\""
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/rules-reminder.mjs"]
           }
         ]
       }
