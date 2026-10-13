@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Catalog + Navigation Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #9c8a76;
+    padding: 10px;
+    max-width: 85%;
+  }
+
+  /* ===================== HEADER / NAV ===================== */
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 0;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 21px;
+    color: var(--umber);
+  }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .primary-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .nav-item {
+    position: relative;
+  }
+  .nav-trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--charcoal-umber);
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+  }
+  .nav-trigger:hover, .nav-trigger.open { background: var(--clay-sand); }
+  .caret { font-size: 10px; color: var(--terracotta); }
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(51, 36, 30, 0.12);
+    min-width: 220px;
+    padding: 8px;
+    display: none;
+  }
+  .nav-item.demo-open .dropdown { display: block; }
+  .dropdown ul { list-style: none; margin: 0; padding: 0; }
+  .dropdown li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--charcoal-umber);
+  }
+  .dropdown li a:hover { background: var(--warm-ivory); color: var(--terracotta); }
+  .dropdown li a .count { font-size: 11.5px; color: #a08d7c; font-weight: 400; }
+  .dropdown-footnote {
+    border-top: 1px solid var(--clay-sand);
+    margin-top: 6px;
+    padding: 8px 12px 4px;
+    font-size: 11.5px;
+    color: #a08d7c;
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-rosewood-pill {
+    background: var(--rosewood);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .cart-pill {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    background: #fff;
+  }
+
+  .nav-note {
+    font-size: 11.5px;
+    color: #a08d7c;
+    padding: 6px 0 0;
+    max-width: 900px;
+  }
+
+  /* ===================== PAGE HEADER ===================== */
+  .catalog-head {
+    padding: 32px 0 20px;
+  }
+  .catalog-head .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 8px;
+  }
+  .catalog-head h1 {
+    font-weight: 600;
+    font-size: clamp(26px, 4vw, 34px);
+  }
+  .catalog-head p {
+    margin: 8px 0 0;
+    font-size: 14.5px;
+    color: #7a6a5f;
+    max-width: 60ch;
+  }
+
+  /* ===================== FILTER CHIPS ===================== */
+  .filter-block {
+    padding: 8px 0 20px;
+    border-bottom: 1px solid var(--clay-sand);
+  }
+  .filter-group { margin-bottom: 16px; }
+  .filter-group:last-child { margin-bottom: 0; }
+  .filter-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0 0 10px;
+  }
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--clay-sand);
+    background: #fff;
+    color: var(--charcoal-umber);
+    cursor: pointer;
+  }
+  .chip .count { color: #a08d7c; font-weight: 400; font-size: 12px; }
+  .chip.active {
+    background: var(--umber);
+    border-color: var(--umber);
+    color: var(--warm-ivory);
+  }
+  .chip.active .count { color: #d9c9ba; }
+  .chip.occasion.active {
+    background: var(--rosewood);
+    border-color: var(--rosewood);
+  }
+
+  /* ===================== ACTIVE FILTERS BAR ===================== */
+  .active-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 14px 0;
+  }
+  .active-filters .label { font-size: 12.5px; font-weight: 600; color: #7a6a5f; }
+  .active-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--clay-sand);
+    color: var(--charcoal-umber);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 8px 6px 12px;
+    border-radius: 999px;
+  }
+  .active-pill button {
+    background: rgba(51,36,30,0.12);
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--charcoal-umber);
+  }
+  .clear-all {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--terracotta);
+    margin-left: 4px;
+  }
+
+  /* ===================== PRODUCT GRID ===================== */
+  .catalog-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px 0 60px;
+  }
+  .result-count {
+    font-size: 13px;
+    color: #7a6a5f;
+    margin: 0 0 16px;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
+  }
+  .product-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .product-card .photo-placeholder { aspect-ratio: 1 / 1; width: 100%; }
+  .product-body { padding: 14px; }
+  .product-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .product-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 5px;
+  }
+  .product-tag.type { color: var(--umber); background: var(--clay-sand); }
+  .product-tag.occasion { color: #fff; background: var(--rosewood); }
+  .product-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--charcoal-umber);
+    margin: 0 0 4px;
+  }
+  .product-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .product-price { font-weight: 700; font-size: 16px; color: var(--terracotta); }
+  .product-cta {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--umber);
+    border: 1px solid var(--umber);
+    border-radius: 999px;
+    padding: 5px 12px;
+    background: transparent;
+  }
+
+  /* In-grid custom-order callout card */
+  .custom-callout-card {
+    border: 2px dashed var(--rosewood);
+    border-radius: 14px;
+    background: #fff8f2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    gap: 10px;
+    aspect-ratio: 1 / 1;
+    text-align: center;
+  }
+  .custom-callout-card h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--rosewood);
+  }
+  .custom-callout-card p {
+    font-size: 12.5px;
+    color: #7a6a5f;
+    margin: 0;
+  }
+  .custom-callout-card a {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--rosewood);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 30px 0;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  @media (max-width: 780px) {
+    .primary-nav { display: none; } /* mobile would use a hamburger — out of scope for this mockup */
+    .topbar-inner { justify-content: space-between; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+
+      <nav class="primary-nav">
+        <div class="nav-item demo-open">
+          <button class="nav-trigger open" type="button">Shop by Type <span class="caret">▾</span></button>
+          <div class="dropdown">
+            <ul>
+              <li><a href="#">Rakhis <span class="count">18</span></a></li>
+              <li><a href="#">Jewelry <span class="count">42</span></a></li>
+              <li><a href="#">Home Decor <span class="count">27</span></a></li>
+              <li><a href="#">Car Decor <span class="count">15</span></a></li>
+              <li><a href="#">Office Decor <span class="count">11</span></a></li>
+              <li><a href="#">Gifting / Combos <span class="count">9</span></a></li>
+            </ul>
+            <p class="dropdown-footnote">List grows as new types are added — plain, no nesting.</p>
+          </div>
+        </div>
+        <div class="nav-item">
+          <button class="nav-trigger" type="button">Shop by Occasion <span class="caret">▾</span></button>
+          <div class="dropdown">
+            <ul>
+              <li><a href="#">Raksha Bandhan <span class="count">18</span></a></li>
+              <li><a href="#">Ganesh Chaturthi <span class="count">14</span></a></li>
+              <li><a href="#">Navratri <span class="count">8</span></a></li>
+              <li><a href="#">Diwali <span class="count">12</span></a></li>
+              <li><a href="#">Everyday <span class="count">64</span></a></li>
+            </ul>
+            <p class="dropdown-footnote">"Everyday" = no occasion tag set. Not a real product tag.</p>
+          </div>
+        </div>
+        <a href="#" class="nav-trigger" style="text-decoration:none;">All Products</a>
+      </nav>
+
+      <div class="top-actions">
+        <a href="#" class="btn-rosewood-pill">Custom Orders</a>
+        <a href="#" class="cart-pill">Cart (0)</a>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="nav-note">Two separate small dropdowns — Type and Occasion are independent facets, not a mega-menu. "Custom Orders" is deliberately a standalone pill, never nested inside either dropdown, so it reads as a different kind of action (a request, not a browse path).</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="catalog-head">
+      <p class="eyebrow">Catalog</p>
+      <h1>All Products</h1>
+      <p>Filter by what it is and, optionally, what it's for — every product carries at least one Type; Occasion is optional.</p>
+    </div>
+
+    <div class="filter-block">
+      <div class="filter-group">
+        <p class="filter-label">Type</p>
+        <div class="chip-row">
+          <span class="chip">Rakhis <span class="count">18</span></span>
+          <span class="chip active">Jewelry <span class="count">42</span></span>
+          <span class="chip">Home Decor <span class="count">27</span></span>
+          <span class="chip">Car Decor <span class="count">15</span></span>
+          <span class="chip">Office Decor <span class="count">11</span></span>
+          <span class="chip">Gifting / Combos <span class="count">9</span></span>
+        </div>
+      </div>
+      <div class="filter-group">
+        <p class="filter-label">Occasion</p>
+        <div class="chip-row">
+          <span class="chip occasion">Raksha Bandhan <span class="count">18</span></span>
+          <span class="chip occasion active">Ganesh Chaturthi <span class="count">14</span></span>
+          <span class="chip occasion">Navratri <span class="count">8</span></span>
+          <span class="chip occasion">Diwali <span class="count">12</span></span>
+          <span class="chip occasion">Everyday <span class="count">64</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="active-filters">
+      <span class="label">Active filters:</span>
+      <span class="active-pill">Jewelry <button aria-label="remove">×</button></span>
+      <span class="active-pill">Ganesh Chaturthi <button aria-label="remove">×</button></span>
+      <a href="#" class="clear-all">Clear all</a>
+    </div>
+
+    <div class="catalog-body">
+      <p class="result-count">6 products match "Jewelry" + "Ganesh Chaturthi"</p>
+      <div class="product-grid">
+
+        <div class="product-card">
+          <div class="photo-placeholder" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Terracotta Modak Charm Earrings</p>
+            <div class="product-price-row">
+              <span class="product-price">₹399</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Mustard Marigold Jhumkas</p>
+            <div class="product-price-row">
+              <span class="product-price">₹359</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Umber Latkan Drop Bracelet</p>
+            <div class="product-price-row">
+              <span class="product-price">₹329</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- In-grid custom-order entry point -->
+        <div class="custom-callout-card">
+          <h3>Don't see what you want?</h3>
+          <p>Describe it, or share a reference photo, and we'll get back to you before anything is priced.</p>
+          <a href="#">Start a custom request →</a>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Sage Leaf Stud Set</p>
+            <div class="product-price-row">
+              <span class="product-price">₹249</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="photo-placeholder" data-label="studio product photo — 1:1"></div>
+          <div class="product-body">
+            <div class="product-tags">
+              <span class="product-tag type">Jewelry</span>
+              <span class="product-tag occasion">Ganesh Chaturthi</span>
+            </div>
+            <p class="product-name">Clay Sand Bead Necklace</p>
+            <div class="product-price-row">
+              <span class="product-price">₹449</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>Mockup for design review — not a live page.</footer>
+
+</body>
+</html>

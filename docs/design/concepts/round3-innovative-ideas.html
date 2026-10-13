@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Round 3: Innovative Interactive Ideas (exploratory)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  .concept-flag {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+  }
+
+  header.page-head { padding: 48px 0 8px; text-align: center; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+  header.page-head h1 { font-weight: 600; font-size: clamp(28px, 4.6vw, 38px); margin-bottom: 10px; }
+  header.page-head p { font-size: 14.5px; color: #6b5d51; max-width: 66ch; margin: 0 auto; }
+
+  .idea-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+    padding: 44px 0 60px;
+  }
+  .idea-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 18px;
+    padding: 26px;
+  }
+  .idea-card .idea-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--mustard);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .idea-card h3 { font-family: var(--font-body); font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+  .idea-card p.desc { font-size: 13.5px; color: #6b5d51; margin: 0 0 18px; }
+  .demo-box {
+    background: var(--warm-ivory);
+    border: 1px dashed var(--clay-sand);
+    border-radius: 14px;
+    padding: 18px;
+    min-height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .demo-hint { font-size: 11px; color: #a08d7c; margin-top: 10px; }
+
+  /* ================= Idea 1: scroll-unspool story reveal ================= */
+  .unspool-scene {
+    height: 220px;
+    overflow-y: auto;
+    width: 100%;
+    padding: 10px 10px 10px 50px;
+    position: relative;
+    text-align: left;
+  }
+  .unspool-scene::-webkit-scrollbar { width: 6px; }
+  .unspool-scene::-webkit-scrollbar-thumb { background: var(--clay-sand); border-radius: 3px; }
+  .unspool-line {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 3px;
+    height: 900px;
+    background: var(--clay-sand);
+  }
+  .unspool-line .drawn {
+    width: 100%;
+    background: var(--terracotta);
+    height: 0%;
+    transition: height 0.1s linear;
+  }
+  .unspool-beat {
+    margin: 0 0 60px;
+    opacity: 0.25;
+    transition: opacity 0.4s ease;
+    font-size: 12.5px;
+    color: var(--charcoal-umber);
+  }
+  .unspool-beat.lit { opacity: 1; }
+  .unspool-beat strong { display: block; font-family: var(--font-display); color: var(--umber); font-size: 14px; margin-bottom: 3px; }
+
+  /* ================= Idea 2: gift-box builder ================= */
+  .builder-wrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; justify-content: center; width: 100%; }
+  .builder-items { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .builder-item {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--clay-sand);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .builder-item:hover { transform: translateY(-3px); }
+  .builder-item.added { border-color: var(--terracotta); background: #F3E4D8; }
+  .builder-box {
+    width: 90px; height: 74px;
+    background: var(--umber);
+    border-radius: 8px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--warm-ivory);
+    font-size: 10px;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .builder-box .ribbon {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 12px; height: 100%; background: var(--mustard);
+  }
+  .builder-total { font-family: var(--font-display); font-weight: 700; color: var(--warm-ivory); font-size: 13px; }
+  .builder-total-label { font-size: 9px; color: #E9DAC8; }
+
+  /* ================= Idea 3: thread-trail cursor ================= */
+  .trail-zone {
+    width: 100%; height: 130px;
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 100%);
+    border-radius: 12px;
+    position: relative;
+    cursor: crosshair;
+    overflow: hidden;
+  }
+  .trail-zone .msg { font-size: 12px; color: #9c8a76; }
+  .trail-dot {
+    position: absolute;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    pointer-events: none;
+    animation: trailFade 0.7s ease forwards;
+  }
+  @keyframes trailFade {
+    to { opacity: 0; transform: scale(0.4); }
+  }
+
+  /* ================= Idea 4: dynamic greeting banner ================= */
+  .greeting-demo {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    border-radius: 14px;
+    padding: 18px 20px;
+    width: 100%;
+    text-align: left;
+  }
+  .greeting-demo .g-eyebrow { color: var(--mustard); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .greeting-demo .g-main { font-family: var(--font-display); font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .greeting-demo .g-sub { font-size: 12px; color: #E9DAC8; }
+
+  /* ================= Idea 5: knit-in-progress loader ================= */
+  .loader-demo { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .loader-hook { position: relative; width: 70px; height: 70px; }
+  .loader-hook svg { width: 100%; height: 100%; }
+  .loader-hook .loop {
+    fill: none;
+    stroke: var(--terracotta);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 8 10;
+    animation: loopSpin 1.4s linear infinite;
+    transform-origin: center;
+  }
+  @keyframes loopSpin { to { stroke-dashoffset: -36; } }
+  .loader-demo .loader-label { font-size: 11.5px; color: #7a6a5f; }
+
+  /* ================= Idea 6: stitch-pattern designer ================= */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 18px);
+    grid-template-rows: repeat(8, 18px);
+    gap: 2px;
+  }
+  .pattern-cell {
+    width: 18px; height: 18px;
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .pattern-side { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .pattern-palette { display: flex; gap: 6px; }
+  .pattern-swatch {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .pattern-swatch.active { border-color: var(--charcoal-umber); }
+  .pattern-cta {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--rosewood);
+    border-bottom: 1px dashed var(--rosewood);
+  }
+
+  /* ================= Idea 7: gift-combo ribbon reveal ================= */
+  .ribbon-card {
+    width: 150px;
+    height: 120px;
+    border-radius: 12px;
+    background: var(--clay-sand);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .ribbon-contents {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px;
+    font-size: 20px;
+  }
+  .ribbon-overlay {
+    position: absolute; inset: 0;
+    background: var(--rosewood);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--warm-ivory);
+    font-size: 11px;
+    font-weight: 600;
+    transition: clip-path 0.5s ease;
+    clip-path: inset(0 0 0 0);
+  }
+  .ribbon-card:hover .ribbon-overlay,
+  .ribbon-card:focus .ribbon-overlay {
+    clip-path: inset(0 100% 0 0);
+  }
+  .ribbon-overlay .band { width: 30px; height: 3px; background: var(--mustard); border-radius: 2px; }
+
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 26px 0;
+    text-align: center;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="concept-flag">Creative exploration, round 3 — new brainstormed interactive ideas only, not wired into any real page</div>
+
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">Round 3 — pushing further</p>
+      <h1>More ambitious, still restrained: interactive ideas</h1>
+      <p>Seven ideas this round lean more interactive than rounds 1–2 — a scroll-linked story, a small working gift-box builder, a custom cursor trail, even a mini pattern designer that feeds into Custom Orders. All still inside the existing palette, all still just demos here — nothing is wired into the real pages.</p>
+    </header>
+
+    <div class="idea-grid">
+
+      <!-- ================= Idea 1 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 1 · Scroll-linked storytelling</p>
+        <h3>"Unspool the thread" story reveal</h3>
+        <p class="desc">A vertical thread line fills in as you scroll through a short brand story — each beat lights up as the thread reaches it. Could open the About page or a product's "making of" section.</p>
+        <div class="demo-box">
+          <div class="unspool-scene" id="unspoolScene">
+            <div class="unspool-line"><div class="drawn" id="unspoolDrawn"></div></div>
+            <div class="unspool-beat" data-beat><strong>One spool.</strong>Everything starts as plain crochet thread or a pipe cleaner.</div>
+            <div class="unspool-beat" data-beat><strong>One hook.</strong>Worked stitch by stitch, by hand, no machines involved.</div>
+            <div class="unspool-beat" data-beat><strong>One maker.</strong>Small batches, checked piece by piece before they ship.</div>
+            <div class="unspool-beat" data-beat><strong>One piece, for you.</strong>That's the whole process — nothing hidden, nothing automated.</div>
+          </div>
+        </div>
+        <p class="demo-hint">↑ scroll inside the box</p>
+      </div>
+
+      <!-- ================= Idea 2 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 2 · Interactive tool</p>
+        <h3>A tiny gift-box builder</h3>
+        <p class="desc">Tap items to add them to a mini box preview with a running total — a playful, low-commitment way to explore gifting combos before landing on the real builder flow.</p>
+        <div class="demo-box">
+          <div class="builder-wrap">
+            <div class="builder-items" id="builderItems">
+              <div class="builder-item" data-price="379" title="Jhumkas">👂</div>
+              <div class="builder-item" data-price="199" title="Car charm">🚗</div>
+              <div class="builder-item" data-price="549" title="Coaster set">🌿</div>
+              <div class="builder-item" data-price="299" title="Garland">🪔</div>
+            </div>
+            <div class="builder-box">
+              <div class="ribbon"></div>
+              <div class="builder-total" id="builderTotal">₹0</div>
+              <div class="builder-total-label" id="builderCount">tap items to add</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= Idea 3 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 3 · Signature micro-interaction</p>
+        <h3>A thread-trail cursor, on hero sections</h3>
+        <p class="desc">Moving the mouse across a hero banner leaves a soft, fading trail of thread-colored dots — a small, ownable signature touch, desktop-only, easy to keep subtle.</p>
+        <div class="demo-box" style="padding:0;">
+          <div class="trail-zone" id="trailZone"><span class="msg">move your mouse here</span></div>
+        </div>
+      </div>
+
+      <!-- ================= Idea 4 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 4 · Smart personalization</p>
+        <h3>A time-aware greeting banner</h3>
+        <p class="desc">A homepage strip that greets differently by time of day and counts down to the nearest festival — computed client-side from the visitor's own clock, no backend needed.</p>
+        <div class="demo-box">
+          <div class="greeting-demo">
+            <div class="g-eyebrow">Live example — uses your browser's clock</div>
+            <div class="g-main" id="greetingMain">Loading…</div>
+            <div class="g-sub" id="greetingSub"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= Idea 5 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 5 · Branded utility moment</p>
+        <h3>A "knit-in-progress" loading state</h3>
+        <p class="desc">Instead of a generic spinner, a small looping thread-and-hook animation for page-load or cart-update moments — even a boring wait becomes on-brand.</p>
+        <div class="demo-box">
+          <div class="loader-demo">
+            <div class="loader-hook">
+              <svg viewBox="0 0 70 70">
+                <circle class="loop" cx="35" cy="35" r="26"/>
+              </svg>
+            </div>
+            <span class="loader-label">Just a moment…</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= Idea 6 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 6 · Playful lead-gen for Custom Orders</p>
+        <h3>A mini stitch-pattern designer</h3>
+        <p class="desc">Click cells to sketch a tiny pattern in two colours, then "turn it into a custom order" — a genuinely interactive toy that doubles as a soft entry point into the custom-order flow.</p>
+        <div class="demo-box">
+          <div class="pattern-side">
+            <div class="pattern-grid" id="patternGrid"></div>
+            <div class="pattern-palette">
+              <span class="pattern-swatch active" style="background:#B5603A;" data-color="#B5603A"></span>
+              <span class="pattern-swatch" style="background:#C99A44;" data-color="#C99A44"></span>
+              <span class="pattern-swatch" style="background:#6E2E33;" data-color="#6E2E33"></span>
+            </div>
+            <a href="#" class="pattern-cta">Like it? Turn this into a custom order →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= Idea 7 ================= -->
+      <div class="idea-card">
+        <p class="idea-num">Idea 7 · Product delight</p>
+        <h3>Gift-combo "untie the ribbon" reveal</h3>
+        <p class="desc">A gifting-combo card shows a wrapped box by default; hovering (or tapping on mobile) untiles the ribbon away to reveal what's inside — a small unboxing moment before you've even bought it.</p>
+        <div class="demo-box">
+          <div class="ribbon-card" tabindex="0">
+            <div class="ribbon-contents">👂 🪔 🌿</div>
+            <div class="ribbon-overlay">
+              <span class="band"></span>
+              Diwali Gifting Box
+              <span class="band"></span>
+            </div>
+          </div>
+        </div>
+        <p class="demo-hint">↑ hover or focus the box</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>Exploratory concept sampler, round 3 — none of these are implemented in the real site or any approved mockup yet.</footer>
+
+  <script>
+    // ---- Idea 1: scroll-linked thread fill + beat highlighting ----
+    (function () {
+      var scene = document.getElementById('unspoolScene');
+      var drawn = document.getElementById('unspoolDrawn');
+      var beats = scene.querySelectorAll('.unspool-beat');
+      function update() {
+        var pct = scene.scrollTop / (scene.scrollHeight - scene.clientHeight);
+        drawn.style.height = Math.min(100, Math.max(0, pct * 100)) + '%';
+        var lineTop = scene.scrollTop;
+        beats.forEach(function (b) {
+          var within = b.offsetTop - scene.scrollTop < 90;
+          b.classList.toggle('lit', within);
+        });
+      }
+      scene.addEventListener('scroll', update);
+      update();
+    })();
+
+    // ---- Idea 2: gift-box builder ----
+    (function () {
+      var items = document.querySelectorAll('#builderItems .builder-item');
+      var total = 0, count = 0;
+      items.forEach(function (item) {
+        item.addEventListener('click', function () {
+          var added = item.classList.toggle('added');
+          var price = parseInt(item.getAttribute('data-price'), 10);
+          total += added ? price : -price;
+          count += added ? 1 : -1;
+          document.getElementById('builderTotal').textContent = '₹' + total;
+          document.getElementById('builderCount').textContent = count > 0 ? (count + ' item' + (count > 1 ? 's' : '') + ' added') : 'tap items to add';
+        });
+      });
+    })();
+
+    // ---- Idea 3: thread-trail cursor ----
+    (function () {
+      var zone = document.getElementById('trailZone');
+      var msg = zone.querySelector('.msg');
+      zone.addEventListener('mousemove', function (e) {
+        if (msg) { msg.style.display = 'none'; }
+        var rect = zone.getBoundingClientRect();
+        var dot = document.createElement('div');
+        dot.className = 'trail-dot';
+        dot.style.left = (e.clientX - rect.left) + 'px';
+        dot.style.top = (e.clientY - rect.top) + 'px';
+        zone.appendChild(dot);
+        setTimeout(function () { dot.remove(); }, 700);
+      });
+    })();
+
+    // ---- Idea 4: time-aware greeting ----
+    (function () {
+      var hour = new Date().getHours();
+      var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      document.getElementById('greetingMain').textContent = greeting + ' — small, deliberate things, made by hand.';
+
+      // Illustrative countdown to a placeholder festival date
+      var target = new Date('2026-10-11T00:00:00');
+      var now = new Date();
+      var days = Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)));
+      document.getElementById('greetingSub').textContent = days + ' days to Diwali (illustrative date) — everything is handmade to order.';
+    })();
+
+    // ---- Idea 6: stitch-pattern designer ----
+    (function () {
+      var grid = document.getElementById('patternGrid');
+      var currentColor = '#B5603A';
+      for (var i = 0; i < 64; i++) {
+        var cell = document.createElement('div');
+        cell.className = 'pattern-cell';
+        cell.addEventListener('click', function () {
+          this.style.background = this.style.background ? '' : currentColor;
+        });
+        grid.appendChild(cell);
+      }
+      document.querySelectorAll('.pattern-swatch').forEach(function (sw) {
+        sw.addEventListener('click', function () {
+          document.querySelectorAll('.pattern-swatch').forEach(function (s) { s.classList.remove('active'); });
+          sw.classList.add('active');
+          currentColor = sw.getAttribute('data-color');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+# DRAFT — install as .github/workflows/ci.yml on the v2 branch (task S-6).
+# The npm scripts below are created by tasks F-2 (validate) and F-7 (test, scope/pii checks).
+name: ci
+on:
+  pull_request:
+    branches: [v2, main]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx astro check
+      - run: npm run validate:content # products, campaigns, collections, minimal-product build
+      - run: npm test # unit tests incl. shared pricing fixture
+      - run: npm run build
+      - name: Scope check (changed paths must match the task's owner area)
+        run: node scripts/ci/scope-check.mjs "${{ github.event.pull_request.title }}" origin/${{ github.base_ref }}
+      - name: Dependency change check (needs an ADR reference in the PR body)
+        run: node scripts/ci/deps-check.mjs origin/${{ github.base_ref }}
+        env: { PR_BODY: '${{ github.event.pull_request.body }}' }
+      - name: PII and secret scan
+        run: node scripts/ci/pii-scan.mjs origin/${{ github.base_ref }}

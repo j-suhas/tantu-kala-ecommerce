@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Shipping &amp; Returns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .wrap-wide {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+
+  .eyebrow.on-dark { color: var(--mustard); }
+
+  /* ---------- Placeholder photography blocks ---------- */
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    padding: 12px 16px;
+    max-width: 80%;
+  }
+  .photo-lifestyle {
+    background: linear-gradient(150deg, #E7C9A8 0%, #D9A876 45%, #B5603A 100%);
+  }
+  .photo-lifestyle::after {
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(51, 24, 14, 0.35);
+    font-weight: 500;
+  }
+  .photo-studio {
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-studio::after {
+    color: #9c8a76;
+  }
+
+  section { padding: 48px 0; }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--umber);
+    letter-spacing: -0.01em;
+  }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .top-nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .top-nav a { color: var(--charcoal-umber); }
+  .top-nav a:hover { color: var(--terracotta); }
+  .top-nav a.current { color: var(--terracotta); }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .icon-btn {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-weight: 600;
+    background: #fff;
+  }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--umber); color: var(--warm-ivory); }
+  .btn-secondary { background: transparent; border-color: var(--umber); color: var(--umber); }
+  .btn-rosewood { background: var(--rosewood); color: #fff; }
+
+  /* ---------- Policy page header ---------- */
+  .policy-header {
+    padding: 44px 0 8px;
+    text-align: left;
+  }
+  .policy-header h1 {
+    font-weight: 600;
+    font-size: clamp(30px, 6vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .policy-header p.lede {
+    font-size: 16px;
+    color: var(--charcoal-umber);
+    max-width: 56ch;
+    margin: 0;
+  }
+  .policy-crumbs {
+    font-size: 12.5px;
+    color: #8a7a6d;
+    margin-bottom: 14px;
+  }
+  .policy-crumbs a { color: var(--terracotta); font-weight: 600; }
+
+  /* ---------- Placeholder / illustrative-copy notice ---------- */
+  .notice-banner {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #F3E4D8;
+    border: 1px solid var(--mustard);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 22px 0 4px;
+  }
+  .notice-banner .dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--mustard);
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+  .notice-banner p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--umber);
+    line-height: 1.55;
+  }
+  .notice-banner p strong { color: var(--rosewood); }
+
+  .notice-banner.small {
+    background: transparent;
+    border: 1px dashed var(--clay-sand);
+    margin: 40px 0 0;
+  }
+  .notice-banner.small p { color: #7a6a5f; font-size: 12.5px; }
+
+  /* ---------- Policy sections ---------- */
+  .policy-section {
+    border-top: 1px solid var(--clay-sand);
+    padding: 40px 0;
+  }
+  .policy-section:first-of-type { border-top: none; }
+  .policy-section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .policy-section-head .icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--clay-sand);
+    flex: 0 0 auto;
+  }
+  .policy-section h2 {
+    font-weight: 600;
+    font-size: clamp(22px, 4vw, 27px);
+    margin-bottom: 4px;
+  }
+  .policy-section .section-sub {
+    font-size: 13.5px;
+    color: var(--sage);
+    font-weight: 600;
+  }
+  .policy-section > p.intro {
+    font-size: 15px;
+    max-width: 62ch;
+    margin: 0 0 22px;
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--umber);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+";
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--terracotta);
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+  }
+  .faq-item[open] summary::after { content: "–"; }
+  .faq-item .faq-body {
+    padding: 0 18px 18px;
+    font-size: 14px;
+    color: var(--charcoal-umber);
+  }
+  .faq-item .faq-body p { margin: 0 0 10px; }
+  .faq-item .faq-body p:last-child { margin-bottom: 0; }
+
+  /* ---------- Callout card (custom orders / payment) ---------- */
+  .policy-callout {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    border-radius: 16px;
+    padding: 26px 24px;
+  }
+  .policy-callout p { color: #E9DAC8; font-size: 14.5px; margin: 0 0 10px; }
+  .policy-callout p:last-child { margin-bottom: 0; }
+  .policy-callout strong { color: var(--warm-ivory); }
+  .policy-callout .eyebrow.on-dark { margin-bottom: 8px; }
+
+  .payment-card {
+    background: var(--clay-sand);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .payment-card .icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    flex: 0 0 auto;
+  }
+  .payment-card p { margin: 0 0 10px; font-size: 14.5px; }
+  .payment-card p:last-child { margin-bottom: 0; }
+
+  /* ---------- Bottom help strip ---------- */
+  .help-strip {
+    background: var(--rosewood);
+    border-radius: 16px;
+    color: var(--warm-ivory);
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .help-strip-text h3 {
+    color: var(--warm-ivory);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .help-strip-text p {
+    margin: 0;
+    font-size: 13.5px;
+    color: #F1DCDD;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 44px 0 28px;
+    margin-top: 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 28px;
+    margin-bottom: 28px;
+  }
+  .footer-grid h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mustard);
+    margin: 0 0 12px;
+  }
+  .footer-grid a, .footer-grid p {
+    display: block;
+    font-size: 13.5px;
+    color: #D9CBBD;
+    margin: 0 0 8px;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(217, 203, 189, 0.15);
+    padding-top: 18px;
+    font-size: 12px;
+    color: #A6968A;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 32px 0; }
+    .policy-section { padding: 28px 0; }
+    .help-strip { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner wrap-wide" style="padding-left:0; padding-right:0;">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+      <nav class="top-nav">
+        <a href="#">Collections</a>
+        <a href="#">Jewelry</a>
+        <a href="#">Decor</a>
+        <a href="#">Festive</a>
+        <a href="#">Custom Orders</a>
+        <a href="#" class="current">Shipping &amp; Returns</a>
+      </nav>
+      <div class="top-actions">
+        <a href="#" class="icon-btn">Cart (0)</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="policy-header">
+      <p class="policy-crumbs"><a href="#">Home</a> &nbsp;/&nbsp; Shipping &amp; Returns</p>
+      <p class="eyebrow">Policies</p>
+      <h1>Shipping &amp; Returns</h1>
+      <p class="lede">Everything at Tantu Kala is made by hand, to order — which shapes how shipping, returns and exchanges work here. Here's what to expect, in plain language.</p>
+
+      <div class="notice-banner">
+        <span class="dot"></span>
+        <p><strong>Placeholder copy, not final policy.</strong> Every timeline, day-range and rule on this page is illustrative — written for this design mockup so the page has realistic content to review. Nothing here is confirmed as Tantu Kala's actual policy until the owner signs off and it's published on the live site.</p>
+      </div>
+    </div>
+
+    <!-- ================= SHIPPING ================= -->
+    <section class="policy-section" id="shipping">
+      <div class="policy-section-head">
+        <div class="icon-badge"></div>
+        <div>
+          <p class="section-sub">Made to order</p>
+          <h2>Shipping</h2>
+        </div>
+      </div>
+      <p class="intro">Nothing on Tantu Kala sits pre-made on a shelf — each piece is crocheted or wire-worked after you order it. That's why our timelines are quoted in a range rather than "ships today."</p>
+
+      <details class="faq-item" open>
+        <summary>How long before my order ships?</summary>
+        <div class="faq-body">
+          <p>Most pieces are handmade and dispatched within roughly <strong>3–6 business days</strong> of your order being confirmed and paid for. The exact estimate for a specific piece is shown on its product page — simpler items (a single keychain, a coaster) tend to be on the faster end; multi-piece combos and detailed jewelry can take a little longer.</p>
+          <p>This range is illustrative for this mockup and will be reviewed before launch.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Where do you ship to?</summary>
+        <div class="faq-body">
+          <p>We currently ship across India via courier/India Post, to any serviceable pin code. We don't offer international shipping in v1 — if that changes, it'll be called out clearly on the site.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>How will I know my order has shipped?</summary>
+        <div class="faq-body">
+          <p>Once your piece is ready and dispatched, we'll share the courier and tracking details over WhatsApp and/or email — whichever you gave us at checkout.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do timelines change around festivals?</summary>
+        <div class="faq-body">
+          <p>During high-demand periods — Raksha Bandhan, Ganesh Chaturthi, Navratri, Diwali — made-to-order lead times can run longer than the usual range, simply because more orders are being handworked at once. We'll flag this on the site when it applies, and will always try to communicate a realistic ship date rather than guess optimistically.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>What does shipping cost?</summary>
+        <div class="faq-body">
+          <p>Shipping charges (if any) are shown at checkout before you pay — this mockup doesn't fix a specific fee or a free-shipping threshold, since that's a pricing decision for the owner to confirm separately.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ================= RETURNS & EXCHANGES ================= -->
+    <section class="policy-section" id="returns">
+      <div class="policy-section-head">
+        <div class="icon-badge"></div>
+        <div>
+          <p class="section-sub">Standard products</p>
+          <h2>Returns &amp; Exchanges</h2>
+        </div>
+      </div>
+      <p class="intro">Because each order is made specifically for you rather than pulled from ready stock, we lean on <strong>exchange or store credit</strong> for genuine issues, rather than an open-ended "return for any reason" policy.</p>
+
+      <details class="faq-item" open>
+        <summary>My item arrived damaged, or I received the wrong item</summary>
+        <div class="faq-body">
+          <p>Message us on WhatsApp or email within <strong>48 hours of delivery</strong> with your order reference and a photo/video of the item as received. Once verified, we'll arrange a <strong>free exchange or store credit</strong> — this is our priority resolution path for anything damaged in transit or shipped incorrectly.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Can I return an item just because I changed my mind?</summary>
+        <div class="faq-body">
+          <p>Since every piece is handworked to order, we generally don't offer no-questions-asked returns for change-of-mind. If something about the piece genuinely doesn't work for you, reach out anyway — we'd rather hear from you and see what we can do than have you unhappy with a handmade piece.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Is slight colour or texture variation grounds for a return?</summary>
+        <div class="faq-body">
+          <p>Handmade thread and pipe-cleaner pieces can have small, natural variation in colour, tension or finish from batch to batch — that's part of being handmade, not a defect, so minor variation on its own isn't treated as a return-eligible issue.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Do I get a cash refund?</summary>
+        <div class="faq-body">
+          <p>For approved cases, our default is exchange or store credit rather than a cash refund, reflecting how small and made-to-order this operation is. Any exceptions would be handled case by case by the team.</p>
+        </div>
+      </details>
+
+      <div class="notice-banner small">
+        <p>All windows (48 hours), remedies (exchange/store credit) and exclusions above are placeholder terms for this mockup — final wording is pending the owner's review.</p>
+      </div>
+    </section>
+
+    <!-- ================= CUSTOM ORDERS ================= -->
+    <section class="policy-section" id="custom">
+      <div class="policy-section-head">
+        <div class="icon-badge"></div>
+        <div>
+          <p class="section-sub">Different rules apply</p>
+          <h2>Custom Orders</h2>
+        </div>
+      </div>
+      <div class="policy-callout">
+        <p class="eyebrow on-dark">Made to your brief</p>
+        <p>A custom order is built to your specific colours, size or reference — which means it generally can't be resold to anyone else if you change your mind. Because of that:</p>
+        <p><strong>Custom orders are non-returnable and non-refundable once production has started.</strong> Before we begin, you're welcome to discuss and adjust the brief with us as much as you need.</p>
+        <p>The one exception: if a custom piece arrives <strong>damaged in transit</strong>, the same damaged-item process from the section above still applies — we'll make it right.</p>
+        <p style="font-size:12.5px; color:#C9B8A6; margin-top:14px;">Placeholder policy text, pending final review.</p>
+      </div>
+    </section>
+
+    <!-- ================= PAYMENT ================= -->
+    <section class="policy-section" id="payment">
+      <div class="policy-section-head">
+        <div class="icon-badge"></div>
+        <div>
+          <p class="section-sub">Direct UPI</p>
+          <h2>Payment</h2>
+        </div>
+      </div>
+      <div class="payment-card">
+        <div class="icon-badge"></div>
+        <div>
+          <p>We accept payment via <strong>Direct UPI</strong> — pay using the UPI button on mobile or by scanning the QR code on desktop, using your own UPI app.</p>
+          <p>Your order is recorded first; once you pay, our team <strong>manually verifies the payment against your order reference</strong> before your piece goes into production and ships. This manual check may take a little time — we'll follow up with you if anything doesn't match.</p>
+          <p style="font-size:12.5px; color:#7a6a5f;">We don't yet support cards, netbanking or other gateways in this version of the site.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice-banner" style="margin: 8px 0 40px;">
+      <span class="dot"></span>
+      <p>Reminder: this entire page — timelines, windows, remedies and terms — is illustrative placeholder copy for design review, not Tantu Kala's confirmed policy. Final wording needs the owner's sign-off before going live.</p>
+    </div>
+
+    <!-- ================= HELP STRIP ================= -->
+    <section aria-label="Still have questions" style="padding-top:0;">
+      <div class="help-strip">
+        <div class="help-strip-text">
+          <h3>Still have a question?</h3>
+          <p>Message us on WhatsApp with your order reference — a real person on the team will reply.</p>
+        </div>
+        <a href="#" class="btn" style="background:var(--warm-ivory); color:var(--rosewood);">Chat on WhatsApp</a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap-wide">
+      <div class="footer-grid">
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Jewelry</a>
+          <a href="#">Home Decor</a>
+          <a href="#">Car &amp; Office Decor</a>
+          <a href="#">Gifting / Combos</a>
+        </div>
+        <div>
+          <h4>Festive</h4>
+          <a href="#">Raksha Bandhan</a>
+          <a href="#">Ganesh Chaturthi</a>
+          <a href="#">Navratri</a>
+          <a href="#">Diwali</a>
+        </div>
+        <div>
+          <h4>Tantu Kala</h4>
+          <a href="#">Custom Orders</a>
+          <a href="#">Shipping &amp; Returns</a>
+          <a href="#">Our Story</a>
+          <a href="#">Contact on WhatsApp</a>
+        </div>
+        <div>
+          <h4>Say hello</h4>
+          <p>hello@tantukala.in</p>
+          <p>@tantu.kala on Instagram</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Tantu Kala. Handmade in India.</span>
+        <span>Mockup for design review — not a live page.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

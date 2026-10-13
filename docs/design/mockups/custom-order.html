@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Custom Order Request Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    padding: 14px 0;
+  }
+  .topbar .inner { max-width: 760px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--umber); }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+
+  .page-head { padding: 40px 0 8px; text-align: center; }
+  .page-head .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+  .page-head h1 {
+    font-weight: 600;
+    font-size: clamp(26px, 4vw, 34px);
+    margin-bottom: 10px;
+  }
+  .page-head p {
+    font-size: 15px;
+    color: #6b5d51;
+    max-width: 52ch;
+    margin: 0 auto;
+  }
+
+  /* No pricing/cart UI anywhere on this page — deliberate */
+  .no-payment-note {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--sage);
+    background: #eef1e9;
+    padding: 8px 16px;
+    border-radius: 999px;
+  }
+
+  /* How this works — 3 step strip */
+  .how-it-works {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 32px 0;
+  }
+  .how-step {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .how-step .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--umber);
+    color: var(--warm-ivory);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .how-step h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--charcoal-umber);
+    margin-bottom: 6px;
+  }
+  .how-step p {
+    font-size: 12.5px;
+    color: #7a6a5f;
+    margin: 0;
+  }
+
+  /* Material constraint callout */
+  .material-callout {
+    background: var(--clay-sand);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .material-callout .ico {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--mustard);
+    flex: 0 0 auto;
+  }
+  .material-callout p {
+    font-size: 13.5px;
+    color: var(--charcoal-umber);
+    margin: 0;
+  }
+  .material-callout strong { color: var(--umber); }
+
+  /* Form */
+  form {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 18px;
+    padding: 28px;
+  }
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--charcoal-umber);
+    margin-bottom: 7px;
+  }
+  .field .optional {
+    font-weight: 400;
+    color: #a08d7c;
+    font-size: 11.5px;
+  }
+  .field input, .field textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--clay-sand);
+    border-radius: 10px;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+  }
+  .field textarea { min-height: 110px; resize: vertical; }
+  .field-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .field-row .field { flex: 1 1 200px; }
+
+  .dropzone {
+    border: 2px dashed var(--clay-sand);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    background: var(--warm-ivory);
+    margin-bottom: 10px;
+  }
+  .dropzone p { margin: 0; font-size: 13px; color: #7a6a5f; }
+  .dropzone .icon { font-size: 22px; margin-bottom: 8px; color: var(--terracotta); }
+
+  .thumb-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .thumb-preview {
+    width: 60px; height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 100%);
+    border: 1px solid var(--clay-sand);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #a08d7c;
+    text-align: center;
+  }
+
+  .submit-cta {
+    width: 100%;
+    background: var(--rosewood);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 15px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .submit-note {
+    text-align: center;
+    font-size: 12px;
+    color: #a08d7c;
+    margin-top: 10px;
+  }
+
+  .alt-channel {
+    text-align: center;
+    padding: 30px 0 50px;
+    font-size: 13.5px;
+    color: #6b5d51;
+  }
+  .alt-channel a {
+    color: var(--sage);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 30px 0;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .how-it-works { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="inner">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="page-head">
+      <p class="eyebrow">Custom Orders</p>
+      <h1>Tell us what you have in mind</h1>
+      <p>Send a description or a reference photo of what you'd like made — we'll review it and get back to you with feasibility, price and timeline.</p>
+      <span class="no-payment-note">This sends a request, not an order — nothing to pay right now.</span>
+    </div>
+
+    <div class="how-it-works">
+      <div class="how-step">
+        <div class="num">1</div>
+        <h3>You share</h3>
+        <p>Describe the piece and upload any reference images.</p>
+      </div>
+      <div class="how-step">
+        <div class="num">2</div>
+        <h3>We review</h3>
+        <p>Our team checks feasibility against what we can craft.</p>
+      </div>
+      <div class="how-step">
+        <div class="num">3</div>
+        <h3>We reach out</h3>
+        <p>Over WhatsApp, call or email to discuss price and timeline.</p>
+      </div>
+    </div>
+
+    <div class="material-callout">
+      <div class="ico"></div>
+      <p><strong>Every piece we make is crochet or pipe cleaner</strong> — no other materials. If what you have in mind fits that, we can likely make it.</p>
+    </div>
+
+    <form>
+      <div class="field">
+        <label for="desc">Describe what you'd like made</label>
+        <textarea id="desc" placeholder="E.g. a crochet keychain shaped like a small elephant, in cream and gold thread, for a Diwali gift..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Reference images <span class="optional">(optional)</span></label>
+        <div class="dropzone">
+          <div class="icon">⬆</div>
+          <p>Drag photos here, or tap to upload</p>
+        </div>
+        <div class="thumb-grid">
+          <div class="thumb-preview">ref-1.jpg</div>
+          <div class="thumb-preview">ref-2.jpg</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="occasion">Occasion / needed by <span class="optional">(optional)</span></label>
+        <input id="occasion" type="text" placeholder="E.g. Diwali, or a specific date">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" type="text" placeholder="Full name">
+        </div>
+        <div class="field">
+          <label for="phone">Phone / WhatsApp</label>
+          <input id="phone" type="text" placeholder="+91...">
+        </div>
+      </div>
+      <div class="field">
+        <label for="email">Email <span class="optional">(optional)</span></label>
+        <input id="email" type="email" placeholder="you@example.com">
+      </div>
+
+      <button class="submit-cta" type="button">Send My Custom Request</button>
+      <p class="submit-note">No payment is required now — we'll follow up with you directly.</p>
+    </form>
+
+    <div class="alt-channel">
+      Prefer to just message us? <a href="#">Reach out on WhatsApp instead →</a>
+    </div>
+  </div>
+
+  <footer>Mockup for design review — not a live page.</footer>
+
+</body>
+</html>

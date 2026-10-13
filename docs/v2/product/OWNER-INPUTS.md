@@ -1,0 +1,46 @@
+# Tantu Kala v2 — Inputs needed from the owner
+
+Version 0.1 · 12 Oct 2026 · Maintained by the **lead agent** (in Claude Code) and the Cowork
+advisory desk until agents start. Answers move to `docs/v2/DECISIONS-LOG.md` and the row is closed.
+
+How this works:
+
+- Every open question, missing value or owner task lives here — nowhere else.
+- The lead asks **at most 3 at a time**, most blocking first, at the start of each session.
+- **Default** = what we'll assume if you don't answer by the "needed by" point. A default is only
+  used after you've accepted it; until then the dependent task stays Blocked.
+- Status: `Open` · `Asked` (date) · `Answered` (decision ID) · `Default accepted` · `Dropped`.
+
+## 1. Open now
+
+| ID    | Input needed                                                                                                                                                                                                        | Why / what it blocks             | Needed by           | Proposed default                                                           | Status                           |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ------------------- | -------------------------------------------------------------------------- | -------------------------------- |
+| IN-03 | Check Cloudflare → Security → Bots → AI Crawl Control on the `embox.in` zone and note current settings                                                                                                              | Must match IN-01                 | R1                  | — (owner task)                                                             | Open                             |
+| IN-05 | Legal seller details for policy/contact pages: legal name, contact address, return/exchange address, customer-care contact, grievance contact — and whether a professional checks them (E-Commerce Rules, DPDP Act) | PG-2, PG-4                       | R2                  | — (owner + professional)                                                   | Open                             |
+| IN-06 | Exact free-delivery threshold (currently "₹500–700")                                                                                                                                                                | CHK-2, CHK-13                    | R2                  | ₹599                                                                       | Open                             |
+| IN-07 | Gift-wrap fee (provisional ₹30)                                                                                                                                                                                     | CHK-4                            | R2                  | ₹30                                                                        | Open                             |
+| IN-08 | Soft bulk-pitch quantity and hard cart limit; size class for each product                                                                                                                                           | CHK-10, CHK-12                   | R2                  | Pitch at 10 items; quote above 25 items or any "large" item                | Open                             |
+| IN-09 | Discount values: order-value tiers, festival codes, loyalty codes (values later, per D-09)                                                                                                                          | CHK-3                            | R2                  | Launch with no codes; one auto tier as today (20% over ₹500) until decided | Open                             |
+| IN-10 | Diwali 2026 order cutoff date and capacity cap (units)                                                                                                                                                              | CMP-1, CMP-4                     | R4 or earlier on v1 | Cutoff 1 Nov; no cap                                                       | Open                             |
+| IN-11 | Merchant UPI ID (embox) for v2 config                                                                                                                                                                               | CHK-7, T3 smoke test             | R2                  | —                                                                          | Open (Q-7: added later by owner) |
+| IN-12 | Order-log column layout (existing off-site log)                                                                                                                                                                     | S-0 Customers tab + dashboard    | S-0                 | —                                                                          | Open                             |
+| IN-13 | Preview URLs: public with test data only, or behind Cloudflare Access? (CI-Q1)                                                                                                                                      | CI-2                             | Setup               | Public, test data only                                                     | Open                             |
+| IN-14 | Content: founder story, product photos (studio + lifestyle), real customer quotes (with permission), any real stats                                                                                                 | PG-1, About, PST-2               | R1                  | Placeholders blocked from release                                          | Open                             |
+| IN-15 | Dev dependencies OK for formatting phase 2: Prettier + Astro plugin (S-9). (Preact, Vitest, Playwright already approved: D-27/D-28)                                                                                 | Setup                            | Setup               | —                                                                          | Open                             |
+| IN-16 | Loyalty details (reward, order count, window)                                                                                                                                                                       | PST-3 (last requirement)         | Last                | —                                                                          | Deferred (D-51)                  |
+| IN-17 | Data retention: how long to keep full addresses and phone numbers after delivery (B-7); deletion-on-request process                                                                                                 | DPDP compliance, LLD-06 §8, PG-2 | R2                  | Keep until decided; nothing auto-deleted                                   | Open                             |
+| IN-20 | Where long-form page copy lives (guides, About story, FAQs): proposed `src/content/` (Astro content collections) — architect to confirm in LLD-02                                                                   | `tk-content` write scope, SEO-D  | R1                  | `src/content/`                                                             | Open (architect)                 |
+
+## 2. Recently answered
+
+| ID           | Answer                                                                              | Decision |
+| ------------ | ----------------------------------------------------------------------------------- | -------- |
+| IN-21        | Machine account `tantu-kala-bot` created; agents use it (INSTALL §1b)               | D-70     |
+| IN-18        | LLD-07 decisions P-1…P-5: all approved                                              | D-68     |
+| IN-19        | Permission model approved; verified in use (S-8, first R1 tasks)                    | D-69     |
+| IN-01        | Allow AI search + user-triggered bots; block training bots                          | D-57     |
+| IN-02        | Material collection pages for crochet, macramé, pipe cleaner (each at ≥ 3 products) | D-58     |
+| IN-04        | Location wording: "Handmade in Delhi & Pune" (owner's final)                        | D-60     |
+| IN-04 (part) | Parcels ship mostly from Delhi, some from Pune                                      | D-59     |
+| —            | Routes R-1…R-7 accepted                                                             | D-54     |
+| —            | AI-search approach (`SEO.md` §7) accepted                                           | D-55     |

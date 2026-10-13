@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Homepage Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+
+  .eyebrow.on-dark { color: var(--mustard); }
+
+  /* ---------- Placeholder photography blocks ---------- */
+  /* Two registers per the confirmed photography brief:
+     - .photo-lifestyle: editorial/hero register — real-use context, warm & candid
+     - .photo-studio: catalog register — neutral seamless background, consistent framing */
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    padding: 12px 16px;
+    max-width: 80%;
+  }
+  .photo-lifestyle {
+    background: linear-gradient(150deg, #E7C9A8 0%, #D9A876 45%, #B5603A 100%);
+  }
+  .photo-lifestyle::after {
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(51, 24, 14, 0.35);
+    font-weight: 500;
+  }
+  .photo-studio {
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-studio::after {
+    color: #9c8a76;
+  }
+
+  section { padding: 56px 0; }
+
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--umber);
+    letter-spacing: -0.01em;
+  }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .top-nav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .top-nav a { color: var(--charcoal-umber); }
+  .top-nav a:hover { color: var(--terracotta); }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .icon-btn {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-weight: 600;
+    background: #fff;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 0;
+  }
+  .hero-inner {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: stretch;
+    min-height: 0;
+  }
+  .hero-copy {
+    flex: 1 1 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: 56px 24px;
+    background: var(--warm-ivory);
+  }
+  .hero-copy h1 {
+    font-weight: 600;
+    font-size: clamp(32px, 6vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .hero-copy p.lede {
+    font-size: 17px;
+    color: var(--charcoal-umber);
+    max-width: 46ch;
+    margin: 0;
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--umber); color: var(--warm-ivory); }
+  .btn-secondary { background: transparent; border-color: var(--umber); color: var(--umber); }
+  .btn-rosewood { background: var(--rosewood); color: #fff; }
+
+  .hero-trust {
+    margin-top: 10px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sage);
+  }
+  .hero-photo {
+    flex: 1 1 360px;
+    min-height: 320px;
+  }
+
+  /* ---------- Section headers ---------- */
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .section-head h2 {
+    font-weight: 600;
+    font-size: clamp(24px, 4vw, 32px);
+  }
+  .section-head .see-all {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--terracotta);
+    white-space: nowrap;
+  }
+  .section-intro {
+    font-size: 15px;
+    color: var(--charcoal-umber);
+    max-width: 60ch;
+    margin: 10px 0 0;
+  }
+
+  /* ---------- Collections (theme-first merchandising) ---------- */
+  .collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+  }
+  .collection-card {
+    background: var(--clay-sand);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(51, 36, 30, 0.10);
+  }
+  .collection-card .photo-placeholder { aspect-ratio: 4 / 5; width: 100%; }
+  .collection-body { padding: 16px 18px 20px; }
+  .collection-card h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--charcoal-umber);
+    margin-bottom: 6px;
+  }
+  .collection-card p {
+    font-size: 13.5px;
+    color: #7a6a5f;
+    margin: 0 0 12px;
+  }
+  .collection-card .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    background: #F3E4D8;
+    padding: 4px 9px;
+    border-radius: 5px;
+  }
+  .collection-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--umber);
+  }
+
+  /* ---------- Shop by type strip ---------- */
+  .type-strip {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+  .type-pill {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 10px 18px 10px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--charcoal-umber);
+    white-space: nowrap;
+  }
+  .type-pill .dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--mustard);
+    flex: 0 0 auto;
+  }
+
+  /* ---------- Custom orders callout ---------- */
+  .custom-orders {
+    background: var(--umber);
+    color: var(--warm-ivory);
+    border-radius: 20px;
+    margin: 0 auto;
+  }
+  .custom-orders-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px;
+    padding: 40px 32px;
+  }
+  .custom-orders-text { flex: 1 1 320px; }
+  .custom-orders-text h2 {
+    color: var(--warm-ivory);
+    font-weight: 600;
+    font-size: clamp(24px, 4vw, 30px);
+    margin-bottom: 12px;
+  }
+  .custom-orders-text p {
+    color: #E9DAC8;
+    font-size: 15px;
+    max-width: 52ch;
+    margin: 0 0 18px;
+  }
+  .custom-steps {
+    flex: 1 1 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .custom-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(250, 243, 231, 0.08);
+    border: 1px solid rgba(250, 243, 231, 0.18);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .custom-step .num {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--mustard);
+    flex: 0 0 auto;
+  }
+  .custom-step p {
+    margin: 0;
+    font-size: 13.5px;
+    color: #F1E4D3;
+  }
+  .custom-step strong { color: var(--warm-ivory); font-weight: 600; }
+
+  /* ---------- Festive layer strip ---------- */
+  .festive-strip {
+    background: var(--rosewood);
+    border-radius: 16px;
+    color: var(--warm-ivory);
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .festive-strip .icon-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--mustard);
+    flex: 0 0 auto;
+  }
+  .festive-strip-text { flex: 1 1 280px; }
+  .festive-strip-text .eyebrow { color: var(--mustard); margin-bottom: 4px; }
+  .festive-strip-text h3 {
+    color: var(--warm-ivory);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 19px;
+    margin-bottom: 4px;
+  }
+  .festive-strip-text p {
+    margin: 0;
+    font-size: 13.5px;
+    color: #F1DCDD;
+  }
+
+  /* ---------- Bestsellers / product grid (studio register) ---------- */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
+  }
+  .product-card {
+    background: #fff;
+    border: 1px solid var(--clay-sand);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .product-card .photo-placeholder { aspect-ratio: 1 / 1; width: 100%; }
+  .product-body { padding: 14px 14px 16px; }
+  .product-tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    background: #F3E4D8;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .product-name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--charcoal-umber);
+    margin: 0 0 4px;
+  }
+  .product-meta {
+    font-size: 12.5px;
+    color: #7a6a5f;
+    margin: 0 0 10px;
+  }
+  .product-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .product-price {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--terracotta);
+  }
+  .product-cta {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--umber);
+    border: 1px solid var(--umber);
+    border-radius: 999px;
+    padding: 5px 12px;
+    background: transparent;
+  }
+
+  /* ---------- Brand story ---------- */
+  .brand-story {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+  }
+  .brand-story-photo {
+    flex: 1 1 320px;
+    aspect-ratio: 5 / 4;
+    border-radius: 18px;
+  }
+  .brand-story-text { flex: 1 1 320px; }
+  .brand-story-text p {
+    font-size: 15.5px;
+    max-width: 52ch;
+    margin: 14px 0 0;
+  }
+  .brand-story-text .eyebrow { margin-bottom: 12px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 44px 0 28px;
+    margin-top: 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 28px;
+    margin-bottom: 28px;
+  }
+  .footer-grid h4 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mustard);
+    margin: 0 0 12px;
+  }
+  .footer-grid a, .footer-grid p {
+    display: block;
+    font-size: 13.5px;
+    color: #D9CBBD;
+    margin: 0 0 8px;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(217, 203, 189, 0.15);
+    padding-top: 18px;
+    font-size: 12px;
+    color: #A6968A;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    section { padding: 40px 0; }
+    .hero-copy, .hero-photo { min-height: 280px; }
+    .custom-orders-inner { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner wrap" style="padding-left:0; padding-right:0;">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+      <nav class="top-nav">
+        <a href="#collections">Collections</a>
+        <a href="#jewelry">Jewelry</a>
+        <a href="#decor">Decor</a>
+        <a href="#festive">Festive</a>
+        <a href="#custom-orders">Custom Orders</a>
+      </nav>
+      <div class="top-actions">
+        <a href="#" class="icon-btn">Cart (0)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Handmade · Crochet &amp; Pipe Cleaner</p>
+        <h1>Small, deliberate&nbsp;things,<br>made by hand.</h1>
+        <p class="lede">Jewelry, décor and gifting — every single piece worked in crochet thread or pipe cleaner, nothing else. Quiet, considered, made to keep.</p>
+        <div class="hero-cta-row">
+          <a href="#collections" class="btn btn-primary">Shop the collections</a>
+          <a href="#custom-orders" class="btn btn-secondary">Start a custom order</a>
+        </div>
+        <p class="hero-trust">Handmade · Made to order · Ships across India</p>
+      </div>
+      <div class="hero-photo photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;crochet jhumkas worn, natural&#10;daylight, close crop, soft bokeh"></div>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <!-- ================= COLLECTIONS (theme-first) ================= -->
+    <section id="collections">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Shop by collection</p>
+          <h2>Curated, not just categorized</h2>
+          <p class="section-intro">Start with a mood or a moment — each collection pulls from across jewelry, décor and gifting.</p>
+        </div>
+        <a href="#" class="see-all">View all collections →</a>
+      </div>
+      <div class="collections-grid">
+        <div class="collection-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;jhumkas &amp; bracelets styled&#10;together on a console"></div>
+          <div class="collection-body">
+            <span class="tag">Everyday</span>
+            <h3>The Quiet Luxe Edit</h3>
+            <p>Earrings, jhumkas &amp; bracelets for wearing daily, not just for festivals.</p>
+            <a href="#" class="collection-link">Explore the edit →</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;desk with coaster set &amp;&#10;car charm, blurred interior"></div>
+          <div class="collection-body">
+            <span class="tag">Décor</span>
+            <h3>Desk &amp; Dashboard</h3>
+            <p>Office and car décor made to travel with you — coasters, charms, keychains.</p>
+            <a href="#" class="collection-link">Explore the edit →</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;gift box mid-unboxing,&#10;tissue &amp; ribbon, hands visible"></div>
+          <div class="collection-body">
+            <span class="tag">Gifting</span>
+            <h3>Gifting, Made Personal</h3>
+            <p>Ready combos and add-a-note gift sets for birthdays, housewarmings and thank-yous.</p>
+            <a href="#" class="collection-link">Explore the edit →</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;garland on a home mandap,&#10;warm ambient light"></div>
+          <div class="collection-body">
+            <span class="tag">Festive</span>
+            <h3>Ganesh Chaturthi: Home &amp; Mandap</h3>
+            <p>Flower garlands and mandap accents, in this year's colours.</p>
+            <a href="#" class="collection-link">Explore the edit →</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;nine-colour bangles &amp; diyas&#10;laid out, golden hour light"></div>
+          <div class="collection-body">
+            <span class="tag">Festive</span>
+            <h3>Navratri Colours</h3>
+            <p>Nine nights, nine palettes — bangles, jhumkas and accents by colour.</p>
+            <a href="#" class="collection-link">Explore the edit →</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <div class="photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;diya trio gift box being&#10;handed over, warm domestic set"></div>
+          <div class="collection-body">
+            <span class="tag">Festive</span>
+            <h3>Diwali Gifting Combos</h3>
+            <p>Boxed sets pairing décor and jewelry — ready to give as they arrive.</p>
+            <a href="#" class="collection-link">Explore the edit →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SHOP BY TYPE (secondary, flat entry) ================= -->
+    <section id="jewelry" aria-label="Shop by type">
+      <div class="section-head" style="margin-bottom:18px;">
+        <div>
+          <p class="eyebrow">Or browse by type</p>
+          <h2 style="font-size:22px;">Everything in the catalog</h2>
+        </div>
+      </div>
+      <div class="type-strip" id="decor">
+        <a href="#" class="type-pill"><span class="dot"></span>Jewelry</a>
+        <a href="#" class="type-pill"><span class="dot"></span>Home Decor</a>
+        <a href="#" class="type-pill"><span class="dot"></span>Car Decor</a>
+        <a href="#" class="type-pill"><span class="dot"></span>Office Decor</a>
+        <a href="#" class="type-pill"><span class="dot"></span>Gifting / Combos</a>
+        <a href="#" class="type-pill"><span class="dot"></span>Rakhis</a>
+      </div>
+    </section>
+
+    <!-- ================= CUSTOM ORDERS ================= -->
+    <section id="custom-orders">
+      <div class="custom-orders">
+        <div class="custom-orders-inner">
+          <div class="custom-orders-text">
+            <p class="eyebrow on-dark">Made to your brief</p>
+            <h2>Have something in mind we haven't made yet?</h2>
+            <p>Send us a description or a reference photo — colours, size, occasion, anything. This isn't a checkout flow: it's a conversation with our team before anything is priced or made.</p>
+            <a href="#" class="btn btn-rosewood">Start a custom request</a>
+          </div>
+          <div class="custom-steps">
+            <div class="custom-step">
+              <span class="num">1</span>
+              <p><strong>Tell us what you want.</strong> Describe it or upload a reference image, plus how to reach you.</p>
+            </div>
+            <div class="custom-step">
+              <span class="num">2</span>
+              <p><strong>We review it.</strong> No price or payment is taken at this step — we just receive your request.</p>
+            </div>
+            <div class="custom-step">
+              <span class="num">3</span>
+              <p><strong>We reach out to you.</strong> Over WhatsApp, call or email — to talk feasibility, price and timeline.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FESTIVE LAYER ================= -->
+    <section id="festive" style="padding-top:0;">
+      <div class="festive-strip">
+        <div class="icon-badge"></div>
+        <div class="festive-strip-text">
+          <p class="eyebrow">This season</p>
+          <h3>Ganesh Chaturthi pieces are up</h3>
+          <p>Garlands and mandap accents, alongside the everyday collections — nothing else about the site changes.</p>
+        </div>
+        <a href="#" class="btn" style="background:var(--warm-ivory); color:var(--rosewood);">Shop the festival edit</a>
+      </div>
+    </section>
+
+    <!-- ================= BESTSELLERS (studio register) ================= -->
+    <section aria-label="Loved this week">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Studio catalog</p>
+          <h2>Loved this week</h2>
+        </div>
+        <a href="#" class="see-all">View full catalog →</a>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <div class="product-body">
+            <span class="product-tag">Jewelry</span>
+            <p class="product-name">Terracotta Crochet Jhumkas</p>
+            <p class="product-meta">Handmade · Ships in 3–5 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹379</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <div class="product-body">
+            <span class="product-tag">Jewelry</span>
+            <p class="product-name">Umber Latkan Drop Earrings</p>
+            <p class="product-meta">Handmade · Ships in 3–5 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹329</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <div class="product-body">
+            <span class="product-tag">Office Decor</span>
+            <p class="product-name">Sage Knot Desk Coaster Set</p>
+            <p class="product-meta">Handmade · Set of 4</p>
+            <div class="product-price-row">
+              <span class="product-price">₹549</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <div class="product-body">
+            <span class="product-tag">Car Decor</span>
+            <p class="product-name">Mini Marigold Garland — Rear View Mirror</p>
+            <p class="product-meta">Handmade · Ganesh Chaturthi</p>
+            <div class="product-price-row">
+              <span class="product-price">₹199</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <div class="product-body">
+            <span class="product-tag">Gifting / Combos</span>
+            <p class="product-name">Diwali Diya Trio Gift Box</p>
+            <p class="product-meta">Handmade · Boxed, ready to give</p>
+            <div class="product-price-row">
+              <span class="product-price">₹699</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="photo-placeholder photo-studio" data-label="studio product photo —&#10;neutral seamless, 1:1 crop"></div>
+          <div class="product-body">
+            <span class="product-tag">Home Decor</span>
+            <p class="product-name">Clay Sand Wall Hoop — Small</p>
+            <p class="product-meta">Handmade · Ships in 4–6 days</p>
+            <div class="product-price-row">
+              <span class="product-price">₹449</span>
+              <span class="product-cta">Add</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BRAND STORY ================= -->
+    <section aria-label="About Tantu Kala">
+      <div class="brand-story">
+        <div class="brand-story-photo photo-placeholder photo-lifestyle" data-label="styled lifestyle photo —&#10;hands mid-crochet, thread &amp;&#10;hook, natural window light"></div>
+        <div class="brand-story-text">
+          <p class="eyebrow">Tantu, meaning thread</p>
+          <h2>Every piece starts as thread or wire — nothing else.</h2>
+          <p>No metal, no resin, no factory line. Everything at Tantu Kala is built by hand from crochet thread or pipe cleaner, one piece at a time — which is also why sizes, colours and small details can be adjusted on most listings, and why a fully custom piece is always on the table.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h4>Shop</h4>
+          <a href="#">Jewelry</a>
+          <a href="#">Home Decor</a>
+          <a href="#">Car &amp; Office Decor</a>
+          <a href="#">Gifting / Combos</a>
+        </div>
+        <div>
+          <h4>Festive</h4>
+          <a href="#">Raksha Bandhan</a>
+          <a href="#">Ganesh Chaturthi</a>
+          <a href="#">Navratri</a>
+          <a href="#">Diwali</a>
+        </div>
+        <div>
+          <h4>Tantu Kala</h4>
+          <a href="#">Custom Orders</a>
+          <a href="#">Our Story</a>
+          <a href="#">Contact on WhatsApp</a>
+        </div>
+        <div>
+          <h4>Say hello</h4>
+          <p>hello@tantukala.in</p>
+          <p>@tantu.kala on Instagram</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Tantu Kala. Handmade in India.</span>
+        <span>Mockup for design review — not a live page.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Product Detail Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--umber); margin: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  .photo-placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo-placeholder::after {
+    content: attr(data-label);
+    white-space: pre-line;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 10px;
+    max-width: 85%;
+  }
+  .photo-studio {
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+  }
+  .photo-studio::after { color: #9c8a76; }
+  .photo-lifestyle {
+    background: linear-gradient(150deg, #E7C9A8 0%, #D9A876 45%, #B5603A 100%);
+  }
+  .photo-lifestyle::after { color: #fff; text-shadow: 0 1px 6px rgba(51,24,14,0.35); }
+
+  .topbar {
+    background: var(--warm-ivory);
+    border-bottom: 1px solid var(--clay-sand);
+    padding: 14px 0;
+  }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--umber); }
+  .logo .lw { display: inline-block; transition: transform 0.2s ease; }
+  .logo:hover .lw:first-child { transform: translateY(-2px) rotate(-2deg); }
+  .logo:hover .lw:last-child { transform: translateY(2px) rotate(2deg); }
+  .cart-pill {
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #fff;
+  }
+
+  .breadcrumb {
+    font-size: 12.5px;
+    color: #a08d7c;
+    padding: 18px 0 0;
+  }
+  .breadcrumb a { color: var(--terracotta); font-weight: 600; }
+
+  /* ===================== PRODUCT LAYOUT ===================== */
+  .product-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 24px 0 20px;
+  }
+
+  .gallery { flex: 1 1 420px; }
+  .gallery-main {
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .gallery-thumbs {
+    display: flex;
+    gap: 10px;
+  }
+  .thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .thumb.active { border-color: var(--terracotta); }
+  .thumb .photo-placeholder::after { font-size: 8px; padding: 4px; }
+  .gallery-dots {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .gallery-dots .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--clay-sand);
+  }
+  .gallery-dots .dot.active { background: var(--terracotta); }
+
+  .info { flex: 1 1 380px; }
+  .info-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .info-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .info-tag.type { color: var(--umber); background: var(--clay-sand); }
+  .info-tag.occasion { color: #fff; background: var(--rosewood); }
+
+  .info h1 {
+    font-weight: 600;
+    font-size: clamp(24px, 3.5vw, 30px);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .price { font-family: var(--font-body); font-weight: 700; font-size: 24px; color: var(--terracotta); }
+  .availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--sage);
+  }
+  .availability .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); }
+
+  .description {
+    font-size: 14.5px;
+    color: var(--charcoal-umber);
+    margin: 0 0 22px;
+    max-width: 52ch;
+  }
+
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .qty-stepper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--clay-sand);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .qty-stepper button {
+    width: 36px; height: 36px;
+    border: none; background: #fff;
+    font-size: 16px; cursor: pointer;
+    color: var(--umber);
+  }
+  .qty-stepper span { width: 36px; text-align: center; font-weight: 600; font-size: 14px; }
+
+  .btn-add {
+    display: block;
+    width: 100%;
+    background: var(--umber);
+    color: var(--warm-ivory);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 15px;
+    border-radius: 999px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 14px;
+  }
+
+  .trust-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #7a6a5f;
+    padding: 14px 0;
+    border-top: 1px solid var(--clay-sand);
+    margin-top: 4px;
+  }
+  .trust-row span { display: flex; align-items: center; gap: 6px; }
+  .trust-row .ico { width: 6px; height: 6px; border-radius: 50%; background: var(--mustard); }
+
+  /* Minor tweak hint — low visual weight, points to checkout note field */
+  .minor-tweak-hint {
+    font-size: 12.5px;
+    color: #a08d7c;
+    background: transparent;
+    border: 1px dashed var(--clay-sand);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 6px;
+  }
+  .minor-tweak-hint strong { color: #7a6a5f; font-weight: 600; }
+
+  /* Full custom order card — heavier, visually distinct from minor-tweak hint */
+  .custom-card {
+    margin-top: 22px;
+    background: var(--clay-sand);
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .custom-card .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+  }
+  .custom-card h3 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--charcoal-umber);
+  }
+  .custom-card p {
+    font-size: 13.5px;
+    color: #6b5d51;
+    margin: 0;
+    max-width: 48ch;
+  }
+  .custom-card a {
+    align-self: flex-start;
+    background: var(--rosewood);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 999px;
+    margin-top: 4px;
+  }
+
+  /* ===================== LOWER PAGE — editorial photo ===================== */
+  .editorial-strip {
+    margin: 48px 0;
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 16 / 7;
+  }
+
+  footer {
+    background: var(--charcoal-umber);
+    color: #D9CBBD;
+    padding: 30px 0;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="wrap">
+      <a href="#" class="logo"><span class="lw">Tantu</span> <span class="lw">Kala</span></a>
+      <a href="#" class="cart-pill">Cart (0)</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="breadcrumb"><a href="#">All Products</a> / <a href="#">Jewelry</a> / Terracotta Crochet Jhumka Earrings</p>
+
+    <div class="product-main">
+      <div class="gallery">
+        <div class="gallery-main photo-placeholder photo-studio" data-label="studio product photo —&#10;main image, neutral seamless&#10;backdrop, 1:1"></div>
+        <div class="gallery-thumbs">
+          <div class="thumb active"><div class="photo-placeholder photo-studio" data-label="img 1"></div></div>
+          <div class="thumb"><div class="photo-placeholder photo-studio" data-label="img 2 —&#10;angle"></div></div>
+          <div class="thumb"><div class="photo-placeholder photo-studio" data-label="img 3 —&#10;scale ref"></div></div>
+          <div class="thumb"><div class="photo-placeholder photo-lifestyle" data-label="img 4 —&#10;worn"></div></div>
+        </div>
+        <div class="gallery-dots" style="display:flex;">
+          <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+
+      <div class="info">
+        <div class="info-tags">
+          <span class="info-tag type">Jewelry</span>
+          <span class="info-tag occasion">Ganesh Chaturthi</span>
+        </div>
+        <h1>Terracotta Crochet Jhumka Earrings</h1>
+        <div class="price-row">
+          <span class="price">₹379</span>
+          <span class="availability"><span class="dot"></span>In stock · ships in 3–5 days</span>
+        </div>
+        <p class="description">Hand-crocheted jhumkas in a warm terracotta thread, finished with a small mustard latkan drop. Lightweight, finished on both sides, comes with secure hooks — made to order, one pair at a time.</p>
+
+        <div class="qty-row">
+          <div class="qty-stepper">
+            <button type="button" aria-label="decrease">–</button>
+            <span>1</span>
+            <button type="button" aria-label="increase">+</button>
+          </div>
+        </div>
+
+        <button class="btn-add" type="button">Add to Cart</button>
+
+        <div class="minor-tweak-hint">
+          <strong>Want a small tweak?</strong> Colour or size adjustments to this listing can be requested in the note field at checkout — no need for a separate request.
+        </div>
+
+        <div class="trust-row">
+          <span><span class="ico"></span>Handmade to order</span>
+          <span><span class="ico"></span>Pay via UPI</span>
+          <span><span class="ico"></span>Ships across India</span>
+        </div>
+
+        <div class="custom-card">
+          <p class="eyebrow">Want something different entirely?</p>
+          <h3>Start a full custom order instead</h3>
+          <p>Different design, different materials arrangement, or something we haven't listed at all — describe it and our team will follow up before anything is priced. This is a separate flow from the tweak note above.</p>
+          <a href="#">Start a custom request →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="editorial-strip photo-placeholder photo-lifestyle" data-label="editorial lifestyle photo —&#10;jhumkas worn, natural daylight,&#10;close crop, soft bokeh, candid"></div>
+  </div>
+
+  <footer>Mockup for design review — not a live page.</footer>
+
+</body>
+</html>

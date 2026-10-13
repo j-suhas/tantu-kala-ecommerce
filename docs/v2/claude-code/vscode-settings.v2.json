@@ -1,0 +1,11 @@
+{
+  "$comment": "DRAFT — install as .vscode/settings.json on the v2 branch (S-9). Un-ignore it in .gitignore.",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "[markdown]": { "files.trimTrailingWhitespace": false },
+  "[astro]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
+}

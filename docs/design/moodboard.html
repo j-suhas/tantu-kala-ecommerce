@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tantu Kala — Design Direction Moodboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --umber: #4D3126;
+    --terracotta: #B5603A;
+    --mustard: #C99A44;
+    --warm-ivory: #FAF3E7;
+    --clay-sand: #EDE1CC;
+    --charcoal-umber: #33241E;
+    --sage: #6B7A5E;
+    --rosewood: #6E2E33;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Karla', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--warm-ivory);
+    color: var(--charcoal-umber);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  header.page-header {
+    margin-bottom: 64px;
+  }
+
+  header.page-header h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 64px);
+    color: var(--umber);
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  header.page-header p {
+    font-size: 18px;
+    color: var(--charcoal-umber);
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  section { margin-bottom: 72px; }
+
+  .section-label {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 24px;
+  }
+
+  /* Palette */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+  }
+
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .swatch-color {
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(51, 36, 30, 0.12);
+  }
+
+  .swatch-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--charcoal-umber);
+  }
+
+  .swatch-hex {
+    font-size: 13px;
+    color: var(--sage);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .swatch-role {
+    font-size: 12px;
+    color: #7a6a5f;
+  }
+
+  /* Typography samples */
+  .type-sample {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--clay-sand);
+  }
+  .type-sample:last-child { border-bottom: none; }
+
+  .type-caption {
+    font-size: 12px;
+    color: var(--sage);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--umber);
+    margin: 0;
+    line-height: 1.1;
+  }
+  .t-h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 38px;
+    color: var(--umber);
+    margin: 0;
+  }
+  .t-h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 27px;
+    color: var(--charcoal-umber);
+    margin: 0;
+  }
+  .t-h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--charcoal-umber);
+    margin: 0;
+  }
+  .t-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--charcoal-umber);
+    margin: 0;
+    max-width: 60ch;
+  }
+  .t-small {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0;
+  }
+
+  /* Filter bar */
+  .filter-group { margin-bottom: 20px; }
+  .filter-group-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    margin: 0 0 10px;
+  }
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--clay-sand);
+    background: #fff;
+    color: var(--charcoal-umber);
+    cursor: default;
+  }
+  .chip.active {
+    background: var(--umber);
+    border-color: var(--umber);
+    color: var(--warm-ivory);
+  }
+  .chip.occasion.active {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: #fff;
+  }
+
+  /* Product card */
+  .card-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .product-card {
+    width: 260px;
+    background: var(--clay-sand);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(51, 36, 30, 0.10);
+  }
+  .product-image {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    background: linear-gradient(155deg, #F7EFE1 0%, #EDE1CC 55%, #E3D5B8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .product-image::after {
+    content: "product photo\A(neutral studio,\A1:1 crop)";
+    white-space: pre;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #9c8a76;
+    letter-spacing: 0.02em;
+  }
+  .product-body {
+    padding: 16px 16px 18px;
+  }
+  .product-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rosewood);
+    background: #F3E4D8;
+    padding: 4px 9px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .product-name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--charcoal-umber);
+    margin: 0 0 6px;
+  }
+  .product-meta {
+    font-size: 13px;
+    color: #7a6a5f;
+    margin: 0 0 12px;
+  }
+  .product-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .product-price {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--terracotta);
+  }
+  .product-cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--umber);
+    border: 1px solid var(--umber);
+    border-radius: 999px;
+    padding: 6px 14px;
+    background: transparent;
+  }
+
+  footer {
+    margin-top: 40px;
+    font-size: 12px;
+    color: #9c8a76;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-header">
+    <h1>Tantu Kala</h1>
+    <p>Design direction moodboard — muted, craft-rooted palette anchored on the existing logo brown, Fraunces + Karla type pairing, and cross-cutting Type + Occasion catalog filters.</p>
+  </header>
+
+  <section>
+    <p class="section-label">Color Palette</p>
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4D3126;"></div>
+        <div class="swatch-name">Umber</div>
+        <div class="swatch-hex">#4D3126</div>
+        <div class="swatch-role">Primary — headlines, buttons</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#B5603A;"></div>
+        <div class="swatch-name">Terracotta</div>
+        <div class="swatch-hex">#B5603A</div>
+        <div class="swatch-role">Secondary — CTAs, price</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C99A44;"></div>
+        <div class="swatch-name">Mustard</div>
+        <div class="swatch-hex">#C99A44</div>
+        <div class="swatch-role">Accent — badges, icons</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FAF3E7; border:1px solid #EDE1CC;"></div>
+        <div class="swatch-name">Warm Ivory</div>
+        <div class="swatch-hex">#FAF3E7</div>
+        <div class="swatch-role">Background</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#EDE1CC;"></div>
+        <div class="swatch-name">Clay Sand</div>
+        <div class="swatch-hex">#EDE1CC</div>
+        <div class="swatch-role">Surface — cards</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#33241E;"></div>
+        <div class="swatch-name">Charcoal Umber</div>
+        <div class="swatch-hex">#33241E</div>
+        <div class="swatch-role">Body text</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#6B7A5E;"></div>
+        <div class="swatch-name">Sage</div>
+        <div class="swatch-hex">#6B7A5E</div>
+        <div class="swatch-role">Muted accent — availability</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#6E2E33;"></div>
+        <div class="swatch-name">Rosewood</div>
+        <div class="swatch-hex">#6E2E33</div>
+        <div class="swatch-role">Deep accent — festival-scoped</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Typography — Fraunces + Karla</p>
+
+    <div class="type-sample">
+      <p class="type-caption">Display / 56–64px / Fraunces SemiBold</p>
+      <p class="t-display">Handcrafted, made to keep</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-caption">H1 / 38px / Fraunces SemiBold</p>
+      <p class="t-h1">Rakhis, jewelry &amp; festive gifting</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-caption">H2 / 27px / Fraunces Regular</p>
+      <p class="t-h2">Diwali gifting combos</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-caption">H3 / Card title / 19px / Karla SemiBold</p>
+      <p class="t-h3">Crochet Jhumka Earrings — Terracotta</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-caption">Body / 16px / Karla Regular</p>
+      <p class="t-body">Every piece is handcrafted using crochet thread or pipe cleaner — nothing else. Add-to-cart, checkout details, and product descriptions all sit in this weight.</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-caption">Small / label / 13px / Karla Medium, tracked, uppercase</p>
+      <p class="t-small">Handmade · Made to order</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Catalog Filters (Type + Occasion)</p>
+    <div class="filter-group">
+      <p class="filter-group-label">Type</p>
+      <div class="chip-row">
+        <span class="chip active">Rakhis</span>
+        <span class="chip">Jewelry</span>
+        <span class="chip">Home Decor</span>
+        <span class="chip">Car Decor</span>
+        <span class="chip">Office Decor</span>
+        <span class="chip">Gifting / Combos</span>
+      </div>
+    </div>
+    <div class="filter-group">
+      <p class="filter-group-label">Occasion</p>
+      <div class="chip-row">
+        <span class="chip occasion">Raksha Bandhan</span>
+        <span class="chip occasion active">Ganesh Chaturthi</span>
+        <span class="chip occasion">Navratri</span>
+        <span class="chip occasion">Diwali</span>
+        <span class="chip occasion">Everyday</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Product Card</p>
+    <div class="card-row">
+      <div class="product-card">
+        <div class="product-image"></div>
+        <div class="product-body">
+          <span class="product-tag">Jewelry</span>
+          <p class="product-name">Terracotta Crochet Jhumkas</p>
+          <p class="product-meta">Handmade · Ships in 3–5 days</p>
+          <div class="product-price-row">
+            <span class="product-price">₹349</span>
+            <span class="product-cta">Add</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image"></div>
+        <div class="product-body">
+          <span class="product-tag">Car Decor</span>
+          <p class="product-name">Mini Marigold Garland — Rear View Mirror</p>
+          <p class="product-meta">Handmade · Ganesh Chaturthi</p>
+          <div class="product-price-row">
+            <span class="product-price">₹199</span>
+            <span class="product-cta">Add</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Tantu Kala — design direction moodboard, for review only.</footer>
+</div>
+</body>
+</html>
