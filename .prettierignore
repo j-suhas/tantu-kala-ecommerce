@@ -1,0 +1,12 @@
+# Build output and dependencies
+dist/
+.astro/
+node_modules/
+package-lock.json
+# Binary/static assets and image masters
+public/
+image-masters/
+# Design mockups are hand-authored HTML; format them only on purpose
+docs/**/*.html
+# Claude Code worktrees
+.claude/worktrees/

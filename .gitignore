@@ -20,3 +20,8 @@ npm-debug.log*
 # editor
 .vscode/
 .idea/
+
+# v2: Claude Code worktrees, personal settings, private learning notes
+.claude/worktrees/
+.claude/settings.local.json
+docs/learning/
