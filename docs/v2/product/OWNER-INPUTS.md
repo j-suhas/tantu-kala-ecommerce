@@ -1,6 +1,6 @@
 # Tantu Kala v2 — Inputs needed from the owner
+Version 0.2 · 21 Oct 2026 · Changelog: 0.2 — IN-22…IN-24 added for PK-1/BR-2; PK-1 answers recorded (D-72…D-75). · Maintained by the **lead agent** (in Claude Code) and the Cowork
 
-Version 0.1 · 12 Oct 2026 · Maintained by the **lead agent** (in Claude Code) and the Cowork
 advisory desk until agents start. Answers move to `docs/v2/DECISIONS-LOG.md` and the row is closed.
 
 How this works:
@@ -30,12 +30,22 @@ How this works:
 | IN-16 | Loyalty details (reward, order count, window)                                                                                                                                                                                                                                                                    | PST-3 (last requirement)                        | Last                       | —                                                                          | Deferred (D-51)                  |
 | IN-17 | Data retention: how long to keep full addresses and phone numbers after delivery (B-7); deletion-on-request process                                                                                                                                                                                              | DPDP compliance, LLD-06 §8, PG-2                | R2                         | Keep until decided; nothing auto-deleted                                   | Open                             |
 | IN-20 | Where long-form page copy lives (guides, About story, FAQs): proposed `src/content/` (Astro content collections) — architect to confirm in LLD-02                                                                                                                                                                | `tk-content` write scope, SEO-D                 | R1                         | `src/content/`                                                             | Open (architect)                 |
+| IN-22 | Choose the new tagline from the drafted options (no material, no location; D-76)                                                                                                                                    | BR-2, PK-1 artwork, home title   | Before PK-1 print   | —                                                                          | Open                             |
+| IN-25 | Does "thread" count as a material under D-76? It is the meaning of the brand name (CX-8: "art made from threads"), and tagline options 1 and 2 depend on it                                                       | BR-2 (IN-22)                     | Before IN-22        | —                                                                          | Open                             |
+| IN-26 | Homepage gets its own title (not the tagline), and D-76's "no material" applies to the tagline only, so page titles may name the crafts? Proposed titles: P1 "Tantu Kala — Handmade crochet, macramé & pipe-cleaner gifts" (59, needs a small `Seo.astro` change) or P2 "Handmade crochet & macramé gifts · Tantu Kala" (45, no code change) | Home title, `og:title` (WhatsApp/Instagram previews), SEO-1 | With IN-22 | Own title, P1 | Open |
+| IN-27 | Only if the website-QR variant is chosen: add `utm_source=pack`, `utm_medium=sticker` to the METRICS §4 UTM list (no `utm_campaign`, so orders aren't credited to a festival) | PK-1 QR, RCH-4 | If QR chosen | — | Open |
+| IN-23 | Do the stalls hang packs on pegs? Decides whether the header tag (option B) is needed in addition to the round seal (A)                                                                                            | PK-1                             | Before PK-1 print   | Seal A only                                                                | Open                             |
+| IN-24 | Approve the vector logo redraw (and the simplified small-size mark) as official logo variants (D-77)                                                                                                               | PK-1 print files, `public/brand/` | Before PK-1 print   | —                                                                          | Open                             |
 | IN-22 | If you start supplying shops (D-41): (a) shop/wholesale prices vs online prices — customers may compare; (b) do shop orders count toward the revenue goal and get their own `channel` (today: `other`); (c) do they share the festival capacity cap; (d) invoices/GST for shop sales — check with a professional | Order log, dashboard, capacity (CMP-4), METRICS | Before the first shop deal | No site change; log shop orders with channel `other` and a note            | Open (low priority)              |
 
 ## 2. Recently answered
 
 | ID           | Answer                                                                              | Decision |
 | ------------ | ----------------------------------------------------------------------------------- | -------- |
+| — (PK-1)     | Sticker is for home deliveries and third-party stalls; not our shop                 | D-72     |
+| — (PK-1)     | No location on packs                                                                 | D-73     |
+| — (PK-1)     | Packs: branding only, no legal label, no professional check                          | D-74     |
+| — (PK-1)     | Instagram handle yes; no material; no QR on main sticker (QR variant for review)     | D-75     |
 | IN-21        | Machine account `tantu-kala-bot` created; agents use it (INSTALL §1b)               | D-70     |
 | IN-18        | LLD-07 decisions P-1…P-5: all approved                                              | D-68     |
 | IN-19        | Permission model approved; verified in use (S-8, first R1 tasks)                    | D-69     |
