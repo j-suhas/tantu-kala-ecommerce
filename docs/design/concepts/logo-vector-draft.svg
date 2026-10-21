@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1960 1330" width="1960" height="1330">
-  <title>Tantu Kala logo: DRAFT vector redraw (not the official logo)</title>
-  <desc>DRAFT redraw. Not the official logo until the owner approves. Traced by hand from public/brand/logo.jpeg
+  <title>Tantu Kala logo: vector redraw, approved for pack printing only (not the master logo)</title>
+  <desc>Approved for pack printing only (owner, 21 Oct 2026). Not the master logo: before master use, redraw the cords
+    under the two knot bands (in the original they bend into nested V shapes). Usage rule: simplified small mark only
+    below about 25 mm tall; full mark above. Traced by hand from public/brand/logo.jpeg
     (1440 x 1440 px raster) for packaging-sticker concept PK-1, 21 Oct 2026. Coordinates are logo.jpeg pixels, so the
     redraw can be laid over the original to compare. Colour: Umber #4D3126; background transparent.
     Groups: #tk-mark (full mark), #tk-wordmark, #tk-mark-small (simplified mark for about 15 mm tall:
@@ -9,8 +11,8 @@
 
   <!-- ===== visible draft label (not part of the logo) ===== -->
   <g font-family="Karla, Arial, sans-serif" fill="#6E2E33">
-    <text x="40" y="70" font-size="40" font-weight="700">DRAFT redraw. Not the official logo until the owner approves.</text>
-    <text x="40" y="115" font-size="24">Traced from public/brand/logo.jpeg · Umber #4D3126 · transparent background · PK-1 concept, 21 Oct 2026</text>
+    <text x="40" y="70" font-size="40" font-weight="700">Vector redraw: approved for pack printing only (owner, 21 Oct). Not the master logo.</text>
+    <text x="40" y="115" font-size="24">Traced from public/brand/logo.jpeg · Umber #4D3126 · transparent background · before master use, redraw the cords under the bands</text>
     <text x="702" y="1215" font-size="26" text-anchor="middle">Full mark + wordmark (original layout)</text>
     <text x="1740" y="1015" font-size="26" text-anchor="middle">Simplified small-size mark</text>
     <text x="1740" y="1050" font-size="22" text-anchor="middle">for ~15 mm tall · lines/gaps ≥ 0.15 mm</text>

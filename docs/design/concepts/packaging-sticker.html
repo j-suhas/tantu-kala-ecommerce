@@ -147,8 +147,6 @@
   <defs>
     <clipPath id="clip-seal"><circle r="20"/></clipPath>
     <clipPath id="clip-hdr"><rect width="90" height="40"/></clipPath>
-    <clipPath id="clip-band"><rect width="60" height="14" rx="2"/></clipPath>
-    <clipPath id="clip-qr"><rect width="28" height="34" rx="2"/></clipPath>
     <mask id="hole-mask" maskUnits="userSpaceOnUse" x="-5" y="-5" width="100" height="52">
       <rect x="-5" y="-5" width="100" height="52" fill="#fff"/><circle cx="45" cy="7" r="3" fill="#000"/>
     </mask>
@@ -156,8 +154,6 @@
     <!-- seal ring paths. Top: r 15.3, from -110 deg to +110 deg (0 deg = top). Bottom: r 16.9 through the bottom. -->
     <path id="arc-top" d="M -14.38 5.23 A 15.3 15.3 0 1 1 14.38 5.23"/>
     <path id="arc-bot" d="M -16.9 0 A 16.9 16.9 0 0 0 16.9 0"/>
-    <!-- tagline slot outline: r 17.3, +-105 deg (the measured extent of a 32-character caps line; see #tagline-slot) -->
-    <path id="arc-slot" d="M -16.71 4.48 A 17.3 17.3 0 1 1 16.71 4.48"/>
 
     <filter id="grain" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="7"/>
@@ -239,35 +235,23 @@
     <!-- wordmark, 22 mm wide -->
     <use href="#lg-word" x="-11" y="5.2" width="22" height="2.93"/>
   </symbol>
-  <!-- A with the tagline placeholder slot -->
+  <!-- A, recommended: tagline in sentence case, 7 pt Karla SemiBold, tracking 0.06 em (same size as the handle) -->
   <symbol id="seal" viewBox="-23 -23 46 46" overflow="visible">
     <g style="clip-path: var(--clip, url(#clip-seal))">
       <use href="#seal-base" x="-23" y="-23" width="46" height="46"/>
-      <use href="#arc-slot" style="fill: none; stroke: var(--ink); stroke-width: .15; stroke-dasharray: .6 .5"/>
-      <text font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="2.293"
-            letter-spacing=".23" style="fill: var(--ink)">
-        <textPath href="#arc-top" startOffset="50%" text-anchor="middle">TAGLINE (BR-2, pending)</textPath>
+      <text font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="2.469"
+            letter-spacing=".15" style="fill: var(--ink)">
+        <textPath href="#arc-top" startOffset="50%" text-anchor="middle">Art made from threads</textPath>
       </text>
     </g>
   </symbol>
-  <!-- length tests for the slot: 32 characters, caps and sentence case (NOT taglines) -->
-  <symbol id="seal-test-caps" viewBox="-23 -23 46 46" overflow="visible">
+  <!-- A, alternative: tagline in caps, 6.5 pt Karla SemiBold, tracking 0.1 em (design-system label style) -->
+  <symbol id="seal-caps" viewBox="-23 -23 46 46" overflow="visible">
     <g style="clip-path: var(--clip, url(#clip-seal))">
       <use href="#seal-base" x="-23" y="-23" width="46" height="46"/>
-      <use href="#arc-slot" style="fill: none; stroke: var(--ink); stroke-width: .15; stroke-dasharray: .6 .5"/>
       <text font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="2.293"
             letter-spacing=".23" style="fill: var(--ink)">
-        <textPath href="#arc-top" startOffset="50%" text-anchor="middle">SAMPLE WORDS FOR LENGTH TEST ABC</textPath>
-      </text>
-    </g>
-  </symbol>
-  <symbol id="seal-test-lower" viewBox="-23 -23 46 46" overflow="visible">
-    <g style="clip-path: var(--clip, url(#clip-seal))">
-      <use href="#seal-base" x="-23" y="-23" width="46" height="46"/>
-      <use href="#arc-slot" style="fill: none; stroke: var(--ink); stroke-width: .15; stroke-dasharray: .6 .5"/>
-      <text font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="2.293"
-            letter-spacing=".23" style="fill: var(--ink)">
-        <textPath href="#arc-top" startOffset="50%" text-anchor="middle">Sample words for length test abc</textPath>
+        <textPath href="#arc-top" startOffset="50%" text-anchor="middle">ART MADE FROM THREADS</textPath>
       </text>
     </g>
   </symbol>
@@ -280,7 +264,9 @@
         <use href="#lg-mark" x="15.6" y="5.5" width="12.78" height="26"/>
         <use href="#lg-word" x="34.4" y="12.8" width="40" height="5.33"/>
         <line x1="34.6" y1="21.5" x2="44.6" y2="21.5" style="stroke: var(--accent); stroke-width: .3"/>
-        <text x="34.4" y="26.4" font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="500"
+        <text x="34.4" y="26.0" font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600"
+              font-size="2.469" letter-spacing=".15" style="fill: var(--ink)">Art made from threads</text>
+        <text x="34.4" y="30.4" font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="500"
               font-size="2.469" style="fill: var(--ink)">@tantu_kala_</text>
       </g>
     </g>
@@ -295,39 +281,14 @@
     </g>
   </symbol>
 
-  <!-- ===== Option C: slim band, 60 x 14 mm (box-lid idea only). ===== -->
-  <symbol id="band-ig" viewBox="-3 -3 66 20" overflow="visible">
-    <g style="clip-path: var(--clip, url(#clip-band))">
-      <rect x="-3" y="-3" width="66" height="20" style="fill: var(--ground)"/>
-      <use href="#lg-word" x="4" y="5.07" width="29" height="3.86"/>
-      <line x1="36.5" y1="3.5" x2="36.5" y2="10.5" style="stroke: var(--accent); stroke-width: .25"/>
-      <text x="47.5" y="7.9" text-anchor="middle" font-family="Karla, 'Helvetica Neue', Arial, sans-serif"
-            font-weight="600" font-size="2.469" style="fill: var(--ink)">@tantu_kala_</text>
-    </g>
-  </symbol>
-
-  <!-- ===== QR alternative: companion sticker, 28 x 34 mm. ===== -->
-  <symbol id="qr-tag" viewBox="-3 -3 34 40" overflow="visible">
-    <g style="clip-path: var(--clip, url(#clip-qr))">
-      <rect x="-3" y="-3" width="34" height="40" style="fill: var(--ground)"/>
-      <!-- QR placeholder 18 x 18 mm; quiet zone at least 4.5 mm all round inside the sticker -->
-      <rect x="5" y="4.5" width="18" height="18" style="fill: none; stroke: var(--ink); stroke-width: .25; stroke-dasharray: .8 .6"/>
-      <g style="fill: none; stroke: var(--ink); stroke-width: .62">
-        <rect x="5.31" y="4.81" width="3.72" height="3.72"/><rect x="18.97" y="4.81" width="3.72" height="3.72"/><rect x="5.31" y="18.47" width="3.72" height="3.72"/>
-      </g>
-      <g style="fill: var(--ink)"><rect x="6.24" y="5.74" width="1.86" height="1.86"/><rect x="19.9" y="5.74" width="1.86" height="1.86"/><rect x="6.24" y="19.4" width="1.86" height="1.86"/></g>
-      <text x="14" y="13.9" text-anchor="middle" font-family="Karla, Arial, sans-serif" font-weight="700" font-size="3.175" style="fill: var(--ink)">QR</text>
-      <text x="14" y="16.8" text-anchor="middle" font-family="Karla, Arial, sans-serif" font-weight="500" font-size="2.117" style="fill: var(--ink)">placeholder</text>
-      <use href="#lg-word" x="4" y="26.3" width="20" height="2.66"/>
-    </g>
-  </symbol>
 </svg>
 
 <div class="status" role="note">
   <div class="wrap" style="padding-bottom:0">
-    <strong>Concept, not approved.</strong> PK-1 (proposal), not on the backlog. <strong>Revision 3</strong>, after the
-    owner's answers on 21 Oct (rev 2 applied the tk-brand review). The logo in the artwork is a <strong>DRAFT vector
-    redraw</strong>, not the official logo. Nothing here is decided until Suhas says so, and nothing is wired into the site.
+    <strong>PK-1 · rev 4: final concept, pending printed proof.</strong> Owner decisions of 21 Oct applied: seal A on
+    every pack, header tag B only for stalls that hang packs on pegs, C dropped, no QR for now, tagline "Art made from
+    threads". The logo redraw is <strong>approved for pack printing only</strong>, not as the master logo. Print files:
+    <code>docs/design/concepts/print/</code>. Nothing is wired into the site.
   </div>
 </div>
 
@@ -346,11 +307,12 @@
     <a href="#content">What goes on it</a>
     <a href="#logo-redraw">Logo redraw</a>
     <a href="#opt-a">A · Round seal</a>
-    <a href="#tagline-slot">Tagline slot</a>
+    <a href="#tagline-slot">Tagline: case</a>
     <a href="#opt-b">B · Header tag</a>
-    <a href="#opt-c">C · Box-lid idea</a>
+    <a href="#opt-c">C · Dropped</a>
     <a href="#sizes">Pack sizes</a>
-    <a href="#qr-alt">QR alternative</a>
+    <a href="#qr-alt">QR: not used</a>
+    <a href="#print-files">Print files</a>
     <a href="#contrast">Contrast</a>
     <a href="#final-artwork">Final artwork</a>
     <a href="#recommend">Recommendation</a>
@@ -366,31 +328,35 @@
     <table>
       <thead><tr><th>Item</th><th>On the pack</th><th>Source</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td>Brand mark and wordmark</td><td>Tantu Kala logo</td><td>Draft vector redraw of <code>public/brand/logo.jpeg</code> (<a href="#logo-redraw">compare</a>); D-77 (provisional): official only after owner approval</td><td><span class="tag owner">Redraw: owner to approve</span></td></tr>
+        <tr><td>Brand mark and wordmark</td><td>Tantu Kala logo (vector redraw; small mark on A)</td><td>Vector redraw of <code>public/brand/logo.jpeg</code> (<a href="#logo-redraw">compare</a>)</td><td><span class="tag fact">Approved for pack printing only (owner, 21 Oct)</span></td></tr>
         <tr><td>Instagram</td><td>@tantu_kala_</td><td><code>src/config/site.mjs</code>; D-75 (owner, 21 Oct)</td><td><span class="tag fact">Decided</span></td></tr>
-        <tr><td>Tagline</td><td>Slot on A only: "TAGLINE (BR-2, pending)", up to 32 characters</td><td>D-76: new tagline (BR-2) names no material; wording pending</td><td><span class="tag ph">Pending BR-2</span></td></tr>
+        <tr><td>Tagline</td><td>"Art made from threads" on A (top of the ring) and on B's front</td><td>Owner, 21 Oct (BR-2); "thread" is not a material word</td><td><span class="tag fact">Decided</span> case: <a href="#tagline-slot">sentence case recommended</a></td></tr>
         <tr><td>Location</td><td><strong>Not on packs (owner, 21 Oct)</strong></td><td>D-73; D-60 stays scoped to brand pages and footer</td><td><span class="tag fact">Decided</span></td></tr>
         <tr><td>Material word</td><td><strong>Not on packs</strong>, no field either (owner, 21 Oct: "without mentioning material")</td><td>D-75</td><td><span class="tag fact">Decided</span></td></tr>
-        <tr><td>QR code</td><td>Not on the main sticker. A separate <a href="#qr-alt">website-QR alternative</a> is shown for owner review.</td><td>D-75</td><td><span class="tag ph">Alternative: owner to review</span></td></tr>
+        <tr><td>QR code</td><td><strong>Not used for now (owner, 21 Oct)</strong></td><td>Revisit when the domain is permanent (CX-10)</td><td><span class="tag fact">Decided</span></td></tr>
         <tr><td>Website URL text</td><td>Not printed</td><td>D-42 <code>tantukala.embox.in</code>; CX-10: lent "in this early stage", may change</td><td><span class="tag fact">Not printed</span></td></tr>
         <tr><td>Back label (legal declarations)</td><td><strong>Back label: not used (owner, 21 Oct)</strong>. Packs carry branding only.</td><td>D-74 (packaging only)</td><td><span class="tag fact">Decided</span></td></tr>
       </tbody>
     </table>
   </div>
   <p style="margin-top:12px"><strong>Never on the artwork:</strong> price, phone number, address, location, material,
-    website URL text, and any words like "shop", "studio", "visit" or "pickup" (CX-11: never imply a place customers can visit).</p>
+    QR, website URL text, "made to order" (stall stock is made in advance), and any words like "shop", "studio", "visit"
+    or "pickup" (CX-11: never imply a place customers can visit).</p>
 </section>
 
 <!-- ======================= LOGO REDRAW ======================= -->
 <section id="logo-redraw" aria-labelledby="h-logo">
-  <h2 id="h-logo">Logo: original vs DRAFT vector redraw</h2>
-  <p class="draftflag">DRAFT redraw. Not the official logo until the owner approves. Faithfulness matters more than polish.</p>
+  <h2 id="h-logo">Logo: original vs vector redraw</h2>
+  <p class="draftflag">Approved for pack printing only (owner, 21 Oct). Not the master logo: before master use, redraw the
+    cords under the bands (they should bend into nested V shapes, as in the original).</p>
+  <p><strong>Usage rule:</strong> use the <strong>simplified small mark only below about 25 mm tall</strong>, and the
+    <strong>full mark above</strong>. On these packs: seal A, small mark at 15 mm; header B front, full mark at 26 mm; B back,
+    small mark at 20 mm.</p>
   <p>The repo only has <code>logo.jpeg</code> (1440 × 1440 px raster, peach <code>#C58E77</code> on Umber
     <code>#4D3126</code>) and an 858 px app icon, and the owner has no vector file. So the mark and wordmark were traced
     by hand into <code>docs/design/concepts/logo-vector-draft.svg</code>: Umber, transparent background, in the
     original's own pixel coordinates so the two can be laid on top of each other. A <strong>simplified small-size
-    mark</strong> is included for the 15 mm seal. <strong>The sticker artwork on this page uses the redraw</strong>, not
-    the filtered JPEG used in revisions 1–2.</p>
+    mark</strong> is included for the 15 mm seal. The sticker artwork and the print files use the redraw.</p>
 
   <div class="row three">
     <figure>
@@ -449,7 +415,7 @@
   </div>
 
   <div class="card">
-    <h3 style="margin-top:0">How faithful the redraw is (my judgement; owner to decide)</h3>
+    <h3 style="margin-top:0">How faithful the redraw is (my judgement; owner approved it for packs on 21 Oct)</h3>
     <ul class="facts">
       <li><strong>Close:</strong> overall proportions and outline (hanger, dowel with brush ends, 12 knots, 23 cords, two
         chevron bands, V-shaped fringe), positions within a few pixels of the original, Umber colour. The wordmark is
@@ -460,8 +426,8 @@
         are irregular. (4) The redraw is centred on x = 702 px; the original's hanger sits about 3–4 px left of its cords.
         (5) Exact stroke widths and curve shapes are estimates from a 1440 px JPEG.</li>
       <li><strong>Simplified small mark:</strong> deliberately not faithful in detail. It has 12 cords instead of 23, 6 knots,
-        a solid dowel and single ties in the bands, so it survives printing at 15 mm. It is a new logo variant and needs approval.</li>
-      <li>Ideally the original logo maker checks or redraws it; this draft is enough to get printer quotes and proofs.</li>
+        a solid dowel and single ties in the bands, so it survives printing at 15 mm. Approved for pack printing (owner, 21 Oct).</li>
+      <li>Before any master-logo use: fix difference (2), the cords under the bands; ideally the original logo maker checks it.</li>
     </ul>
   </div>
 </section>
@@ -469,11 +435,11 @@
 <!-- ======================= OPTION A ======================= -->
 <section id="opt-a" aria-labelledby="h-a">
   <p class="eyebrow">Option A</p>
-  <h2 id="h-a">Round seal, 40 mm <span class="tag rec">Recommended</span></h2>
+  <h2 id="h-a">Round seal, 40 mm <span class="tag rec">On every pack (owner, 21 Oct)</span></h2>
   <p>A round sticker that also closes the pack. Fold the bag's flap to the front and stick the seal centred over the
     flap edge. It sits in the top band of the pack, above the product. It works on every pack size we expect, from a
     small jewellery bag to a clear box lid (stick it across the lid edge). Content: the simplified mark, the wordmark,
-    <strong>@tantu_kala_</strong> along the bottom, and a <strong>tagline slot</strong> along the top.</p>
+    <strong>"Art made from threads"</strong> along the top and <strong>@tantu_kala_</strong> along the bottom.</p>
   <p><strong>Pack rule:</strong> bag length ≥ product length + about 50 mm, so the seal (which reaches about 48 mm down
     from the top edge) never overlaps the product.</p>
 
@@ -489,13 +455,13 @@
     </figure>
     <figure>
       <div class="stage enlarged">
-        <svg viewBox="-21 -21 42 42" style="max-width:126mm" role="img" aria-label="Round seal enlarged: simplified mark in the centre, TANTU KALA wordmark below, a dashed tagline slot along the top reading TAGLINE (BR-2, pending), and @tantu_kala_ along the bottom">
+        <svg viewBox="-21 -21 42 42" style="max-width:126mm" role="img" aria-label="Round seal enlarged: simplified mark in the centre, TANTU KALA wordmark below, Art made from threads along the top, and @tantu_kala_ along the bottom">
           <g filter="url(#lift)"><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></g>
         </svg>
       </div>
       <figcaption>Enlarged (about 3× on desktop). Full colour on paper: Warm Ivory ground, Umber ink, Mustard hairline
-        ring and dots. Mark 15 mm (simplified); wordmark 22 mm wide; handle 7 pt, tracking 0.08 em.
-        <span class="tag ph">Tagline slot: BR-2 pending</span> The dashed arc is the slot's limit and is not printed.</figcaption>
+        ring and dots. Mark 15 mm (simplified); wordmark 22 mm wide; tagline 7 pt sentence case, tracking 0.06 em
+        (recommended; caps shown in <a href="#tagline-slot">the case comparison</a>); handle 7 pt, tracking 0.08 em.</figcaption>
     </figure>
   </div>
 
@@ -592,7 +558,7 @@
   </div>
 
   <div class="callout" style="margin-top:16px">
-    <strong>Why the seal isn't brown like the Instagram logo.</strong> At 40 mm the mark is only 15 mm tall. Even the
+    <strong>Why the seal isn't brown like the original logo.</strong> At 40 mm the mark is only 15 mm tall. Even the
     simplified mark's lines are about 0.15 mm, below the about 0.18 mm usually advised for light lines on a dark ground,
     which can fill in. So the seal uses dark ink on a light ground. The brown "logo look" is kept for the larger header tag (B).
     <details>
@@ -630,9 +596,9 @@
         <tbody>
           <tr><th scope="row">Finished size</th><td>Ø 40 mm circle, die-cut or kiss-cut on sheets</td></tr>
           <tr><th scope="row">Artwork with bleed</th><td>Ø 46 mm (3 mm bleed all round)</td></tr>
-          <tr><th scope="row">Safe area</th><td>Ø 36 mm (2 mm in from the cut). The tagline slot's limit sits at Ø 34.6 mm.</td></tr>
-          <tr><th scope="row">Text sizes</th><td>Tagline slot 6.5 pt Karla SemiBold, tracking 0.1 em; handle 7 pt, tracking 0.08 em. <strong>Nothing below 6 pt.</strong></td></tr>
-          <tr><th scope="row">Logo</th><td>Simplified small mark, 15 mm tall (lines ≈ 0.154 mm); wordmark 22 mm wide (strokes ≈ 0.20 mm). Draft redraw: owner to approve.</td></tr>
+          <tr><th scope="row">Safe area</th><td>Ø 36 mm (2 mm in from the cut). Ring text sits inside about Ø 35 mm (estimate from the arc radii).</td></tr>
+          <tr><th scope="row">Text sizes</th><td>Tagline 7 pt Karla SemiBold sentence case, tracking 0.06 em (caps alternative: 6.5 pt, 0.1 em); handle 7 pt, tracking 0.08 em. <strong>Nothing below 6 pt.</strong></td></tr>
+          <tr><th scope="row">Logo</th><td>Simplified small mark, 15 mm tall (lines ≈ 0.154 mm); wordmark 22 mm wide (strokes ≈ 0.20 mm). Redraw approved for pack printing only.</td></tr>
           <tr><th scope="row">Colours</th><td>Full colour: Warm Ivory <code>#FAF3E7</code> ground, Umber <code>#4D3126</code> ink, Mustard <code>#C99A44</code> hairline (decoration only).<br>1-colour: Umber only, on white or kraft.</td></tr>
           <tr><th scope="row">Stock</th><td>Matte white paper sticker (gloss glares under stall lights), or kraft paper sticker (needs its own proof). Clear vinyl only with a white-ink flood.</td></tr>
           <tr><th scope="row">Pack rule</th><td>Bag length ≥ product length + about 50 mm</td></tr>
@@ -642,47 +608,49 @@
   </div>
 </section>
 
-<!-- ======================= TAGLINE SLOT ======================= -->
+<!-- ======================= TAGLINE CASE ======================= -->
 <section id="tagline-slot" aria-labelledby="h-slot">
-  <h2 id="h-slot">Tagline slot on A: how much fits</h2>
-  <p>The tagline (BR-2, being drafted; it won't name materials) goes along the top of the ring, where the location used
-    to be. The slot runs up to <strong>±105° from the top</strong> (dashed arc) at 6.5 pt Karla SemiBold with 0.1 em
-    tracking. Below are 32-character length tests. They are <strong>sample words, not taglines</strong>.</p>
-  <div class="row three">
+  <h2 id="h-slot">Tagline on A: sentence case or caps</h2>
+  <p>"Art made from threads" (21 characters) runs along the top of the ring. The two versions side by side, at true size
+    and enlarged. Brand note S2: caps compete with the all-caps wordmark.</p>
+  <div class="row two">
     <figure>
-      <div class="stage enlarged"><svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal with the tagline placeholder">
-        <use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></svg></div>
-      <figcaption>Placeholder as it stands (23 characters).</figcaption>
+      <div class="stage enlarged" style="flex-direction:column;gap:10px">
+        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm;flex:0 0 auto" role="img" aria-label="Seal at true size, tagline in sentence case">
+          <g filter="url(#lift)"><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
+        <svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal enlarged, tagline Art made from threads in sentence case">
+          <g filter="url(#lift)"><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
+      </div>
+      <figcaption><span class="tag rec">Recommended</span> <strong>Sentence case</strong>, 7 pt, tracking 0.06 em. Same size and
+        case style as the handle below, so the ring reads as one quiet voice and the wordmark stays the only caps line.</figcaption>
     </figure>
     <figure>
-      <div class="stage enlarged"><svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal with a 32 character capital-letter length test">
-        <use href="#seal-test-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></svg></div>
-      <figcaption>Length test, <strong>all caps</strong>, 32 characters.</figcaption>
-    </figure>
-    <figure>
-      <div class="stage enlarged"><svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal with a 32 character sentence-case length test">
-        <use href="#seal-test-lower" class="v-full" x="-23" y="-23" width="46" height="46"/></svg></div>
-      <figcaption>Length test, <strong>sentence case</strong>, 32 characters.</figcaption>
+      <div class="stage enlarged" style="flex-direction:column;gap:10px">
+        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm;flex:0 0 auto" role="img" aria-label="Seal at true size, tagline in caps">
+          <g filter="url(#lift)"><use href="#seal-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
+        <svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal enlarged, tagline ART MADE FROM THREADS in caps">
+          <g filter="url(#lift)"><use href="#seal-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
+      </div>
+      <figcaption><strong>Caps</strong>, 6.5 pt, tracking 0.1 em (design-system label style). It looks tidier as a band,
+        but now there are two caps lines (tagline and wordmark) competing.</figcaption>
     </figure>
   </div>
   <div class="callout sage">
-    <strong>How many characters fit (measured by eye on the Chrome render above):</strong> <strong>32 characters fit</strong>
-    in both cases. All caps reach about ±100° from the top, just inside the slot's ±105° limit; sentence case reaches
-    about ±95°. Past about ±75° the letters turn steeply down the sides of the ring and read less easily, so the
-    <strong>comfortable length is about 24 characters in caps or 25–26 in sentence case</strong> (estimate, scaled from
-    the 32-character tests). Above the slot's limit, text runs down the sides of the ring and gets hard to read. If BR-2 runs long, the options
-    are 6 pt (the minimum) or a shorter line. The final count must be re-checked with the real tagline in the final artwork.
+    <strong>Fit (measured by eye on the Chrome render):</strong> both fit comfortably. <strong>Sentence case spans about ±55°</strong> from the top of the ring; <strong>caps
+    about ±62°</strong>. Both stay well inside the roughly ±75° beyond which ring text starts to turn steeply down the
+    sides, and well clear of the two dots at ±135°. All text sits inside the 36 mm safe circle. Re-check after the text is
+    outlined: a different fallback font would change the length.
   </div>
 </section>
 
 <!-- ======================= OPTION B ======================= -->
 <section id="opt-b" aria-labelledby="h-b">
   <p class="eyebrow">Option B</p>
-  <h2 id="h-b">Fold-over header tag, 90 × 40 mm <span class="tag rec">Pegs only</span></h2>
+  <h2 id="h-b">Fold-over header tag, 90 × 40 mm <span class="tag rec">For stalls with pegs only</span></h2>
   <p>A small card folded over the top edge of the bag and stapled (or taped) through. Use it <strong>only if a stall
-    hangs packs on pegs</strong> (owner to confirm), instead of A. It sits entirely above the product and gives a hang
-    hole. This is the only option big enough for the brown, logo-coloured look. Branding only: mark, wordmark and
-    @tantu_kala_ on the front; the small mark on the back.</p>
+    hangs packs on pegs</strong>, instead of A. It sits entirely above the product and gives a hang hole. This is the
+    only option big enough for the brown, logo-coloured look. Front: mark, wordmark, "Art made from threads" and
+    @tantu_kala_. Back: the small mark.</p>
 
   <div class="row">
     <figure>
@@ -698,12 +666,13 @@
   <div class="row two" style="margin-top:16px">
     <figure>
       <div class="stage enlarged">
-        <svg viewBox="-2 -2 94 44" style="max-width:280mm" role="img" aria-label="Header tag front enlarged: logo mark on the left, TANTU KALA wordmark, @tantu_kala_, and a hang hole at top centre">
+        <svg viewBox="-2 -2 94 44" style="max-width:280mm" role="img" aria-label="Header tag front enlarged: logo mark on the left, TANTU KALA wordmark, Art made from threads, @tantu_kala_, and a hang hole at top centre">
           <g filter="url(#lift)"><use href="#hdr-front" class="v-rev" x="-3" y="-3" width="96" height="46"/></g>
         </svg>
       </div>
       <figcaption>Front, enlarged. Full colour: the logo's own colours (Umber ground, peach mark <code>#C58E77</code>),
-        Warm Ivory handle, Mustard divider. The side-by-side mark + wordmark is a <strong>new horizontal lockup</strong>
+        Warm Ivory tagline (7 pt SemiBold, sentence case) and handle (7 pt Medium), Mustard divider. The tagline fits
+        cleanly on one line, about 29 mm wide (measured on the render), with the handle below it about 3 mm clear of the staple zone. The side-by-side mark + wordmark is a <strong>new horizontal lockup</strong>
         (see the <a href="#final-artwork">final-artwork note</a>). Full mark at 26 mm: lines ≈ 0.15 mm, borderline for
         light on dark; the small mark is the fallback if the proof fills in.</figcaption>
     </figure>
@@ -826,8 +795,8 @@
           <tr><th scope="row">Artwork with bleed</th><td>96 × 86 mm (3 mm bleed on all four cut edges; none needed at the fold)</td></tr>
           <tr><th scope="row">Safe area</th><td>2 mm in from every cut edge; keep 6 mm free at the open edge of each face for staples; 2 mm clear around the hole</td></tr>
           <tr><th scope="row">Hang hole</th><td>Ø 6 mm round, centred, 7 mm below the fold, punched through both halves <span class="tag ph">Euro slot instead? stall to confirm</span></td></tr>
-          <tr><th scope="row">Text sizes</th><td>Handle 7 pt Karla Medium. <strong>Nothing below 6 pt.</strong></td></tr>
-          <tr><th scope="row">Logo</th><td>Front: full mark 26 mm tall, wordmark 40 mm wide. Back: small mark 20 mm tall. Draft redraw: owner to approve.</td></tr>
+          <tr><th scope="row">Text sizes</th><td>Tagline 7 pt Karla SemiBold, tracking 0.06 em; handle 7 pt Karla Medium. <strong>Nothing below 6 pt.</strong></td></tr>
+          <tr><th scope="row">Logo</th><td>Front: full mark 26 mm tall, wordmark 40 mm wide. Back: small mark 20 mm tall. Redraw approved for pack printing only.</td></tr>
           <tr><th scope="row">Colours</th><td>Full colour: Umber <code>#4D3126</code> flood, logo peach <code>#C58E77</code> (mark and wordmark only), Warm Ivory <code>#FAF3E7</code> text, Mustard <code>#C99A44</code> divider.<br>1-colour: Umber on white or kraft card.</td></tr>
           <tr><th scope="row">Stock</th><td>300–350 gsm card, matte (assumption: a usual weight for hang tags; ask the shop)</td></tr>
           <tr><th scope="row">Layout</th><td>Back half printed upside down (rotated 180°) so both faces read the right way after folding</td></tr>
@@ -840,103 +809,16 @@
 <!-- ======================= OPTION C ======================= -->
 <section id="opt-c" aria-labelledby="h-c">
   <p class="eyebrow">Option C</p>
-  <h2 id="h-c">Slim band, 60 × 14 mm <span class="tag warn">Rejected as a pack sticker · box-lid idea only</span></h2>
-  <p>Brand review rejected the band as a sticker for bags. It is kept only as an idea for <strong>clear-box lids</strong>:
-    a slim rounded label on the lid rim with the wordmark and @tantu_kala_. At 14 mm tall even the small mark doesn't fit
-    well, so the band carries the wordmark only (a new horizontal lockup) and the brand reads weaker than on A.</p>
-
-  <div class="row two">
-    <figure>
-      <div class="stage truesize">
-        <svg viewBox="0 0 60 14" style="width:60mm;height:14mm" role="img" aria-label="Slim band at true size, 60 by 14 millimetres">
-          <g filter="url(#lift)"><use href="#band-ig" class="v-full" x="-3" y="-3" width="66" height="20"/></g>
-        </svg>
-      </div>
-      <figcaption><strong>True size: 60 × 14 mm.</strong></figcaption>
-    </figure>
-    <figure>
-      <div class="stage enlarged">
-        <svg viewBox="-1 -1 62 16" style="max-width:186mm" role="img" aria-label="Slim band enlarged: TANTU KALA wordmark and @tantu_kala_">
-          <g filter="url(#lift)"><use href="#band-ig" class="v-full" x="-3" y="-3" width="66" height="20"/></g>
-        </svg>
-      </div>
-      <figcaption>Enlarged: wordmark and Instagram handle only.</figcaption>
-    </figure>
-  </div>
-
-  <h3>On a clear box lid</h3>
-  <div class="row two">
-    <figure>
-      <div class="stage enlarged" style="padding:8px">
-        <svg viewBox="0 0 200 250" role="img" aria-label="Clear box seen from the front, 150 millimetres wide, holding a small crochet flower bouquet. The slim band sits on the left of the lid rim, above the flowers. The whole product is visible.">
-          <rect width="200" height="250" fill="url(#shelf)"/>
-          <g transform="translate(0 12)">
-            <path d="M100 95 C98 130 96 160 100 192 M100 95 C110 125 118 150 122 186 M100 95 C88 125 80 150 78 186" fill="none" stroke="#6B7A5E" stroke-width="2"/>
-            <path d="M90 140 q-14 -4 -18 -14 q12 0 18 14z M112 150 q14 -6 20 -16 q-12 0 -20 16z" fill="#6B7A5E"/>
-            <g fill="#B5603A"><circle cx="100" cy="66" r="9"/><circle cx="111" cy="74" r="9"/><circle cx="107" cy="87" r="9"/><circle cx="93" cy="87" r="9"/><circle cx="89" cy="74" r="9"/></g>
-            <circle cx="100" cy="78" r="6" fill="#C99A44"/>
-            <g fill="#EDE1CC" stroke="#C7B595" stroke-width=".5"><circle cx="70" cy="96" r="8"/><circle cx="79" cy="104" r="8"/><circle cx="74" cy="115" r="8"/><circle cx="62" cy="113" r="8"/><circle cx="60" cy="102" r="8"/></g>
-            <circle cx="69" cy="106" r="5" fill="#6B7A5E"/>
-            <g fill="#6E2E33"><circle cx="132" cy="98" r="7"/><circle cx="140" cy="105" r="7"/><circle cx="136" cy="115" r="7"/><circle cx="126" cy="114" r="7"/><circle cx="124" cy="104" r="7"/></g>
-            <circle cx="131" cy="107" r="4.5" fill="#C99A44"/>
-          </g>
-          <rect x="25" y="40" width="150" height="185" rx="1" fill="#E8F1F4" fill-opacity=".14" stroke="#8FA3AB" stroke-opacity=".75" stroke-width=".7"/>
-          <rect x="25" y="40" width="150" height="185" fill="url(#film)"/>
-          <rect x="22" y="26" width="156" height="30" rx="1" fill="#FFFFFF" fill-opacity=".26" stroke="#8FA3AB" stroke-opacity=".8" stroke-width=".7"/>
-          <path d="M40 100 L70 70 M50 220 L170 100" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="1.2"/>
-          <svg x="30" y="34" width="60" height="14" viewBox="0 0 60 14" overflow="visible">
-            <g filter="url(#lift)"><use href="#band-ig" class="v-full" x="-3" y="-3" width="66" height="20"/></g>
-          </svg>
-          <text x="100" y="244" text-anchor="middle" font-family="Karla, Arial, sans-serif" font-size="5" fill="#33241E">Clear box, 150 mm wide, front view (illustration)</text>
-        </svg>
-      </div>
-    </figure>
-    <div>
-      <h3 style="margin-top:0">Placement and visibility</h3>
-      <ul class="facts">
-        <li><strong>Where:</strong> on the lid rim of a clear box, left side. Not on bags (brand review).</li>
-        <li><strong>Covers:</strong> 840 mm² of the lid rim; nothing over the box body.</li>
-        <li><strong>Product hidden:</strong> none, as long as the product sits below the lid rim.</li>
-        <li><strong>Weakness:</strong> no mark, so less recognisable; it doesn't seal anything (A across the lid edge does).</li>
-      </ul>
-      <ul class="stats"><li>Size <b>60 × 14 mm</b></li><li>Text <b>7 pt</b></li><li>Wordmark <b>29 mm</b></li></ul>
-    </div>
-  </div>
-
-  <h3>Print spec</h3>
-  <div class="row two">
-    <figure>
-      <div class="stage enlarged">
-        <svg viewBox="-4 -4 68 22" style="max-width:200mm" role="img" aria-label="Print spec diagram for the band: 66 by 20 millimetre artwork with bleed, 60 by 14 trim with 2 millimetre corners, 56 by 10 safe area">
-          <use href="#band-ig" class="v-full noclip" x="-3" y="-3" width="66" height="20"/>
-          <rect x="-3" y="-3" width="66" height="20" fill="none" stroke="#8A8A8A" stroke-width=".2" stroke-dasharray=".4 .5"/>
-          <rect width="60" height="14" rx="2" fill="none" stroke="#B5603A" stroke-width=".25"/>
-          <rect x="2" y="2" width="56" height="10" rx="1" fill="none" stroke="#6B7A5E" stroke-width=".2" stroke-dasharray="1 .6"/>
-        </svg>
-      </div>
-      <ul class="speclegend" aria-label="Diagram key">
-        <li><span class="sw bleed"></span>Bleed 66 × 20 mm</li><li><span class="sw trim"></span>Trim 60 × 14 mm, r 2 mm</li><li><span class="sw safe"></span>Safe 56 × 10 mm</li>
-      </ul>
-    </figure>
-    <div class="tbl" style="margin-top:0">
-      <table style="min-width:0">
-        <tbody>
-          <tr><th scope="row">Finished size</th><td>60 × 14 mm, 2 mm rounded corners</td></tr>
-          <tr><th scope="row">Artwork with bleed</th><td>66 × 20 mm; safe area 56 × 10 mm</td></tr>
-          <tr><th scope="row">Text sizes</th><td>Handle 7 pt. <strong>Nothing below 6 pt.</strong></td></tr>
-          <tr><th scope="row">Logo</th><td>Wordmark 29 mm wide (strokes ≈ 0.26 mm); no mark</td></tr>
-          <tr><th scope="row">Colours / stock</th><td>As A: Warm Ivory, Umber, Mustard divider, or 1-colour Umber; matte white or kraft paper sticker</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <h2 id="h-c">Slim band, 60 × 14 mm <span class="tag warn">Dropped (owner, 21 Oct)</span></h2>
+  <p>The slim band (wordmark + handle on a 60 × 14 mm label) was rejected as a pack sticker in the brand review and
+    then dropped entirely. Clear boxes use seal A across the lid edge instead. Its artwork has been removed from this page.</p>
 </section>
 
 <!-- ======================= SIZES ======================= -->
 <section id="sizes" aria-labelledby="h-sizes">
   <h2 id="h-sizes">One system across pack sizes</h2>
   <p>The same 40 mm seal goes on every pack; it doesn't grow with the bag. Packs that hang on stall pegs use the header
-    tag instead. The band is only an idea for clear-box lids. Pack rule for A: <strong>bag length ≥ product length + about 50 mm</strong>.</p>
+    tag instead. Pack rule for A: <strong>bag length ≥ product length + about 50 mm</strong>.</p>
   <figure>
     <div class="stage enlarged" style="padding:8px">
       <svg viewBox="0 0 405 250" role="img" aria-label="Three clear bags at the same scale: small 75 by 100, medium 100 by 150, large 150 by 200 millimetres. The same 40 millimetre seal sits 8 millimetres below the top of each, above the product.">
@@ -970,56 +852,56 @@
   </figure>
   <div class="tbl">
     <table>
-      <thead><tr><th>Pack</th><th>A · Seal 40 mm</th><th>B · Header 90 mm (pegs only)</th><th>C · Band 60 mm (box-lid idea)</th></tr></thead>
+      <thead><tr><th>Pack</th><th>A · Seal 40 mm (every pack)</th><th>B · Header 90 mm (stalls with pegs only)</th></tr></thead>
       <tbody>
-        <tr><td>Small zip/OPP bag, under 90 mm wide (jewellery, keychains)</td><td class="pass">Yes</td><td class="fail">No: wider than the bag</td><td class="fail">No: not for bags</td></tr>
-        <tr><td>Medium clear bag, 100–150 mm wide (flowers, car hangings)</td><td class="pass">Yes</td><td class="pass">Yes, only if it hangs on a peg (instead of A)</td><td class="fail">No: not for bags</td></tr>
-        <tr><td>Large clear bag, 150 mm+ (garlands, gift sets)</td><td class="pass">Yes</td><td class="pass">Yes, only if it hangs on a peg (instead of A)</td><td class="fail">No: not for bags</td></tr>
-        <tr><td>Clear box</td><td class="pass">Yes, across the lid edge (closure seal)</td><td class="fail">No</td><td>Idea only: on the lid rim</td></tr>
+        <tr><td>Small zip/OPP bag, under 90 mm wide (jewellery, keychains)</td><td class="pass">Yes</td><td class="fail">No: wider than the bag</td></tr>
+        <tr><td>Medium clear bag, 100–150 mm wide (flowers, car hangings)</td><td class="pass">Yes</td><td class="pass">Yes, only if it hangs on a peg (instead of A)</td></tr>
+        <tr><td>Large clear bag, 150 mm+ (garlands, gift sets)</td><td class="pass">Yes</td><td class="pass">Yes, only if it hangs on a peg (instead of A)</td></tr>
+        <tr><td>Clear box</td><td class="pass">Yes, across the lid edge (closure seal)</td><td class="fail">No</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- ======================= QR ALTERNATIVE ======================= -->
+<!-- ======================= QR: NOT USED ======================= -->
 <section id="qr-alt" aria-labelledby="h-qr">
-  <p class="eyebrow">For owner review</p>
-  <h2 id="h-qr">Alternative for owner review: website QR</h2>
-  <p>The owner decided <strong>no QR on the main sticker</strong> (21 Oct). This is a separate idea to accept or drop:
-    a small <strong>companion sticker</strong>, 28 × 34 mm, on the back of the pack, with a QR to the website.</p>
-  <div class="row two">
-    <figure>
-      <div class="stage enlarged" style="gap:10mm">
-        <svg viewBox="0 0 28 34" style="width:28mm;height:34mm;flex:0 0 auto" role="img" aria-label="QR companion sticker at true size, 28 by 34 millimetres">
-          <g filter="url(#lift)"><use href="#qr-tag" class="v-one" x="-3" y="-3" width="34" height="40"/></g>
-        </svg>
-        <svg viewBox="-1 -1 30 36" style="max-width:220px;flex:1 1 auto" role="img" aria-label="QR companion sticker enlarged: an 18 millimetre QR placeholder above the TANTU KALA wordmark">
-          <g filter="url(#lift)"><use href="#qr-tag" class="v-one" x="-3" y="-3" width="34" height="40"/></g>
-        </svg>
-      </div>
-      <figcaption>True size (left) and enlarged. <span class="tag ph">QR placeholder, not a real code</span> White ground,
-        Umber modules (11.78:1). Dark-on-light only; light-on-dark QR codes scan less reliably on some phones (assumption: common guidance).</figcaption>
-    </figure>
-    <div>
-      <ul class="facts">
-        <li><strong>Target:</strong> <code>https://tantukala.embox.in/</code> (D-42).</li>
-        <li><strong>Tracking tag, proposal only:</strong> <code>?utm_source=pack&amp;utm_medium=sticker</code>. <span class="tag ph">tk-seo to check</span></li>
-        <li><strong>Size:</strong> QR 18 mm (minimum), with a white quiet zone of at least 4 modules (about 2.5 mm); the sticker gives 4.5–5 mm.</li>
-        <li><strong>Density:</strong> by the QR standard's capacity table (re-check when generating), the plain URL (27 characters) needs
-          version 3 (29 × 29 modules) at error-correction level M, so modules are ≈ 0.62 mm at 18 mm. With the tracking tag (62 characters)
-          it needs version 4 (33 × 33), ≈ 0.55 mm. Smaller modules are harder for cheap phone cameras in stall lighting.</li>
-        <li><strong>Why not a variant of A:</strong> an 18 mm code plus its quiet zone fills the seal's centre, so the mark, wordmark and tagline would have to go.</li>
-      </ul>
-      <div class="callout">
-        <strong>CX-10 caveat.</strong> The <code>embox.in</code> domain is lent to Tantu Kala "in this early stage". If it
-        changes, every QR already printed points to a dead or wrong address, and packs already at stalls can't be updated.
-        Ways to limit the risk (owner to decide): print QR stickers in small batches; keep them separate from the main
-        sticker (as here) so they can be dropped without reprinting A; or point the code at an address the owner will
-        always control (check against ADR-001: ₹0, Tier 0).
-      </div>
-      <p><strong>Before ordering:</strong> generate the real code, print a proof, and scan it with the default camera app on two or three Android phones.</p>
-    </div>
+  <h2 id="h-qr">Website QR <span class="tag warn">Not used for now (owner, 21 Oct)</span></h2>
+  <p>No QR on any pack artwork for now. Revisit when the domain is permanent: <code>tantukala.embox.in</code> (D-42) is
+    lent "in this early stage" (CX-10), and a printed code can't follow a domain change. When it is revisited, rev 3's notes
+    still apply: 18 mm minimum, a white quiet zone, dark modules on a light ground, a separate companion sticker rather than
+    a crowded seal, and the UTM tag for tk-seo to check.</p>
+</section>
+
+<!-- ======================= PRINT FILES ======================= -->
+<section id="print-files" aria-labelledby="h-print">
+  <h2 id="h-print">Print artwork files</h2>
+  <p>In <code>docs/design/concepts/print/</code>. Each file is true size in millimetres with a 3 mm bleed. The
+    <strong>ARTWORK</strong> layer is what prints; the separate <strong>GUIDES</strong> layer holds bleed, trim (cut line,
+    named <code>CutContour</code>), safe area and, for B, the fold, punch and staple zones. Hide the guides layer before output,
+    or use it as the cut path.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>File</th><th>What</th><th>Size (with bleed)</th></tr></thead>
+      <tbody>
+        <tr><td><code>seal-A-40mm.svg</code></td><td>Seal A, full colour (Warm Ivory ground, Umber, Mustard), tagline in sentence case</td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
+        <tr><td><code>seal-A-40mm-1colour.svg</code></td><td>Seal A, 1-colour Umber, no ground (for kraft or cheap 1-colour print)</td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
+        <tr><td><code>header-B.svg</code></td><td>Header tag B, flat sheet: back half rotated 180°, front half below the fold</td><td>96 × 86 mm; trim 90 × 80 mm</td></tr>
+      </tbody>
+    </table>
   </div>
+  <div class="callout">
+    <strong>Text is NOT converted to outlines.</strong> No tool on this machine can do it: no Inkscape, no font-editing
+    library and no local copy of the Karla font, and nothing was installed. The files carry live text set in
+    <strong>Karla</strong> (free, Google Fonts, OFL licence): SemiBold 600 for the tagline and the seal's handle, Medium 500
+    for B's handle. <strong>Before printing, the owner or the print shop must install Karla and convert the text to
+    outlines</strong> (Inkscape: Path → Object to Path; Illustrator: Type → Create Outlines), then check that the text on the
+    ring still sits on its arc. The logo is already vector paths and needs nothing.
+  </div>
+  <p><strong>Colours</strong> (hex, plus rough CMYK from a simple conversion, not colour-managed; ask for a printed proof):
+    Umber <code>#4D3126</code> ≈ C0 M36 Y51 K70 · Warm Ivory <code>#FAF3E7</code> ≈ C0 M3 Y8 K2 · Mustard <code>#C99A44</code>
+    ≈ C0 M23 Y66 K21 · logo peach <code>#C58E77</code> ≈ C0 M28 Y40 K23.</p>
+  <p><strong>Checked</strong> (text search of all three files): no "Delhi", "Pune", material word, QR, URL or "made to order"
+    in any artwork. Stall stock is made in advance, so "made to order" must never appear on packs.</p>
 </section>
 
 <!-- ======================= CONTRAST ======================= -->
@@ -1031,9 +913,9 @@
     <table>
       <thead><tr><th>Text</th><th>Background</th><th>Where</th><th>Ratio</th><th>Small text ≥ 4.5</th></tr></thead>
       <tbody>
-        <tr><td><span class="dot" style="background:#4D3126"></span>Umber</td><td><span class="dot" style="background:#FFFFFF"></span>White paper / white flood</td><td>A, C 1-colour; B white card; clear + white; QR sticker</td><td>11.78:1</td><td class="pass">Pass</td></tr>
-        <tr><td><span class="dot" style="background:#4D3126"></span>Umber</td><td><span class="dot" style="background:#FAF3E7"></span>Warm Ivory ground</td><td>A, C full colour</td><td>10.68:1</td><td class="pass">Pass</td></tr>
-        <tr><td><span class="dot" style="background:#FAF3E7"></span>Warm Ivory</td><td><span class="dot" style="background:#4D3126"></span>Umber flood</td><td>B full colour (handle)</td><td>10.68:1</td><td class="pass">Pass</td></tr>
+        <tr><td><span class="dot" style="background:#4D3126"></span>Umber</td><td><span class="dot" style="background:#FFFFFF"></span>White paper / white flood</td><td>A 1-colour; B white card; clear + white</td><td>11.78:1</td><td class="pass">Pass</td></tr>
+        <tr><td><span class="dot" style="background:#4D3126"></span>Umber</td><td><span class="dot" style="background:#FAF3E7"></span>Warm Ivory ground</td><td>A full colour (tagline, handle)</td><td>10.68:1</td><td class="pass">Pass</td></tr>
+        <tr><td><span class="dot" style="background:#FAF3E7"></span>Warm Ivory</td><td><span class="dot" style="background:#4D3126"></span>Umber flood</td><td>B full colour (tagline, handle)</td><td>10.68:1</td><td class="pass">Pass</td></tr>
         <tr><td><span class="dot" style="background:#C58E77"></span>Logo peach</td><td><span class="dot" style="background:#4D3126"></span>Umber flood</td><td>B mark and wordmark only (logotype)</td><td>4.21:1</td><td>n/a: logotype; wordmark caps about 5 mm</td></tr>
         <tr><td><span class="dot" style="background:#4D3126"></span>Umber</td><td><span class="dot" style="background:#D2B48C"></span>Light kraft (assumed <code>#D2B48C</code>)</td><td>Kraft versions</td><td>5.97:1</td><td class="pass">Pass</td></tr>
         <tr><td><span class="dot" style="background:#4D3126"></span>Umber</td><td><span class="dot" style="background:#C4A27A"></span>Mid kraft (assumed <code>#C4A27A</code>, shown here)</td><td>Kraft versions</td><td>4.93:1</td><td class="pass">Pass</td></tr>
@@ -1048,16 +930,15 @@
 
 <!-- ======================= FINAL ARTWORK ======================= -->
 <section id="final-artwork" aria-labelledby="h-final">
-  <h2 id="h-final">Final-artwork note (for the print files, later)</h2>
+  <h2 id="h-final">Final-artwork notes</h2>
   <div class="callout">
     <ul class="facts" style="margin:0">
-      <li><strong>Vector logo only.</strong> Final print files must use a vector logo. The only one today is the
-        <strong>draft redraw</strong> in <code>logo-vector-draft.svg</code>; it becomes usable only once the owner approves
-        it (ideally after the original logo maker has seen it).</li>
-      <li><strong>Text converted to outlines</strong> in the final PDF, so the print shop's computer can't swap the fonts.
-        If any accented word is ever printed (for example "macramé"), check the accent survives the outline step.</li>
-      <li><strong>New logo variants need approval:</strong> the horizontal lockup (mark beside wordmark on B; wordmark-only
-        band on C), the 1-colour Umber mark, and the simplified small-size mark. <span class="tag owner">Owner to approve</span></li>
+      <li><strong>Vector logo:</strong> the redraw in <code>logo-vector-draft.svg</code> is <strong>approved for pack printing
+        only</strong> (owner, 21 Oct): the full mark, the simplified small mark, the 1-colour Umber version and B's horizontal
+        lockup. It is not the master logo; before master use, redraw the cords under the bands.</li>
+      <li><strong>Usage rule:</strong> small mark only below about 25 mm tall; full mark above.</li>
+      <li><strong>Text must be converted to outlines</strong> before printing, so the print shop's computer can't swap the
+        fonts. The print files in <code>print/</code> still have live Karla text (see <a href="#print-files">Print files</a>).</li>
       <li><strong>Back label: not used (owner, 21 Oct).</strong> Packs carry branding only.</li>
     </ul>
   </div>
@@ -1065,21 +946,19 @@
 
 <!-- ======================= RECOMMENDATION ======================= -->
 <section id="recommend" aria-labelledby="h-rec">
-  <h2 id="h-rec">Recommendation</h2>
+  <h2 id="h-rec">Final concept (owner, 21 Oct)</h2>
   <div class="card soft">
     <ol class="rec-list">
-      <li><strong>A · Round seal (recommended, the core sticker):</strong> one 40 mm size fits every pack, holds the flap
-        shut as a closure seal, sits above the product (pack rule: bag length ≥ product length + about 50 mm) and costs the
-        least. Mark, wordmark, @tantu_kala_ and the BR-2 tagline slot. Print on matte white paper in full colour, or
-        1-colour Umber on light/mid kraft.</li>
-      <li><strong>B · Header tag (pegs only):</strong> use it instead of A only if a stall hangs packs on pegs. It carries the
-        true logo colours and a hang hole, but needs 90 mm+ bags and stapling.</li>
-      <li><strong>C · Slim band (rejected as a pack sticker):</strong> kept only as a clear-box-lid idea.</li>
-      <li><strong>QR companion (owner review):</strong> only if the owner wants a website link on packs, accepting the CX-10 domain risk.</li>
+      <li><strong>A · Round seal, on every pack:</strong> 40 mm, closure seal, above the product (pack rule: bag length ≥
+        product length + about 50 mm). Small mark, wordmark, "Art made from threads" (sentence case recommended) and
+        @tantu_kala_. Matte white paper in full colour, or 1-colour Umber on light/mid kraft.</li>
+      <li><strong>B · Header tag, for stalls with pegs only:</strong> instead of A on those packs. Logo colours, tagline,
+        handle and a hang hole; needs bags at least 90 mm wide and stapling.</li>
+      <li><strong>C · dropped. QR · not used for now.</strong></li>
     </ol>
-    <p style="margin:0"><strong>Materials:</strong> paper (white or kraft) over clear vinyl. <strong>Before ordering:</strong>
-      approve (or replace) the draft vector logo, then get a printed proof of A on <em>each</em> stock you plan to use
-      (white and kraft separately), and check the mark's lines and the 6.5–7 pt text with your own eyes.</p>
+    <p style="margin:0"><strong>Next step: a printed proof.</strong> Outline the text (see <a href="#print-files">Print files</a>),
+      then get a shop proof of A on <em>each</em> stock you plan to use (white and kraft separately). Check the mark's lines,
+      the 7 pt text and the colours with your own eyes, and for B the fold, punch and staples.</p>
   </div>
 </section>
 
@@ -1095,19 +974,17 @@
         <li>Local print shops can die-cut a 40 mm circle and print CMYK on paper sticker stock; white ink is <em>not</em> assumed.</li>
         <li>Minimum printable line about 0.09 mm dark-on-light and about 0.18 mm light-on-dark: general print practice, not a figure from a specific shop.</li>
         <li>300–350 gsm card for the header; Ø 6 mm hang hole.</li>
-        <li>QR capacity figures are from the QR standard's table as I know it; the generator will confirm the version.</li>
+        <li>Text widths and arc fit are judged by eye on Chrome's rendering of Karla; the outlined file must be re-checked.</li>
         <li>Rough CMYK for the shop (simple conversion, not colour-managed; ask for a printed proof): Umber ≈ C0 M36 Y51 K70; Warm Ivory ≈ C0 M3 Y8 K2; Mustard ≈ C0 M23 Y66 K21; logo peach ≈ C0 M28 Y40 K23.</li>
       </ul>
     </div>
     <div class="card">
       <h3 style="margin-top:0">Still open (owner)</h3>
       <ol class="facts">
-        <li>Approve, correct or replace the <a href="#logo-redraw">draft vector redraw</a> and the simplified small mark? Can the original logo maker check it?</li>
-        <li>Will any stall hang packs on pegs (so header B is needed)?</li>
-        <li>The BR-2 tagline: it must fit the <a href="#tagline-slot">slot</a>.</li>
-        <li>The website-QR companion: yes or no?</li>
-        <li>Which look: light seal (recommended) or brown (proof first)? White or kraft paper?</li>
-        <li>Approve the new logo variants (horizontal lockup, 1-colour mark, small mark)?</li>
+        <li>Tagline case on A: sentence case (recommended) or caps? See <a href="#tagline-slot">the comparison</a>.</li>
+        <li>Which stalls hang packs on pegs (they get header B)?</li>
+        <li>Stock: matte white paper, kraft, or both? Each needs its own proof.</li>
+        <li>Who outlines the text: the owner (Inkscape, free) or the print shop?</li>
       </ol>
     </div>
   </div>
@@ -1119,7 +996,7 @@
   <p class="noprint">Printing this page prints only this sheet (A4). In the print dialog choose <strong>Scale 100% /
     Actual size</strong>, then check the 50 mm bar with a ruler before judging sizes.</p>
   <div class="proof">
-    <p class="proof-flag">SIZE CHECK ONLY · NOT PRINT ARTWORK · DRAFT LOGO REDRAW</p>
+    <p class="proof-flag">SIZE CHECK ONLY · NOT PRINT ARTWORK</p>
     <div class="sheet">
       <div class="item">
         <svg viewBox="0 0 50 4" style="width:50mm;height:4mm" role="img" aria-label="50 millimetre check bar">
@@ -1130,7 +1007,11 @@
       </div>
       <div class="item">
         <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></svg>
-        <div>A · full colour (tagline slot)</div>
+        <div>A · sentence case (recommended)</div>
+      </div>
+      <div class="item">
+        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></svg>
+        <div>A · caps</div>
       </div>
       <div class="item">
         <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal" class="v-one" x="-23" y="-23" width="46" height="46"/></svg>
@@ -1138,18 +1019,10 @@
       </div>
       <div class="item">
         <svg viewBox="0 0 90 40" style="width:90mm;height:40mm"><use href="#hdr-front" class="v-rev" x="-3" y="-3" width="96" height="46"/></svg>
-        <div>B · front (pegs only)</div>
-      </div>
-      <div class="item">
-        <svg viewBox="0 0 60 14" style="width:60mm;height:14mm"><rect width="60" height="14" rx="2" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#band-ig" class="v-full" x="-3" y="-3" width="66" height="20"/></svg>
-        <div>C · box-lid idea only</div>
-      </div>
-      <div class="item">
-        <svg viewBox="0 0 28 34" style="width:28mm;height:34mm"><rect width="28" height="34" rx="2" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#qr-tag" class="v-one" x="-3" y="-3" width="34" height="40"/></svg>
-        <div>QR alternative (owner review)</div>
+        <div>B · front (stalls with pegs only)</div>
       </div>
     </div>
-    <p class="proof-flag" style="margin:6mm 0 0">SIZE CHECK ONLY · NOT PRINT ARTWORK · concept PK-1, not approved</p>
+    <p class="proof-flag" style="margin:6mm 0 0">SIZE CHECK ONLY · NOT PRINT ARTWORK · PK-1 rev 4 · pending printed proof</p>
   </div>
   <p class="noprint" style="margin-top:12px;font-size:14px">A home or office printer proof checks size and legibility only. Colours and fine lines must be judged on the print shop's own proof.</p>
 </section>

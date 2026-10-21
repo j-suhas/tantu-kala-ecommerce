@@ -91,6 +91,10 @@ P = provisional (owner said "for now"/intuition-based).
 | D-75 | Sticker content: Instagram handle `@tantu_kala_` yes; no material word; no QR on the main sticker. A separate website-QR variant may be proposed for the owner's review | D | 21 Oct | PK-1 |
 | D-76 | New tagline (BR-2) replaces "Handmade crochet, knotted with love" on the website **and** packaging; it names no material. Wording: owner to choose (IN-22) | D | 21 Oct | BR-2, `site.mjs`, Footer, Seo, PK-1 |
 | D-77 | No vector logo exists; it may be recreated as a vector redraw. A redraw becomes the official logo only after the owner approves it (IN-24) | P | 21 Oct | PK-1, `public/brand/` |
+| D-78 | "Thread" is not a material under D-76 (IN-25). Tagline = **"Art made from threads"** (IN-22) | D | 21 Oct | BR-2, PK-1, D-76 |
+| D-79 | Round seal A (40 mm) on every pack; header tag B only for stalls that hang packs on pegs (IN-23); band C dropped | D | 21 Oct | PK-1 |
+| D-80 | Vector logo redraw + small mark approved **for pack printing only** (IN-24); before master use, the cords under the bands are redrawn | D | 21 Oct | PK-1, D-77 |
+| D-81 | No QR on packs for now; revisit when the domain is permanent (CX-10) | D | 21 Oct | PK-1, D-75 |
 | D-72 | Token budget (owner "go", 21 Oct — Opus on every agent was exhausting the usage limit): agents on Sonnet (reviewer/security high effort; builders, design, content, brand, SEO medium; docs low); `tk-architect` stays Opus/high; lead defaults to Sonnet/medium, Opus for planning/release sessions; the lead passes `model: opus` only for the Opus list (F-5, F-6S, LLD/contract changes, release security review, bug surviving two fixes) or on owner request; no Haiku; agents read the brief + named sections instead of whole docs; max two agents at once | D        | 21 Oct                 | agents, CLAUDE.md, AGENT-WORKFLOW §1, write-task-brief, TASK-BRIEF |
 | D-59 | Ship-from: most parcels ship from Delhi, some from Pune; one location-independent delivery estimate kept for now                                                                                                                                                                                                                                                                                                                                                                                                                                                   | D (fact) | 12 Oct                 | CX-11, shipping copy                                               |
 | D-56 | The lead agent also acts as business analyst: validates every requirement and release, owns `OWNER-INPUTS.md` and asks the owner for missing inputs, supervises `tk-docs`                                                                                                                                                                                                                                                                                                                                                                                          | D        | 12 Oct                 | workflow                                                           |
@@ -538,6 +542,12 @@ given in the lead session on 21 Oct, recorded as said:
   sticker", without mentioning material. Wording: owner chooses from drafted options (IN-22).
 - **D-77 (P):** "I don't have logo as vector file, if needed we might need to recreate it." A
   redraw is official only once the owner approves it (IN-24).
+- **D-78…D-81 (later on 21 Oct):** the owner accepted the review agents' first five recommendations
+  ("I accept the first 5 recommendations"): "thread" is not a material; tagline "Art made from
+  threads"; seal A on every pack, header tag B only where stalls use pegs; the logo redraw approved
+  for pack printing only; no QR for now. The homepage title (IN-26) is deferred: "we will discuss
+  the title later if needed". Until then the website tagline is not changed, because `Seo.astro`
+  builds the homepage title from the tagline.
 
 
 ## Owner amendment — stockist shops (21 Oct 2026)
