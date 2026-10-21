@@ -266,7 +266,7 @@
         <line x1="34.6" y1="21.5" x2="44.6" y2="21.5" style="stroke: var(--accent); stroke-width: .3"/>
         <text x="34.4" y="26.0" font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600"
               font-size="2.469" letter-spacing=".15" style="fill: var(--ink)">Art made from threads</text>
-        <text x="34.4" y="30.4" font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="500"
+        <text x="34.4" y="30.4" font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600"
               font-size="2.469" style="fill: var(--ink)">@tantu_kala_</text>
       </g>
     </g>
@@ -671,7 +671,7 @@
         </svg>
       </div>
       <figcaption>Front, enlarged. Full colour: the logo's own colours (Umber ground, peach mark <code>#C58E77</code>),
-        Warm Ivory tagline (7 pt SemiBold, sentence case) and handle (7 pt Medium), Mustard divider. The tagline fits
+        Warm Ivory tagline (7 pt SemiBold, sentence case) and handle (7 pt SemiBold; small light-on-dark type needs the heavier weight), Mustard divider. The tagline fits
         cleanly on one line, about 29 mm wide (measured on the render), with the handle below it about 3 mm clear of the staple zone. The side-by-side mark + wordmark is a <strong>new horizontal lockup</strong>
         (see the <a href="#final-artwork">final-artwork note</a>). Full mark at 26 mm: lines ≈ 0.15 mm, borderline for
         light on dark; the small mark is the fallback if the proof fills in.</figcaption>
@@ -795,7 +795,7 @@
           <tr><th scope="row">Artwork with bleed</th><td>96 × 86 mm (3 mm bleed on all four cut edges; none needed at the fold)</td></tr>
           <tr><th scope="row">Safe area</th><td>2 mm in from every cut edge; keep 6 mm free at the open edge of each face for staples; 2 mm clear around the hole</td></tr>
           <tr><th scope="row">Hang hole</th><td>Ø 6 mm round, centred, 7 mm below the fold, punched through both halves <span class="tag ph">Euro slot instead? stall to confirm</span></td></tr>
-          <tr><th scope="row">Text sizes</th><td>Tagline 7 pt Karla SemiBold, tracking 0.06 em; handle 7 pt Karla Medium. <strong>Nothing below 6 pt.</strong></td></tr>
+          <tr><th scope="row">Text sizes</th><td>Tagline 7 pt Karla SemiBold, tracking 0.06 em; handle 7 pt Karla SemiBold. <strong>Nothing below 6 pt.</strong></td></tr>
           <tr><th scope="row">Logo</th><td>Front: full mark 26 mm tall, wordmark 40 mm wide. Back: small mark 20 mm tall. Redraw approved for pack printing only.</td></tr>
           <tr><th scope="row">Colours</th><td>Full colour: Umber <code>#4D3126</code> flood, logo peach <code>#C58E77</code> (mark and wordmark only), Warm Ivory <code>#FAF3E7</code> text, Mustard <code>#C99A44</code> divider.<br>1-colour: Umber on white or kraft card.</td></tr>
           <tr><th scope="row">Stock</th><td>300–350 gsm card, matte (assumption: a usual weight for hang tags; ask the shop)</td></tr>
@@ -875,6 +875,9 @@
 <!-- ======================= PRINT FILES ======================= -->
 <section id="print-files" aria-labelledby="h-print">
   <h2 id="h-print">Print artwork files</h2>
+  <p class="draftflag">NOT READY FOR A SHOP AS-IS. LIVE TEXT: install Karla and outline before output · logo redraw for
+    pack use only (D-80) · proof each stock. The same note is printed on each file's GUIDES layer, outside the artboard,
+    so it shows when the file is opened in Illustrator or Inkscape.</p>
   <p>In <code>docs/design/concepts/print/</code>. Each file is true size in millimetres with a 3 mm bleed. The
     <strong>ARTWORK</strong> layer is what prints; the separate <strong>GUIDES</strong> layer holds bleed, trim (cut line,
     named <code>CutContour</code>), safe area and, for B, the fold, punch and staple zones. Hide the guides layer before output,
@@ -892,8 +895,7 @@
   <div class="callout">
     <strong>Text is NOT converted to outlines.</strong> No tool on this machine can do it: no Inkscape, no font-editing
     library and no local copy of the Karla font, and nothing was installed. The files carry live text set in
-    <strong>Karla</strong> (free, Google Fonts, OFL licence): SemiBold 600 for the tagline and the seal's handle, Medium 500
-    for B's handle. <strong>Before printing, the owner or the print shop must install Karla and convert the text to
+    <strong>Karla</strong> (free, Google Fonts, OFL licence): SemiBold 600 for all text, including both handles. <strong>Before printing, the owner or the print shop must install Karla and convert the text to
     outlines</strong> (Inkscape: Path → Object to Path; Illustrator: Type → Create Outlines), then check that the text on the
     ring still sits on its arc. The logo is already vector paths and needs nothing.
   </div>

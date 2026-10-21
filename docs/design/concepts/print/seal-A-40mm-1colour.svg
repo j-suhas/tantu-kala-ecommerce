@@ -54,5 +54,11 @@
     <circle id="bleed-edge" r="22.95" stroke="#00AEEF" stroke-dasharray="0.5 0.5"/>
     <circle id="CutContour" r="20" stroke="#EC008C"/>
     <circle id="safe-area" r="18" stroke="#00A651" stroke-dasharray="1 0.5"/>
+    <!-- visible print note on the pasteboard, above the artboard (outside the trim; never prints) -->
+    <g id="print-note" fill="#EC008C" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="1.8" font-weight="700">
+      <text x="-23" y="-31">PRINT NOTE: LIVE TEXT: install Karla (Google Fonts) and outline before output</text>
+      <text x="-23" y="-28.6">Logo redraw for pack use only (D-80) · proof each stock (white and kraft separately)</text>
+      <text x="-23" y="-26.2">PK-1 rev 4 · cut line = CutContour (magenta) · hide this GUIDES layer before output</text>
+    </g>
   </g>
 </svg>
