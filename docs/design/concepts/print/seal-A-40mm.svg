@@ -2,9 +2,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
      width="46mm" height="46mm" viewBox="-23 -23 46 46">
-  <title>Tantu Kala pack seal A, 40 mm, full colour (PK-1 rev 4)</title>
+  <title>Tantu Kala pack seal A, 40 mm, sentence-case tagline: NOT CHOSEN (owner chose ALL CAPS, 21 Oct)</title>
   <desc>
-    PRINT ARTWORK, PK-1 rev 4 (21 Oct 2026). Pending a printed proof.
+    NOT CHOSEN: the owner approved the ALL CAPS version (seal-A-40mm-CAPS.svg) on 21 Oct 2026. Kept for reference only.
+    PRINT ARTWORK, PK-1 rev 4 (21 Oct 2026).
     Size: trim = circle 40 mm diameter; canvas 46 x 46 mm includes 3 mm bleed; safe area 36 mm diameter.
     Units: 1 user unit = 1 mm.
     Layers: ARTWORK (prints) and GUIDES (do not print: bleed, CutContour = trim/cut line, safe area).
@@ -64,6 +65,7 @@
     <circle id="safe-area" r="18" stroke="#00A651" stroke-dasharray="1 0.5"/>
     <!-- visible print note on the pasteboard, above the artboard (outside the trim; never prints) -->
     <g id="print-note" fill="#EC008C" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="1.8" font-weight="700">
+      <text x="-23" y="-33.4">NOT CHOSEN: sentence-case tagline. The owner approved ALL CAPS (seal-A-40mm-CAPS.svg), 21 Oct.</text>
       <text x="-23" y="-31">PRINT NOTE: LIVE TEXT: install Karla (Google Fonts) and outline before output</text>
       <text x="-23" y="-28.6">Logo redraw for pack use only (D-80) · proof each stock (white and kraft separately)</text>
       <text x="-23" y="-26.2">PK-1 rev 4 · cut line = CutContour (magenta) · hide this GUIDES layer before output</text>

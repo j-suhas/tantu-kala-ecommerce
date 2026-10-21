@@ -44,6 +44,8 @@
 
   .status { background: var(--umber); color: var(--ivory); padding: 12px 16px; font-size: 15px; }
   .status strong { color: #fff; }
+  .status a { color: #fff; text-decoration: underline; }   /* white on Umber: 11.78:1 */
+  .status a:focus-visible { outline-color: #fff; }
   header.top { padding: 28px 0 8px; }
   .lede { font-size: 17px; max-width: 72ch; }
 
@@ -235,8 +237,8 @@
     <!-- wordmark, 22 mm wide -->
     <use href="#lg-word" x="-11" y="5.2" width="22" height="2.93"/>
   </symbol>
-  <!-- A, recommended: tagline in sentence case, 7 pt Karla SemiBold, tracking 0.06 em (same size as the handle) -->
-  <symbol id="seal" viewBox="-23 -23 46 46" overflow="visible">
+  <!-- A, NOT CHOSEN: tagline in sentence case, 7 pt Karla SemiBold, tracking 0.06 em -->
+  <symbol id="seal-sentence" viewBox="-23 -23 46 46" overflow="visible">
     <g style="clip-path: var(--clip, url(#clip-seal))">
       <use href="#seal-base" x="-23" y="-23" width="46" height="46"/>
       <text font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="2.469"
@@ -245,8 +247,8 @@
       </text>
     </g>
   </symbol>
-  <!-- A, alternative: tagline in caps, 6.5 pt Karla SemiBold, tracking 0.1 em (design-system label style) -->
-  <symbol id="seal-caps" viewBox="-23 -23 46 46" overflow="visible">
+  <!-- A, APPROVED FOR PRINT (owner, 21 Oct): tagline in ALL CAPS, 6.5 pt Karla SemiBold, tracking 0.1 em -->
+  <symbol id="seal" viewBox="-23 -23 46 46" overflow="visible">
     <g style="clip-path: var(--clip, url(#clip-seal))">
       <use href="#seal-base" x="-23" y="-23" width="46" height="46"/>
       <text font-family="Karla, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="2.293"
@@ -285,10 +287,10 @@
 
 <div class="status" role="note">
   <div class="wrap" style="padding-bottom:0">
-    <strong>PK-1 · rev 4: final concept, pending printed proof.</strong> Owner decisions of 21 Oct applied: seal A on
-    every pack, header tag B only for stalls that hang packs on pegs, C dropped, no QR for now, tagline "Art made from
-    threads". The logo redraw is <strong>approved for pack printing only</strong>, not as the master logo. Print files:
-    <code>docs/design/concepts/print/</code>. Nothing is wired into the site.
+    <strong>PK-1 · rev 4: seal A approved for print (owner, 21 Oct), ALL CAPS tagline "ART MADE FROM THREADS".</strong>
+    Header tag B kept for future; C dropped; no QR for now. The logo redraw is <strong>approved for pack printing only</strong>
+    (D-80), not as the master logo. Print-ready PDFs: <a href="print/PRINT-seal-A-40mm-single.pdf">single seal</a> ·
+    <a href="print/PRINT-seal-A-40mm-A4-sheet.pdf">A4 sheet, 24 up</a>. Nothing is wired into the site.
   </div>
 </div>
 
@@ -330,7 +332,7 @@
       <tbody>
         <tr><td>Brand mark and wordmark</td><td>Tantu Kala logo (vector redraw; small mark on A)</td><td>Vector redraw of <code>public/brand/logo.jpeg</code> (<a href="#logo-redraw">compare</a>)</td><td><span class="tag fact">Approved for pack printing only (owner, 21 Oct)</span></td></tr>
         <tr><td>Instagram</td><td>@tantu_kala_</td><td><code>src/config/site.mjs</code>; D-75 (owner, 21 Oct)</td><td><span class="tag fact">Decided</span></td></tr>
-        <tr><td>Tagline</td><td>"Art made from threads" on A (top of the ring) and on B's front</td><td>Owner, 21 Oct (BR-2); "thread" is not a material word</td><td><span class="tag fact">Decided</span> case: <a href="#tagline-slot">sentence case recommended</a></td></tr>
+        <tr><td>Tagline</td><td>"ART MADE FROM THREADS" on A (top of the ring); B's front (kept for future) shows it in sentence case</td><td>Owner, 21 Oct (BR-2); "thread" is not a material word</td><td><span class="tag fact">Decided</span> case on A: <a href="#tagline-slot">ALL CAPS (owner, 21 Oct)</a></td></tr>
         <tr><td>Location</td><td><strong>Not on packs (owner, 21 Oct)</strong></td><td>D-73; D-60 stays scoped to brand pages and footer</td><td><span class="tag fact">Decided</span></td></tr>
         <tr><td>Material word</td><td><strong>Not on packs</strong>, no field either (owner, 21 Oct: "without mentioning material")</td><td>D-75</td><td><span class="tag fact">Decided</span></td></tr>
         <tr><td>QR code</td><td><strong>Not used for now (owner, 21 Oct)</strong></td><td>Revisit when the domain is permanent (CX-10)</td><td><span class="tag fact">Decided</span></td></tr>
@@ -435,11 +437,11 @@
 <!-- ======================= OPTION A ======================= -->
 <section id="opt-a" aria-labelledby="h-a">
   <p class="eyebrow">Option A</p>
-  <h2 id="h-a">Round seal, 40 mm <span class="tag rec">On every pack (owner, 21 Oct)</span></h2>
+  <h2 id="h-a">Round seal, 40 mm <span class="tag rec">Approved for print (owner, 21 Oct): ALL CAPS tagline</span></h2>
   <p>A round sticker that also closes the pack. Fold the bag's flap to the front and stick the seal centred over the
     flap edge. It sits in the top band of the pack, above the product. It works on every pack size we expect, from a
     small jewellery bag to a clear box lid (stick it across the lid edge). Content: the simplified mark, the wordmark,
-    <strong>"Art made from threads"</strong> along the top and <strong>@tantu_kala_</strong> along the bottom.</p>
+    <strong>"ART MADE FROM THREADS"</strong> along the top and <strong>@tantu_kala_</strong> along the bottom.</p>
   <p><strong>Pack rule:</strong> bag length ≥ product length + about 50 mm, so the seal (which reaches about 48 mm down
     from the top edge) never overlaps the product.</p>
 
@@ -455,13 +457,13 @@
     </figure>
     <figure>
       <div class="stage enlarged">
-        <svg viewBox="-21 -21 42 42" style="max-width:126mm" role="img" aria-label="Round seal enlarged: simplified mark in the centre, TANTU KALA wordmark below, Art made from threads along the top, and @tantu_kala_ along the bottom">
+        <svg viewBox="-21 -21 42 42" style="max-width:126mm" role="img" aria-label="Round seal enlarged: simplified mark in the centre, TANTU KALA wordmark below, ART MADE FROM THREADS along the top, and @tantu_kala_ along the bottom">
           <g filter="url(#lift)"><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></g>
         </svg>
       </div>
       <figcaption>Enlarged (about 3× on desktop). Full colour on paper: Warm Ivory ground, Umber ink, Mustard hairline
-        ring and dots. Mark 15 mm (simplified); wordmark 22 mm wide; tagline 7 pt sentence case, tracking 0.06 em
-        (recommended; caps shown in <a href="#tagline-slot">the case comparison</a>); handle 7 pt, tracking 0.08 em.</figcaption>
+        ring and dots. Mark 15 mm (simplified); wordmark 22 mm wide; tagline ALL CAPS 6.5 pt, tracking 0.1 em
+        (approved; see <a href="#tagline-slot">the case comparison</a>); handle 7 pt, tracking 0.08 em.</figcaption>
     </figure>
   </div>
 
@@ -597,7 +599,7 @@
           <tr><th scope="row">Finished size</th><td>Ø 40 mm circle, die-cut or kiss-cut on sheets</td></tr>
           <tr><th scope="row">Artwork with bleed</th><td>Ø 46 mm (3 mm bleed all round)</td></tr>
           <tr><th scope="row">Safe area</th><td>Ø 36 mm (2 mm in from the cut). Ring text sits inside about Ø 35 mm (estimate from the arc radii).</td></tr>
-          <tr><th scope="row">Text sizes</th><td>Tagline 7 pt Karla SemiBold sentence case, tracking 0.06 em (caps alternative: 6.5 pt, 0.1 em); handle 7 pt, tracking 0.08 em. <strong>Nothing below 6 pt.</strong></td></tr>
+          <tr><th scope="row">Text sizes</th><td>Tagline ALL CAPS 6.5 pt Karla SemiBold, tracking 0.1 em (approved); handle 7 pt, tracking 0.08 em. <strong>Nothing below 6 pt.</strong></td></tr>
           <tr><th scope="row">Logo</th><td>Simplified small mark, 15 mm tall (lines ≈ 0.154 mm); wordmark 22 mm wide (strokes ≈ 0.20 mm). Redraw approved for pack printing only.</td></tr>
           <tr><th scope="row">Colours</th><td>Full colour: Warm Ivory <code>#FAF3E7</code> ground, Umber <code>#4D3126</code> ink, Mustard <code>#C99A44</code> hairline (decoration only).<br>1-colour: Umber only, on white or kraft.</td></tr>
           <tr><th scope="row">Stock</th><td>Matte white paper sticker (gloss glares under stall lights), or kraft paper sticker (needs its own proof). Clear vinyl only with a white-ink flood.</td></tr>
@@ -610,29 +612,28 @@
 
 <!-- ======================= TAGLINE CASE ======================= -->
 <section id="tagline-slot" aria-labelledby="h-slot">
-  <h2 id="h-slot">Tagline on A: sentence case or caps</h2>
-  <p>"Art made from threads" (21 characters) runs along the top of the ring. The two versions side by side, at true size
-    and enlarged. Brand note S2: caps compete with the all-caps wordmark.</p>
+  <h2 id="h-slot">Tagline on A: ALL CAPS approved (owner, 21 Oct)</h2>
+  <p>"ART MADE FROM THREADS" (21 characters) runs along the top of the ring. The owner chose ALL CAPS. I had
+    recommended sentence case (brand note S2: caps compete with the all-caps wordmark); it is kept below as "not chosen".</p>
   <div class="row two">
     <figure>
       <div class="stage enlarged" style="flex-direction:column;gap:10px">
-        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm;flex:0 0 auto" role="img" aria-label="Seal at true size, tagline in sentence case">
+        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm;flex:0 0 auto" role="img" aria-label="Seal at true size, tagline in all caps">
           <g filter="url(#lift)"><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
-        <svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal enlarged, tagline Art made from threads in sentence case">
+        <svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal enlarged, tagline ART MADE FROM THREADS in all caps">
           <g filter="url(#lift)"><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
       </div>
-      <figcaption><span class="tag rec">Recommended</span> <strong>Sentence case</strong>, 7 pt, tracking 0.06 em. Same size and
-        case style as the handle below, so the ring reads as one quiet voice and the wordmark stays the only caps line.</figcaption>
+      <figcaption><span class="tag rec">Approved for print (owner, 21 Oct)</span> <strong>ALL CAPS</strong>, 6.5 pt,
+        tracking 0.1 em (design-system label style).</figcaption>
     </figure>
     <figure>
       <div class="stage enlarged" style="flex-direction:column;gap:10px">
-        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm;flex:0 0 auto" role="img" aria-label="Seal at true size, tagline in caps">
-          <g filter="url(#lift)"><use href="#seal-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
-        <svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal enlarged, tagline ART MADE FROM THREADS in caps">
-          <g filter="url(#lift)"><use href="#seal-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
+        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm;flex:0 0 auto" role="img" aria-label="Seal at true size, tagline in sentence case, not chosen">
+          <g filter="url(#lift)"><use href="#seal-sentence" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
+        <svg viewBox="-21 -21 42 42" style="max-width:90mm" role="img" aria-label="Seal enlarged, tagline in sentence case, not chosen">
+          <g filter="url(#lift)"><use href="#seal-sentence" class="v-full" x="-23" y="-23" width="46" height="46"/></g></svg>
       </div>
-      <figcaption><strong>Caps</strong>, 6.5 pt, tracking 0.1 em (design-system label style). It looks tidier as a band,
-        but now there are two caps lines (tagline and wordmark) competing.</figcaption>
+      <figcaption><span class="tag warn">Not chosen</span> Sentence case, 7 pt, tracking 0.06 em.</figcaption>
     </figure>
   </div>
   <div class="callout sage">
@@ -646,7 +647,7 @@
 <!-- ======================= OPTION B ======================= -->
 <section id="opt-b" aria-labelledby="h-b">
   <p class="eyebrow">Option B</p>
-  <h2 id="h-b">Fold-over header tag, 90 × 40 mm <span class="tag rec">For stalls with pegs only</span></h2>
+  <h2 id="h-b">Fold-over header tag, 90 × 40 mm <span class="tag owner">Kept for future (owner, 21 Oct)</span></h2>
   <p>A small card folded over the top edge of the bag and stapled (or taped) through. Use it <strong>only if a stall
     hangs packs on pegs</strong>, instead of A. It sits entirely above the product and gives a hang hole. This is the
     only option big enough for the brown, logo-coloured look. Front: mark, wordmark, "Art made from threads" and
@@ -875,35 +876,51 @@
 <!-- ======================= PRINT FILES ======================= -->
 <section id="print-files" aria-labelledby="h-print">
   <h2 id="h-print">Print artwork files</h2>
-  <p class="draftflag">NOT READY FOR A SHOP AS-IS. LIVE TEXT: install Karla and outline before output · logo redraw for
-    pack use only (D-80) · proof each stock. The same note is printed on each file's GUIDES layer, outside the artboard,
-    so it shows when the file is opened in Illustrator or Inkscape.</p>
-  <p>In <code>docs/design/concepts/print/</code>. Each file is true size in millimetres with a 3 mm bleed. The
-    <strong>ARTWORK</strong> layer is what prints; the separate <strong>GUIDES</strong> layer holds bleed, trim (cut line,
-    named <code>CutContour</code>), safe area and, for B, the fold, punch and staple zones. Hide the guides layer before output,
-    or use it as the cut path.</p>
+  <p class="draftflag">PDFs embed the font and are print-ready; the SVGs still have live text: outline before using them
+    directly. Logo redraw for pack use only (D-80). Proof each stock.</p>
+
+  <h3>Print-ready PDFs (approved seal A, ALL CAPS, full colour)</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>File</th><th>What</th><th>Page</th></tr></thead>
+      <tbody>
+        <tr><td><a href="print/PRINT-seal-A-40mm-single.pdf"><code>PRINT-seal-A-40mm-single.pdf</code></a></td><td>One seal: 46 mm artwork incl. 3 mm bleed, centred, with corner crop marks for the 40 mm trim. No cut circle is printed (a PDF from Chrome has no layers to keep it separate).</td><td>60 × 60 mm (Chrome writes 59.94 mm)</td></tr>
+        <tr><td><a href="print/PRINT-seal-A-40mm-A4-sheet.pdf"><code>PRINT-seal-A-40mm-A4-sheet.pdf</code></a></td><td><strong>24 up</strong>, straight grid 4 × 6 at 46 mm pitch (honeycomb fits only 22). Each seal keeps its 3 mm bleed; a grey hairline cut guide sits just outside each 40 mm trim, never inside a sticker. 50 mm check bar and one info line in the bottom margin.</td><td>A4 portrait (Chrome writes 209.89 × 297.01 mm). Margins to the bleed: left/right 13 mm, top 7 mm, bottom 14 mm.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Both PDFs embed <strong>Karla SemiBold</strong> as a font subset, so no outlining is needed for them. Print at
+    <strong>100% / Actual size</strong> and check the 50 mm bar with a ruler. They are regenerated from
+    <code>print/pdf-source-single.html</code> and <code>print/pdf-source-A4-sheet.html</code> with Chrome headless
+    (print to PDF, no header/footer, a 10 s budget so the webfont loads).</p>
+
+  <h3>SVG artwork (editable)</h3>
+  <p>Each SVG is true size in millimetres with a 3 mm bleed. The <strong>ARTWORK</strong> layer is what prints; the
+    separate <strong>GUIDES</strong> layer holds bleed, trim (cut line, named <code>CutContour</code>), safe area, a print
+    note and, for B, the fold, punch and staple zones. Hide the guides layer before output, or use it as the cut path.</p>
   <div class="tbl">
     <table>
       <thead><tr><th>File</th><th>What</th><th>Size (with bleed)</th></tr></thead>
       <tbody>
-        <tr><td><code>seal-A-40mm.svg</code></td><td>Seal A, full colour (Warm Ivory ground, Umber, Mustard), tagline in sentence case</td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
-        <tr><td><code>seal-A-40mm-1colour.svg</code></td><td>Seal A, 1-colour Umber, no ground (for kraft or cheap 1-colour print)</td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
-        <tr><td><code>header-B.svg</code></td><td>Header tag B, flat sheet: back half rotated 180°, front half below the fold</td><td>96 × 86 mm; trim 90 × 80 mm</td></tr>
+        <tr><td><code>seal-A-40mm-CAPS.svg</code></td><td><strong>Approved for print (owner, 21 Oct):</strong> seal A, full colour, ALL CAPS tagline</td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
+        <tr><td><code>seal-A-40mm.svg</code></td><td>Seal A, full colour, sentence-case tagline: <strong>not chosen</strong></td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
+        <tr><td><code>seal-A-40mm-1colour.svg</code></td><td>Seal A, 1-colour Umber, sentence case: <strong>not chosen</strong> (set the tagline in caps if a 1-colour run is wanted)</td><td>46 × 46 mm; trim Ø 40 mm</td></tr>
+        <tr><td><code>header-B.svg</code></td><td>Header tag B, flat sheet: <strong>kept for future (owner, 21 Oct)</strong></td><td>96 × 86 mm; trim 90 × 80 mm</td></tr>
       </tbody>
     </table>
   </div>
   <div class="callout">
-    <strong>Text is NOT converted to outlines.</strong> No tool on this machine can do it: no Inkscape, no font-editing
-    library and no local copy of the Karla font, and nothing was installed. The files carry live text set in
-    <strong>Karla</strong> (free, Google Fonts, OFL licence): SemiBold 600 for all text, including both handles. <strong>Before printing, the owner or the print shop must install Karla and convert the text to
-    outlines</strong> (Inkscape: Path → Object to Path; Illustrator: Type → Create Outlines), then check that the text on the
-    ring still sits on its arc. The logo is already vector paths and needs nothing.
+    <strong>The SVGs' text is NOT converted to outlines.</strong> No tool on this machine can do it (no Inkscape, no
+    font-editing library, no local Karla file), and nothing was installed. The SVGs carry live Karla SemiBold 600 text. To
+    use an SVG directly, install Karla and convert the text to outlines (Inkscape: Path → Object to Path; Illustrator:
+    Type → Create Outlines), then check that the ring text still sits on its arc. The logo is already vector paths.
   </div>
   <p><strong>Colours</strong> (hex, plus rough CMYK from a simple conversion, not colour-managed; ask for a printed proof):
     Umber <code>#4D3126</code> ≈ C0 M36 Y51 K70 · Warm Ivory <code>#FAF3E7</code> ≈ C0 M3 Y8 K2 · Mustard <code>#C99A44</code>
     ≈ C0 M23 Y66 K21 · logo peach <code>#C58E77</code> ≈ C0 M28 Y40 K23.</p>
-  <p><strong>Checked</strong> (text search of all three files): no "Delhi", "Pune", material word, QR, URL or "made to order"
-    in any artwork. Stall stock is made in advance, so "made to order" must never appear on packs.</p>
+  <p><strong>Checked</strong> (text search of the SVGs; text decoded from the PDFs): the PDFs draw only "ART MADE FROM
+    THREADS" and "@tantu_kala_" inside the stickers (plus the info line in the A4 margin); no "Delhi", "Pune", material
+    word, QR, URL or "made to order" in any artwork. Stall stock is made in advance, so "made to order" must never appear on packs.</p>
 </section>
 
 <!-- ======================= CONTRAST ======================= -->
@@ -951,16 +968,17 @@
   <h2 id="h-rec">Final concept (owner, 21 Oct)</h2>
   <div class="card soft">
     <ol class="rec-list">
-      <li><strong>A · Round seal, on every pack:</strong> 40 mm, closure seal, above the product (pack rule: bag length ≥
-        product length + about 50 mm). Small mark, wordmark, "Art made from threads" (sentence case recommended) and
+      <li><strong>A · Round seal, on every pack: approved for print (owner, 21 Oct).</strong> 40 mm, closure seal, above the product (pack rule: bag length ≥
+        product length + about 50 mm). Small mark, wordmark, "ART MADE FROM THREADS" (ALL CAPS, approved) and
         @tantu_kala_. Matte white paper in full colour, or 1-colour Umber on light/mid kraft.</li>
-      <li><strong>B · Header tag, for stalls with pegs only:</strong> instead of A on those packs. Logo colours, tagline,
+      <li><strong>B · Header tag: kept for future (owner, 21 Oct).</strong> If used later, only for stalls with pegs, instead of A on those packs. Logo colours, tagline,
         handle and a hang hole; needs bags at least 90 mm wide and stapling.</li>
       <li><strong>C · dropped. QR · not used for now.</strong></li>
     </ol>
-    <p style="margin:0"><strong>Next step: a printed proof.</strong> Outline the text (see <a href="#print-files">Print files</a>),
-      then get a shop proof of A on <em>each</em> stock you plan to use (white and kraft separately). Check the mark's lines,
-      the 7 pt text and the colours with your own eyes, and for B the fold, punch and staples.</p>
+    <p style="margin:0"><strong>Next step: a printed proof.</strong> Print the
+      <a href="print/PRINT-seal-A-40mm-A4-sheet.pdf">A4 sheet PDF</a> at home at 100%, then give the PDFs (font embedded, no
+      outlining needed) to the shop for a proof on <em>each</em> stock you plan to use (white and kraft separately). Check
+      the mark's lines, the 6.5–7 pt text and the colours with your own eyes.</p>
   </div>
 </section>
 
@@ -983,10 +1001,10 @@
     <div class="card">
       <h3 style="margin-top:0">Still open (owner)</h3>
       <ol class="facts">
-        <li>Tagline case on A: sentence case (recommended) or caps? See <a href="#tagline-slot">the comparison</a>.</li>
+        <li>Print the A4 sheet at home (100%, Actual size) and check the 50 mm bar, the mark's lines and the 6.5–7 pt text.</li>
         <li>Which stalls hang packs on pegs (they get header B)?</li>
         <li>Stock: matte white paper, kraft, or both? Each needs its own proof.</li>
-        <li>Who outlines the text: the owner (Inkscape, free) or the print shop?</li>
+        <li>Only if the shop wants the SVGs rather than the PDFs: who outlines the text (owner with Inkscape, or the shop)?</li>
       </ol>
     </div>
   </div>
@@ -1009,11 +1027,11 @@
       </div>
       <div class="item">
         <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal" class="v-full" x="-23" y="-23" width="46" height="46"/></svg>
-        <div>A · sentence case (recommended)</div>
+        <div>A · ALL CAPS (approved)</div>
       </div>
       <div class="item">
-        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal-caps" class="v-full" x="-23" y="-23" width="46" height="46"/></svg>
-        <div>A · caps</div>
+        <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal-sentence" class="v-full" x="-23" y="-23" width="46" height="46"/></svg>
+        <div>A · sentence case (not chosen)</div>
       </div>
       <div class="item">
         <svg viewBox="-20 -20 40 40" style="width:40mm;height:40mm"><circle r="19.95" fill="none" stroke="#ccc" stroke-width=".1"/><use href="#seal" class="v-one" x="-23" y="-23" width="46" height="46"/></svg>
@@ -1021,7 +1039,7 @@
       </div>
       <div class="item">
         <svg viewBox="0 0 90 40" style="width:90mm;height:40mm"><use href="#hdr-front" class="v-rev" x="-3" y="-3" width="96" height="46"/></svg>
-        <div>B · front (stalls with pegs only)</div>
+        <div>B · front (kept for future)</div>
       </div>
     </div>
     <p class="proof-flag" style="margin:6mm 0 0">SIZE CHECK ONLY · NOT PRINT ARTWORK · PK-1 rev 4 · pending printed proof</p>

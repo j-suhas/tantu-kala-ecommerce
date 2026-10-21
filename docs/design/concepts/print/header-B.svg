@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
      width="96mm" height="86mm" viewBox="-3 -3 96 86">
-  <title>Tantu Kala header tag B, flat sheet, full colour (PK-1 rev 4)</title>
+  <title>Tantu Kala header tag B, flat sheet, full colour: KEPT FOR FUTURE (owner, 21 Oct), not for the current print run</title>
   <desc>
     PRINT ARTWORK, PK-1 rev 4 (21 Oct 2026). Pending a printed proof. Only for stalls that hang packs on pegs.
     Flat sheet: trim 90 x 80 mm; canvas 96 x 86 mm includes 3 mm bleed on all cut edges. 1 user unit = 1 mm.
@@ -79,6 +79,7 @@
     <rect id="staple-zone-front" x="0" y="74" width="90" height="6" fill="#EC008C" fill-opacity="0.15" stroke="none"/>
     <!-- visible print note on the pasteboard, above the artboard (outside the trim; never prints) -->
     <g id="print-note" fill="#EC008C" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="2.2" font-weight="700">
+      <text x="-3" y="-15">KEPT FOR FUTURE (owner, 21 Oct): not part of the current print run</text>
       <text x="-3" y="-12">PRINT NOTE: LIVE TEXT: install Karla (Google Fonts) and outline before output</text>
       <text x="-3" y="-9">Logo redraw for pack use only (D-80) · proof each stock · pegs-only header tag</text>
       <text x="-3" y="-6">PK-1 rev 4 · cut = CutContour · fold, punch, staple zones on this layer · hide GUIDES before output</text>

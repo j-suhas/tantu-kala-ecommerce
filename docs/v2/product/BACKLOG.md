@@ -36,7 +36,7 @@ coding, but decisions, content, photos, the owner's reviews and real-phone testi
 
 | ID   | Task                                                                                                                       | Owner                         | Depends on         | Status                     |
 | ---- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------ | -------------------------- |
-| PK-1 | Pack sticker for clear packs (round seal A; header tag B if pegs, IN-23); website-QR variant for review; vector logo draft | design + brand                | D-78…D-81          | In progress (final artwork) |
+| PK-1 | Pack sticker for clear packs (round seal A; header tag B if pegs, IN-23); website-QR variant for review; vector logo draft | design + brand                | D-78…D-82          | In progress (print PDFs; A approved, caps) |
 | BR-2 | New tagline for site + packs (no material, no location): options → brand + SEO review → owner picks (IN-22); then `site.mjs` | content + brand + seo, data | IN-26 (site only)  | Packs: done (D-78). Site: waits for IN-26 |
 
 ## Release R1 → `v2.0.0`: new brand + catalog (checkout logic unchanged from v1)
