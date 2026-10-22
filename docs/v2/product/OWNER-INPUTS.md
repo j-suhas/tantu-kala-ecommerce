@@ -36,7 +36,7 @@ How this works:
 
 | ID           | Answer                                                                              | Decision |
 | ------------ | ----------------------------------------------------------------------------------- | -------- |
-| IN-21        | Machine account `tantu-kala-bot` created; agents use it (INSTALL §1b)               | D-70     |
+| IN-21        | Machine account created (`tantu-kala-bot`, now CommitKitten); agents use it (INSTALL §1b)               | D-70     |
 | IN-18        | LLD-07 decisions P-1…P-5: all approved                                              | D-68     |
 | IN-19        | Permission model approved; verified in use (S-8, first R1 tasks)                    | D-69     |
 | IN-01        | Allow AI search + user-triggered bots; block training bots                          | D-57     |
