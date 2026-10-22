@@ -85,6 +85,17 @@ P = provisional (owner said "for now"/intuition-based).
 | D-69 | Per-agent permission model approved (owner, 13 Oct: "looks fine… not fully confident but trusting you"): default-deny write scope per role, read-only shells for reviewer/security/docs/SEO, owner-only rules files and install kit (AGENT-WORKFLOW §2, `policy.mjs`). Because many target folders don't exist yet, it is **verified in use**: S-8 smoke tests, then the lead reports every blocked edit during the first R1 tasks and proposes scope fixes to the owner                                                                                           | D        | 13 Oct                 | agents, hooks, IN-19                                               |
 | D-70 | Agents act on GitHub as a separate machine account `tantu-kala-bot` (owner created it, 13 Oct): collaborator with push access, classic token scoped `repo` + `project` only, no bypass on any ruleset; the owner reviews, approves and merges as himself. Token lives only in the git-ignored `.claude/settings.local.json`; hooks refuse GitHub commands when it isn't loaded and block printing it; only the lead updates the board                                                                                                                              | D        | 13 Oct                 | IN-21, guardrail #27, INSTALL §1b                                  |
 | D-71 | Task branches are named `task/<task-id>-<slug>` (was `v2/<task-id>-<slug>`): git can't hold a branch `v2` and branches `v2/…` at the same time — found 13 Oct while testing the install. Integration branch stays `v2`. Proposed by Cowork; **owner to confirm**                                                                                                                                                                                                                                                                                                   | P        | 13 Oct                 | GIT-STRATEGY, ADR-002, INSTALL, hooks                              |
+| D-73 | Packaging sticker (PK-1): one brand sticker for the clear product packs, used across the whole product experience: home deliveries **and** third-party stalls that choose to stock the products. Not our shop; D-41 ("no shop") still holds | D | 21 Oct | PK-1, CX-1, CX-11 |
+| D-74 | Packs say nothing about where pieces are made. D-60 ("Handmade in Delhi & Pune") stays scoped to brand pages and footer | D | 21 Oct | PK-1, D-60 |
+| D-75 | Packs carry branding only: no legal-declaration label, and no professional check of packaging; review is by the owner and the review agents. Scope: packaging only (IN-05, the website's legal pages, is unchanged) | D | 21 Oct | PK-1 |
+| D-76 | Sticker content: Instagram handle `@tantu_kala_` yes; no material word; no QR on the main sticker. A separate website-QR variant may be proposed for the owner's review | D | 21 Oct | PK-1 |
+| D-77 | New tagline (BR-2) replaces "Handmade crochet, knotted with love" on the website **and** packaging; it names no material. Wording: owner to choose (IN-23) | D | 21 Oct | BR-2, `site.mjs`, Footer, Seo, PK-1 |
+| D-78 | No vector logo exists; it may be recreated as a vector redraw. A redraw becomes the official logo only after the owner approves it (IN-25) | P | 21 Oct | PK-1, `public/brand/` |
+| D-79 | "Thread" is not a material under D-77 (IN-26). Tagline = **"Art made from threads"** (IN-23) | D | 21 Oct | BR-2, PK-1, D-77 |
+| D-80 | Round seal A (40 mm) on every pack; header tag B only for stalls that hang packs on pegs (IN-24); band C dropped | D | 21 Oct | PK-1 |
+| D-81 | Vector logo redraw + small mark approved **for pack printing only** (IN-25); before master use, the cords under the bands are redrawn | D | 21 Oct | PK-1, D-78 |
+| D-82 | No QR on packs for now; revisit when the domain is permanent (CX-10) | D | 21 Oct | PK-1, D-76 |
+| D-83 | **Seal A approved for print with the tagline in ALL CAPS** ("ART MADE FROM THREADS"). Header tag B kept on record for future use, not printed now. Deliverables: single-sticker PDF + A4 sheet PDF | D | 21 Oct | PK-1, D-80 |
 | D-72 | Token budget (owner "go", 21 Oct — Opus on every agent was exhausting the usage limit): agents on Sonnet (reviewer/security high effort; builders, design, content, brand, SEO medium; docs low); `tk-architect` stays Opus/high; lead defaults to Sonnet/medium, Opus for planning/release sessions; the lead passes `model: opus` only for the Opus list (F-5, F-6S, LLD/contract changes, release security review, bug surviving two fixes) or on owner request; no Haiku; agents read the brief + named sections instead of whole docs; max two agents at once | D        | 21 Oct                 | agents, CLAUDE.md, AGENT-WORKFLOW §1, write-task-brief, TASK-BRIEF |
 | D-59 | Ship-from: most parcels ship from Delhi, some from Pune; one location-independent delivery estimate kept for now                                                                                                                                                                                                                                                                                                                                                                                                                                                   | D (fact) | 12 Oct                 | CX-11, shipping copy                                               |
 | D-56 | The lead agent also acts as business analyst: validates every requirement and release, owns `OWNER-INPUTS.md` and asks the owner for missing inputs, supervises `tk-docs`                                                                                                                                                                                                                                                                                                                                                                                          | D        | 12 Oct                 | workflow                                                           |
@@ -513,6 +524,35 @@ _Log entries below this line will be appended as later decisions are made._
      mobile (OPS-8). Speed Post deep-link format not yet verified.
 - **Decided (8 Oct):** stamp card (PST-3a) **deferred** until most must-haves are delivered;
   revisit together with accounts/login vs phone-number identity.
+## Packaging sticker and tagline (owner, 21 Oct 2026)
+
+Context: the owner asked for a small brand sticker for the clear product packs (PK-1). Answers
+given in the lead session on 21 Oct, recorded as said:
+
+- **D-73:** the sticker is part of the overall product experience: packs delivered at home or
+  picked up from "a few shops who decided to keep our product on shelf". These are other people's
+  stalls ("Not my shop, some other stalls selling my product"); the sticker is made "irrespective of
+  it". The site still never suggests a shop of our own (D-41, CX-11).
+- **D-74:** "packs should not say anything about where they are made."
+- **D-75:** "for these items I don't care about the legal issues… we will mostly focus on branding
+  on that label and nothing else." No professional check: "just me and review agents". Recorded for
+  packaging only; IN-05 is unchanged.
+- **D-76:** "we can also think of adding instagram handle on the sticker"; "without mentioning
+  material"; "I don't want a QR yet", but a separate website-QR proposal may be shown for review.
+- **D-77:** "let's get the tagline updated for both website and actual product branding like this
+  sticker", without mentioning material. Wording: owner chooses from drafted options (IN-23).
+- **D-78 (P):** "I don't have logo as vector file, if needed we might need to recreate it." A
+  redraw is official only once the owner approves it (IN-25).
+- **D-79…D-82 (later on 21 Oct):** the owner accepted the review agents' first five recommendations
+  ("I accept the first 5 recommendations"): "thread" is not a material; tagline "Art made from
+  threads"; seal A on every pack, header tag B only where stalls use pegs; the logo redraw approved
+  for pack printing only; no QR for now. The homepage title (IN-27) is deferred: "we will discuss
+  the title later if needed". Until then the website tagline is not changed, because `Seo.astro`
+  builds the homepage title from the tagline.
+- **D-83 (21 Oct):** "I'm finalising the option A round sticker for now with all caps tagline, but
+  also keep the fold over in our records for future as it's good as well." Asked for a single-sticker
+  file and an A4 sheet filled with stickers, both print-ready.
+
 
 ## Owner amendment — stockist shops (21 Oct 2026)
 
