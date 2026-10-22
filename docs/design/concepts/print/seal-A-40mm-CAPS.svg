@@ -12,7 +12,7 @@
       Tagline "ART MADE FROM THREADS": 6.5 pt (2.293 mm), letter-spacing 0.23 mm (0.1 em), on the top arc.
       Handle "@tantu_kala_": 7 pt (2.469 mm), letter-spacing 0.2 mm (0.08 em), on the bottom arc.
       Use the PDFs, or install Karla and outline the text before using this SVG directly.
-    Logo: vector redraw, approved for pack printing only (D-80). Simplified small mark 15 mm tall; wordmark 22 mm wide.
+    Logo: vector redraw, approved for pack printing only (D-81). Simplified small mark 15 mm tall; wordmark 22 mm wide.
     Colours (hex, rough CMYK from a simple conversion, not colour-managed):
       Warm Ivory #FAF3E7 ~ C0 M3 Y8 K2 (ground) | Umber #4D3126 ~ C0 M36 Y51 K70 (all text and logo) |
       Mustard #C99A44 ~ C0 M23 Y66 K21 (hairline ring and two dots, decoration only).
@@ -62,7 +62,7 @@
     <g id="print-note" fill="#EC008C" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="1.8" font-weight="700">
       <text x="-23" y="-33.4">APPROVED FOR PRINT (owner, 21 Oct): ALL CAPS tagline. Print-ready PDFs (font embedded) are in this folder.</text>
       <text x="-23" y="-31">LIVE TEXT in this SVG: install Karla (Google Fonts) and outline before using it directly</text>
-      <text x="-23" y="-28.6">Logo redraw for pack use only (D-80) · proof each stock (white and kraft separately)</text>
+      <text x="-23" y="-28.6">Logo redraw for pack use only (D-81) · proof each stock (white and kraft separately)</text>
       <text x="-23" y="-26.2">PK-1 rev 4 · cut line = CutContour (magenta) · hide this GUIDES layer before output</text>
     </g>
   </g>

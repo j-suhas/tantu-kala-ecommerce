@@ -2,7 +2,7 @@
 
 Version 0.4 · 21 Oct 2026 · Status: **draft**
 
-Changelog: 0.4 — added "Brand & packaging" (PK-1 sticker, BR-2 tagline; D-72…D-77). 0.3 — S-2/S-3 done by the owner by hand (`claude-code/INSTALL.md`); S-8 is now the
+Changelog: 0.4 — added "Brand & packaging" (PK-1 sticker, BR-2 tagline; D-73…D-78). 0.3 — S-2/S-3 done by the owner by hand (`claude-code/INSTALL.md`); S-8 is now the
 per-role smoke test; paths updated for the docs restructure. 0.2 — work grouped into **phase releases** (each one is a working, shippable site);
 added guardrail setup (S-6); S-0 narrowed to Customers tab + dashboard on Suhas's existing log.
 
@@ -36,8 +36,8 @@ coding, but decisions, content, photos, the owner's reviews and real-phone testi
 
 | ID   | Task                                                                                                                       | Owner                         | Depends on         | Status                     |
 | ---- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------ | -------------------------- |
-| PK-1 | Pack sticker for clear packs (round seal A; header tag B if pegs, IN-23); website-QR variant for review; vector logo draft | design + brand                | D-78…D-82          | In progress (print PDFs; A approved, caps) |
-| BR-2 | New tagline for site + packs (no material, no location): options → brand + SEO review → owner picks (IN-22); then `site.mjs` | content + brand + seo, data | IN-26 (site only)  | Packs: done (D-78). Site: waits for IN-26 |
+| PK-1 | Pack sticker for clear packs (round seal A; header tag B if pegs, IN-24); website-QR variant for review; vector logo draft | design + brand                | D-79…D-83          | In progress (print PDFs; A approved, caps) |
+| BR-2 | New tagline for site + packs (no material, no location): options → brand + SEO review → owner picks (IN-23); then `site.mjs` | content + brand + seo, data | IN-27 (site only)  | Packs: done (D-79). Site: waits for IN-27 |
 
 ## Release R1 → `v2.0.0`: new brand + catalog (checkout logic unchanged from v1)
 

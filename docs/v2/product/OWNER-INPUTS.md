@@ -1,5 +1,5 @@
 # Tantu Kala v2 — Inputs needed from the owner
-Version 0.3 · 21 Oct 2026 · Changelog: 0.3 — IN-22…IN-25, IN-27 answered (D-78…D-81); IN-26 deferred. 0.2 — IN-22…IN-24 added for PK-1/BR-2; PK-1 answers recorded (D-72…D-75). · Maintained by the **lead agent** (in Claude Code) and the Cowork
+Version 0.3 · 21 Oct 2026 · Changelog: 0.3 — IN-23…IN-26, IN-28 answered (D-79…D-82); IN-27 deferred. 0.2 — IN-23…IN-25 added for PK-1/BR-2; PK-1 answers recorded (D-73…D-76). · Maintained by the **lead agent** (in Claude Code) and the Cowork
 
 advisory desk until agents start. Answers move to `docs/v2/DECISIONS-LOG.md` and the row is closed.
 
@@ -30,22 +30,22 @@ How this works:
 | IN-16 | Loyalty details (reward, order count, window)                                                                                                                                                                                                                                                                    | PST-3 (last requirement)                        | Last                       | —                                                                          | Deferred (D-51)                  |
 | IN-17 | Data retention: how long to keep full addresses and phone numbers after delivery (B-7); deletion-on-request process                                                                                                                                                                                              | DPDP compliance, LLD-06 §8, PG-2                | R2                         | Keep until decided; nothing auto-deleted                                   | Open                             |
 | IN-20 | Where long-form page copy lives (guides, About story, FAQs): proposed `src/content/` (Astro content collections) — architect to confirm in LLD-02                                                                                                                                                                | `tk-content` write scope, SEO-D                 | R1                         | `src/content/`                                                             | Open (architect)                 |
-| IN-26 | Homepage gets its own title (not the tagline), and D-76's "no material" applies to the tagline only, so page titles may name the crafts? Proposed titles: P1 "Tantu Kala — Handmade crochet, macramé & pipe-cleaner gifts" (59, needs a small `Seo.astro` change) or P2 "Handmade crochet & macramé gifts · Tantu Kala" (45, no code change) | Home title, `og:title` (WhatsApp/Instagram previews), SEO-1 | With IN-22 | Own title, P1 | Deferred (owner, 21 Oct) |
+| IN-27 | Homepage gets its own title (not the tagline), and D-77's "no material" applies to the tagline only, so page titles may name the crafts? Proposed titles: P1 "Tantu Kala — Handmade crochet, macramé & pipe-cleaner gifts" (59, needs a small `Seo.astro` change) or P2 "Handmade crochet & macramé gifts · Tantu Kala" (45, no code change) | Home title, `og:title` (WhatsApp/Instagram previews), SEO-1 | With IN-23 | Own title, P1 | Deferred (owner, 21 Oct) |
 | IN-22 | If you start supplying shops (D-41): (a) shop/wholesale prices vs online prices — customers may compare; (b) do shop orders count toward the revenue goal and get their own `channel` (today: `other`); (c) do they share the festival capacity cap; (d) invoices/GST for shop sales — check with a professional | Order log, dashboard, capacity (CMP-4), METRICS | Before the first shop deal | No site change; log shop orders with channel `other` and a note            | Open (low priority)              |
 
 ## 2. Recently answered
 
 | ID           | Answer                                                                              | Decision |
 | ------------ | ----------------------------------------------------------------------------------- | -------- |
-| IN-25        | "Thread" is not a material                                                          | D-78     |
-| IN-22        | Tagline "Art made from threads"                                                      | D-78     |
-| IN-23        | Seal A on every pack; tag B only where stalls use pegs                               | D-79     |
-| IN-24        | Logo redraw approved for pack printing only                                          | D-80     |
-| IN-27        | Dropped: no QR for now                                                               | D-81     |
-| — (PK-1)     | Sticker is for home deliveries and third-party stalls; not our shop                 | D-72     |
-| — (PK-1)     | No location on packs                                                                 | D-73     |
-| — (PK-1)     | Packs: branding only, no legal label, no professional check                          | D-74     |
-| — (PK-1)     | Instagram handle yes; no material; no QR on main sticker (QR variant for review)     | D-75     |
+| IN-26        | "Thread" is not a material                                                          | D-79     |
+| IN-23        | Tagline "Art made from threads"                                                      | D-79     |
+| IN-24        | Seal A on every pack; tag B only where stalls use pegs                               | D-80     |
+| IN-25        | Logo redraw approved for pack printing only                                          | D-81     |
+| IN-28        | Dropped: no QR for now                                                               | D-82     |
+| — (PK-1)     | Sticker is for home deliveries and third-party stalls; not our shop                 | D-73     |
+| — (PK-1)     | No location on packs                                                                 | D-74     |
+| — (PK-1)     | Packs: branding only, no legal label, no professional check                          | D-75     |
+| — (PK-1)     | Instagram handle yes; no material; no QR on main sticker (QR variant for review)     | D-76     |
 | IN-21        | Machine account `tantu-kala-bot` created; agents use it (INSTALL §1b)               | D-70     |
 | IN-18        | LLD-07 decisions P-1…P-5: all approved                                              | D-68     |
 | IN-19        | Permission model approved; verified in use (S-8, first R1 tasks)                    | D-69     |
