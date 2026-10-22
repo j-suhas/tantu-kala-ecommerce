@@ -7,6 +7,8 @@
 - Files to create/edit:
 - Files NOT to touch:
 - Contracts used (types / API actions):
+- Read only (max 3 doc sections, file + §):
+- Model: agent default | Opus (only if on the Opus list, AGENT-WORKFLOW §1)
 
 ## Why (context — required)
 

@@ -1,9 +1,11 @@
 # Tantu Kala v2 — How agents work on this repo
 
-Version 0.4 · 12 Oct 2026 · Status: **draft**
+Version 0.5 · 21 Oct 2026 · Status: **draft**
 
 Changelog:
 
+- 0.5 — Model policy D-72: Sonnet for most agents, Opus for the architect and an Opus list;
+  narrow reading rules.
 - 0.4 — §2 rewritten as the enforced permission model (default-deny per role, read-only shells
   for review roles and SEO, owner-only install kit); paths updated for the docs restructure.
 - 0.3 — Added design, architect, security, docs and content roles; GitHub Projects board as the
@@ -42,10 +44,22 @@ when a task needs them. Repeatable procedures are **skills**, not agents
 (`claude-code/skills/`: `write-task-brief`, `board-update`, `release-checklist`,
 `validate-requirement`, `owner-inputs`).
 
-**Model policy (owner, 9 Oct):** quality over consumption. All role agents run on the strongest
-model with high effort (`model: opus`, `effort: high` in their definitions — change to
-`inherit` if your plan doesn't offer that model in Claude Code). Usage is naturally capped by the
-WIP limit (review capacity) and the plan's usage windows.
+**Model policy (owner, 21 Oct — D-72, replaces the 9 Oct "all Opus, high effort" policy D-35):**
+usage limits were blocking work, so models match the job:
+
+| Agent                                               | Model / effort                                                                                    | Why                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `tk-architect`                                      | Opus / high                                                                                       | Rare, hardest reasoning (design, contracts)    |
+| `tk-reviewer`, `tk-security`                        | Sonnet / high                                                                                     | Narrow diffs, careful checking                 |
+| `tk-frontend`, `tk-data`, `tk-apps-script`, `tk-qa` | Sonnet / medium                                                                                   | Most code volume; tests catch mistakes         |
+| `tk-design`, `tk-content`, `tk-brand`, `tk-seo`     | Sonnet / medium                                                                                   | Writing and design; images are the costly part |
+| `tk-docs`                                           | Sonnet / low                                                                                      | Mostly checking and updating text              |
+| Lead (main session)                                 | Owner's choice: Sonnet / medium by default; Opus for planning, release and hard-decision sessions | Long-running context costs the most            |
+
+**Opus list** (the lead may pass `model: opus` when delegating only for these, or when the owner
+says so): F-5 pricing engine, F-6S spike, any LLD or shared-contract change, release security
+review, and a bug that survived two fix attempts. No agent uses Haiku: every role makes judgment
+calls, and redoing weak work costs more than it saves.
 
 **Starting sessions:** the lead is a plain `claude` session. Any hand-started worker session must
 use `claude --agent tk-<role> --worktree <task-id>` so hooks know its role (`agent_type`).

@@ -10,9 +10,7 @@ isolation: worktree
 You are the architect for Tantu Kala v2 (tier 0: static Astro on Cloudflare + one Apps Script +
 Sheets/Drive; designed to move to Cloudflare Workers + D1 later).
 
-Before working: read `CLAUDE.md`, `docs/v2/architecture/SYSTEM-DESIGN.md`, `docs/v2/architecture/ARCHITECTURE.md`,
-`docs/v2/product/LEAD-QA.md` (A4 migration rules), `docs/v2/standards/SECURITY.md`, the ADRs and LLDs in `docs/v2/architecture/`
-and your brief.
+**Read first:** your task brief — it quotes the requirement rows, acceptance criteria and decisions you need. `CLAUDE.md` is already loaded; don't re-read it. Open other docs only for a specific question, and read just that section (Grep for the ID or heading) rather than the whole file. Your references: `docs/v2/architecture/` (SYSTEM-DESIGN, ARCHITECTURE, ADRs, LLDs), `LEAD-QA.md` A4 (migration rules), `SECURITY.md`.
 
 You:
 

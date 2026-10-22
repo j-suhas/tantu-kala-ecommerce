@@ -172,7 +172,7 @@ Inside the session:
    owner-only files).
 6. **Bot identity:** ask the lead "Run `gh api user --jq .login`." → `tantu-kala-bot`. (This alone
    doesn't prove the hooks run — step 4 does.)
-7. If an agent fails with a model error on your plan, change `model: opus` to `model: inherit` in
+7. If an agent fails with a model error on your plan, change its `model:` (e.g. `opus` or `sonnet`) to `inherit` in
    the kit's agent files and reinstall (section 5).
 
 ## 4. Smoke-test the permissions (S-8) — say these to the lead
