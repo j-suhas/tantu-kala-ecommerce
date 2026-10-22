@@ -1,6 +1,6 @@
 # Tantu Kala v2 — Search visibility (SEO) plan
 
-Version 0.3 · 11 Oct 2026 · Status: **approved for now** (owner, 10 Oct); agents refine it as work starts
+Version 0.4 · 21 Oct 2026 · Status: **approved for now** (owner, 10 Oct); agents refine it as work starts
 
 Goal (owner, 9 Oct): Tantu Kala should appear on relevant searches, with SEO and content managed
 deliberately and **tested and verified across many kinds of searches**.
@@ -18,16 +18,16 @@ to it. **Gap:** breadcrumbs say "Rakhis" for every product; no category/occasion
 
 ## 2. Search intents we target
 
-| Cluster                 | Example searches (to refine with real data)                                                                                    | Landing page                                                       |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| Brand                   | tantu kala, tantukala crochet                                                                                                  | Home, About                                                        |
-| Product type            | handmade crochet jhumka, crochet earrings handmade India, macramé wall hanging, pipe cleaner flowers bouquet, crochet keychain | `/shop/<type>` pages + products                                    |
-| Occasion                | handmade rakhi online, crochet rakhi, handmade Diwali gifts, Navratri jewellery handmade, Ganpati decoration handmade          | `/occasions/<occasion>` (stable yearly URLs, not `/diwali-2026`)   |
-| Type × occasion         | crochet jhumka for Navratri, macramé Diwali decor                                                                              | Curated combo pages — only where ≥ 3 real products exist           |
-| Gifting / custom / bulk | custom crochet gift, personalised handmade gift, bulk handmade return gifts, corporate Diwali gifts handmade                   | Custom order, Bulk order pages                                     |
-| Local                   | crochet gifts in <city>, handmade gifts near me                                                                                | Contact/About with location; Google Business Profile (if eligible) |
-| Care / how-to (content) | how to wash crochet jewellery, are crochet earrings heavy                                                                      | Short guides linked to products                                    |
-| Hindi/Marathi phrasing  | rakhi online handmade, crochet rakhi bhai ke liye                                                                              | Covered through natural copy; separate language pages later        |
+| Cluster                 | Example searches (to refine with real data)                                                                                    | Landing page                                                                                                     |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Brand                   | tantu kala, tantukala crochet                                                                                                  | Home, About                                                                                                      |
+| Product type            | handmade crochet jhumka, crochet earrings handmade India, macramé wall hanging, pipe cleaner flowers bouquet, crochet keychain | `/shop/<type>` pages + products                                                                                  |
+| Occasion                | handmade rakhi online, crochet rakhi, handmade Diwali gifts, Navratri jewellery handmade, Ganpati decoration handmade          | `/occasions/<occasion>` (stable yearly URLs, not `/diwali-2026`)                                                 |
+| Type × occasion         | crochet jhumka for Navratri, macramé Diwali decor                                                                              | Curated combo pages — only where ≥ 3 real products exist                                                         |
+| Gifting / custom / bulk | custom crochet gift, personalised handmade gift, bulk handmade return gifts, corporate Diwali gifts handmade                   | Custom order, Bulk order pages                                                                                   |
+| Local                   | crochet gifts in <city>, handmade gifts near me                                                                                | Contact/About with location (no Google Business Profile — ineligible, D-41); a stockist page only if shops start |
+| Care / how-to (content) | how to wash crochet jewellery, are crochet earrings heavy                                                                      | Short guides linked to products                                                                                  |
+| Hindi/Marathi phrasing  | rakhi online handmade, crochet rakhi bhai ke liye                                                                              | Covered through natural copy; separate language pages later                                                      |
 
 ## 3. Requirements (folded into REQUIREMENTS as SEO-1…SEO-9)
 
@@ -78,6 +78,11 @@ to it. **Gap:** breadcrumbs say "Rakhis" for every product; no category/occasion
   delivery only; the digital store is run from Pune. Consequences:
   - **No Google Business Profile.** Google lists online-only businesses with no face-to-face
     customer contact as ineligible ([eligibility guidelines](https://support.google.com/business/answer/13763036)).
+    Re-checked 21 Oct after D-41 was amended: supplying a few stockist shops doesn't change this — the
+    guideline requires the business itself to meet customers in person and lists brands and artists
+    as ineligible. The shops keep their own profiles. No `LocalBusiness` markup for Tantu Kala.
+  - **If stockists start (IN-22):** a real "Where to buy" page listing each shop by city, linking to
+    the shop's own listing, can serve local searches honestly. Not before a shop agreement exists.
   - Local intent is served honestly through visible content ("handmade in Delhi, shipped across
     India") on About, footer and shipping pages — never fake addresses or city doorway pages.
 - **Q-22 — domain:** stay on `tantukala.embox.in`. Use a **URL-prefix property** in Search

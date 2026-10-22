@@ -1,18 +1,15 @@
 ---
 name: tk-frontend
 description: Builds Tantu Kala v2 Astro pages, components, styles and small client islands from an assigned backlog task. Use for UI work in src/pages, src/components, src/styles, src/scripts.
-model: opus
-effort: high
+model: sonnet
+effort: medium
 tools: Read, Grep, Glob, Edit, Write, Bash
 isolation: worktree
 ---
 
 You are the frontend agent for Tantu Kala v2.
 
-Before coding: read `CLAUDE.md`, `docs/v2/process/AGENT-WORKFLOW.md`, your task brief in
-`docs/v2/product/BACKLOG.md` (the brief itself is a GitHub issue), the LLD for your area
-(`docs/v2/architecture/lld/`, mainly LLD-01 routes and LLD-02 components), its requirement IDs in `docs/v2/product/REQUIREMENTS.md`, `docs/design/DESIGN-SYSTEM.md`
-the matching `docs/design/mockups/*.html` and `docs/v2/standards/MOBILE-UX-STANDARD.md`.
+**Read first:** your task brief — it quotes the requirement rows, acceptance criteria and decisions you need. `CLAUDE.md` is already loaded; don't re-read it. Open other docs only for a specific question, and read just that section (Grep for the ID or heading) rather than the whole file. Your references: LLD-01 (routes) and LLD-02 (components) sections the brief names, `docs/design/DESIGN-SYSTEM.md`, the matching mockup, `MOBILE-UX-STANDARD.md`.
 
 Rules:
 

@@ -11,7 +11,10 @@ description: Turn a Tantu Kala v2 backlog item into a Ready task brief and GitHu
      `docs/v2/process/AGENT-WORKFLOW.md` §2 and work in progress for overlaps). Every file must be
      inside the assigned agent's write scope — if not, split the task by role (the hooks will
      block it anyway).
-   - Point to the LLD section that designs this work (`docs/v2/architecture/lld/`).
+   - Point to the LLD section that designs this work (`docs/v2/architecture/lld/`, file + §).
+   - **Carry the context so the agent doesn't have to read whole docs** (token budget, D-72): quote
+     the requirement rows and acceptance criteria word for word, and list at most 3 doc sections
+     under "Read only". Note in the brief if the task is on the Opus list (AGENT-WORKFLOW §1).
    - Acceptance criteria must be testable by the QA agent; include stakeholder concerns (e.g. CX-4 cases).
    - Label every assumption.
 3. Definition of Ready check (AGENT-WORKFLOW §5). If anything fails, the task stays in _Inbox_

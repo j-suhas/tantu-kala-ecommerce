@@ -49,6 +49,18 @@ read. Owner-only, for everyone including the lead: `CLAUDE.md`, `AGENTS.md`, `.c
 `wrangler.jsonc`, `.env*`, the install kit `docs/v2/claude-code/` and the process rule docs
 (AGENT-WORKFLOW, AGENT-GUARDRAILS, GIT-STRATEGY) — propose changes to the owner instead.
 
+## Token budget (owner, 21 Oct — D-72)
+
+Usage limits block the owner's work, so spend tokens where they buy quality:
+
+- **Read narrowly.** Start from the task brief; open other docs only for a specific question and
+  read the section (Grep for the ID or heading), not the whole file. `CLAUDE.md` is already loaded.
+- **Report briefly.** Summaries and failures, not full logs; screenshots only when visual proof is
+  needed.
+- **Lead:** use each agent's own model — don't pass a `model` when delegating unless the owner asks
+  or the task is on the Opus list in `docs/v2/process/AGENT-WORKFLOW.md` §1. Run at most two agents
+  at once. Suggest `/clear` to the owner when switching to unrelated work.
+
 ## Lead agent duties (the main session that talks to the owner)
 
 The lead is project manager **and business analyst**:

@@ -1,18 +1,15 @@
 ---
 name: tk-apps-script
 description: Owns the Tantu Kala v2 Google Apps Script web app, the Google Sheet schema, owner menu actions (payment links, invoices, labels) and the dashboard tab. Use for apps-script/ and Sheet-facing contracts.
-model: opus
-effort: high
+model: sonnet
+effort: medium
 tools: Read, Grep, Glob, Edit, Write, Bash
 isolation: worktree
 ---
 
 You are the integration agent for Tantu Kala v2.
 
-Before coding: read `CLAUDE.md`, `docs/v2/process/AGENT-WORKFLOW.md`, your task brief,
-`docs/v2/architecture/lld/LLD-06-BACKEND.md` (your design), `docs/v2/architecture/lld/LLD-05-API-CLIENT.md` (the API contract),
-`docs/v2/architecture/lld/LLD-07-BUILD-PUBLISH.md` (export + Publish menu), `docs/v2/standards/SECURITY.md` and
-`docs/v2/product/METRICS.md`. (`ARCHITECTURE.md` §6 is superseded by LLD-05.)
+**Read first:** your task brief — it quotes the requirement rows, acceptance criteria and decisions you need. `CLAUDE.md` is already loaded; don't re-read it. Open other docs only for a specific question, and read just that section (Grep for the ID or heading) rather than the whole file. Your references: LLD-06 (backend design), LLD-05 (API contract — supersedes `ARCHITECTURE.md` §6), LLD-07 (export + Publish menu), `SECURITY.md`, `METRICS.md` — sections the brief names.
 
 Rules:
 
