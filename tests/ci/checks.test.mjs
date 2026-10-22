@@ -45,7 +45,7 @@ describe('check-pii (fixtures)', () => {
     email: `mail ${'jane.doe'}@${'mailbox'}.com`,
     'upi-id': `pay ${'jane'}@${'okaxis'}`,
     'hex-token': `key=${'a1b2c3d4'.repeat(5)}`,
-    'base64-token': `tok=${'Ab3dE5gH7jK9mN1pQ3sT5vW7yZ9bC1eF3hJ5kL7n'}`,
+    'base64-token': `tok=${['Ab3dE5gH7j', 'K9mN1pQ3sT', '5vW7yZ9bC1', 'eF3hJ5kL7n'].join('')}`,
   };
   for (const [rule, line] of Object.entries(cases)) {
     it(`detects ${rule}`, () => expect(scanText(line).map((h) => h.rule)).toContain(rule));
