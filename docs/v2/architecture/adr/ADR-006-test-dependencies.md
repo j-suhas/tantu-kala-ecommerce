@@ -1,6 +1,6 @@
 # ADR-006: Test dependencies (Vitest now, Playwright later)
 
-- Status: **Proposed**, for the owner to approve (drafted by the lead, 23 Oct 2026)
+- Status: **Accepted** (owner, 23 Oct 2026: "I approve ADR-006 option A (Vitest now, Playwright later)"; recorded as D-84). Drafted by the lead, 23 Oct 2026.
 - Context: D-28 (9 Oct, decided) says "L-2: Vitest + Playwright, dev-only (ADR-006 to write)".
   `SECURITY.md` T9 says new dependencies need an ADR, and that installs use a lockfile and
   `npm ci`. F-7 (PR #29) adds `vitest` to `package.json` for the CI check scripts, but
@@ -33,9 +33,7 @@
     updates.
   - F-7's `npm test` and CI install step work once the lockfile is regenerated.
   - Playwright will download browser binaries when first installed (size not measured here).
-- Owner steps if approved (agents cannot do these):
-  1. On `task/F-7-test-harness`, run `npm install` and commit the updated `package-lock.json`.
-  2. Record the decision as the next free ID in `docs/v2/DECISIONS-LOG.md` (the lead does this;
-     D-84 if PR #22 merges first, because it uses D-73…D-83) and set this ADR to **Accepted**.
+- Owner step still open (agents cannot do it): on `task/F-7-test-harness`, run `npm install` and
+  commit the updated `package-lock.json`. Until then `npm ci` fails on that branch.
 - Revisit: when the first end-to-end task is written (install Playwright), or if Vitest
   maintenance becomes a burden (fall back to option C).
