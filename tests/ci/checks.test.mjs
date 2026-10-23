@@ -53,6 +53,19 @@ describe('check-pii (fixtures)', () => {
   it('passes clean text and path-like strings', () => {
     expect(scanText('Add a product = one JSON entry. src/lib/pricing.ts and a/very/long/path/segments/with/Mixed1Case/names')).toEqual([]);
   });
+  it('an allowed value does not hide a real value on the same line', () => {
+    // Allowlisted public value rebuilt at runtime from pieces (the shape used in the brand config).
+    const allowed = ['91', '8999', '282304'].join('');
+    const real = ['9', '876', '543210'].join('');
+    expect(scanText(`${allowed}`)).toEqual([]); // sanity: allowed alone is clean
+    expect(scanText(`${allowed} and ${real}`).map((h) => h.rule)).toEqual(['phone']);
+    expect(scanText(`${real} and ${allowed}`).map((h) => h.rule)).toEqual(['phone']);
+  });
+  it('a path-like token does not hide a real token on the same line', () => {
+    const pathLike = ['aa/Bb1', 'cc/Dd2', 'ee/Ff3', 'gg/Hh4', 'ii/Jj5', 'kk/Ll6', 'mm'].join('');
+    const real = ['Ab3dE5gH7j', 'K9mN1pQ3sT', '5vW7yZ9bC1', 'eF3hJ5kL7n'].join('');
+    expect(scanText(`${pathLike} ${real}`).map((h) => h.rule)).toContain('base64-token');
+  });
   it('fails files with hits but only reports known files', () => {
     const files = { 'a.md': cases.phone, '.env.production': 'U=https://script.google.com/macros/s/' + 'A'.repeat(30) + '/exec' };
     const r = scanFiles(Object.keys(files), (f) => files[f]);

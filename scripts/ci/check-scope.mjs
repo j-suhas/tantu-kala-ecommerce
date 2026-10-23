@@ -25,7 +25,7 @@ export function ownerOnlyViolations(paths) {
 
 function main() {
   const base = process.argv[2] ?? 'origin/v2';
-  const out = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' });
+  const out = execFileSync('git', ['diff', '--name-only', '--no-renames', `${base}...HEAD`], { encoding: 'utf8' });
   const bad = ownerOnlyViolations(out.split('\n').filter(Boolean));
   if (bad.length) {
     console.error('check-scope FAIL: owner-only paths changed:\n  ' + bad.join('\n  '));

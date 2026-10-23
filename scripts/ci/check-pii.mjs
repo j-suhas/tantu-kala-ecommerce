@@ -41,11 +41,13 @@ export function scanText(text) {
   const hits = [];
   text.split(/\r?\n/).forEach((line, i) => {
     for (const { name, re } of RULES) {
-      const m = line.match(re);
-      if (!m) continue;
-      if (name === 'base64-token' && (!isMixedToken(m[0]) || (m[0].match(/\//g) ?? []).length >= 2)) continue; // path-like
-      if (ALLOWED_HASHES.has(hashValue(normalise(name, m[0])))) continue;
-      hits.push({ rule: name, line: i + 1 });
+      const global = new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g');
+      for (const m of line.matchAll(global)) {
+        // Skips are decided per match, so an allowed value never hides a real one on the same line.
+        if (name === 'base64-token' && (!isMixedToken(m[0]) || (m[0].match(/\//g) ?? []).length >= 2)) continue; // path-like
+        if (ALLOWED_HASHES.has(hashValue(normalise(name, m[0])))) continue;
+        hits.push({ rule: name, line: i + 1 });
+      }
     }
   });
   return hits;
