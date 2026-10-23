@@ -8,12 +8,12 @@
   So `npm ci` fails on that branch until the owner approves and regenerates the lockfile.
   Today `package.json` has no test runner at all.
 - Options:
-  - (A) **Vitest now; Playwright added with the first end-to-end task** (proposed).
+  - (A) **Vitest now; Playwright added with the first end-to-end task** (chosen by the owner).
   - (B) Vitest and Playwright both now.
   - (C) No test dependency: Node's built-in test runner (`node --test`). This has no install step
     but, as far as the lead knows, lacks the TypeScript and watch ergonomics the A3 stack chose
     Vitest for (assumption, not measured here).
-- Proposal: **A.**
+- Decision: **A.**
   - **Vitest** (dev-only) runs the pure-logic unit tests: pricing, tags, validation, and the F-7
     check scripts. F-7 pins `^2.1.9`; the owner or lead may choose another version when
     regenerating the lockfile.
