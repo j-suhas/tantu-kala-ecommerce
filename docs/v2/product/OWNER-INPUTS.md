@@ -31,11 +31,17 @@ How this works:
 | IN-17 | Data retention: how long to keep full addresses and phone numbers after delivery (B-7); deletion-on-request process                                                                                                                                                                                              | DPDP compliance, LLD-06 §8, PG-2                | R2                         | Keep until decided; nothing auto-deleted                                   | Open                             |
 | IN-20 | Where long-form page copy lives (guides, About story, FAQs): proposed `src/content/` (Astro content collections) — architect to confirm in LLD-02                                                                                                                                                                | `tk-content` write scope, SEO-D                 | R1                         | `src/content/`                                                             | Open (architect)                 |
 | IN-22 | If you start supplying shops (D-41): (a) shop/wholesale prices vs online prices — customers may compare; (b) do shop orders count toward the revenue goal and get their own `channel` (today: `other`); (c) do they share the festival capacity cap; (d) invoices/GST for shop sales — check with a professional | Order log, dashboard, capacity (CMP-4), METRICS | Before the first shop deal | No site change; log shop orders with channel `other` and a note            | Open (low priority)              |
+| IN-34 | Homepage shape: 3 collections (one large) instead of 6, one hero button (custom as a text link), products as the 2nd section | DZ-2b homepage | DZ-2b | Yes | Open |
+| IN-35 | Product facts the pages state: making/dispatch time ("ships in 3–5 days" is invented), size and weight per piece, reply time on WhatsApp/email, whether "No metal" is true for pipe-cleaner pieces | DZ-2b copy; L1-2; CX copy | DZ-2b | Show "Made to order" with no day count until given | Open |
+| IN-36 | Respect check: may deity motifs be sold as earrings, coasters and boxes (festival mockup: modak earrings, Ganpati Gifting Box, coasters)? | DZ-2b festival page; catalog | DZ-2b | Ask before showing any deity motif | Open |
 
 ## 2. Recently answered
 
 | ID           | Answer                                                                              | Decision |
 | ------------ | ----------------------------------------------------------------------------------- | -------- |
+| IN-31 | Text colours: three text shades added | D-89 |
+| IN-32 | Small labels in sentence case | D-90 |
+| IN-33 | One shared header with zero-JS menu | D-91 |
 | IN-21        | Machine account `tantu-kala-bot` created; agents use it (INSTALL §1b)               | D-70     |
 | IN-18        | LLD-07 decisions P-1…P-5: all approved                                              | D-68     |
 | IN-19        | Permission model approved; verified in use (S-8, first R1 tasks)                    | D-69     |
