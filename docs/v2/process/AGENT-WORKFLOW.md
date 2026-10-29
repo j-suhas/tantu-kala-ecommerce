@@ -1,9 +1,12 @@
 # Tantu Kala v2 — How agents work on this repo
 
-Version 0.5 · 21 Oct 2026 · Status: **draft**
+Version 0.6 · 29 Oct 2026 · Status: **draft**
 
 Changelog:
 
+- 0.6 — Kit v3: gated workflow (plan / verify / review gates by hook), 17 process skills, new
+  agents tk-social and tk-analyst, `work/` gate files, `Skill` tool for agents. Permission model
+  unchanged — new roles follow the same default-deny rules (table below).
 - 0.5 — Model policy D-72: Sonnet for most agents, Opus for the architect and an Opus list;
   narrow reading rules.
 - 0.4 — §2 rewritten as the enforced permission model (default-deny per role, read-only shells
@@ -37,12 +40,17 @@ This document is the operating manual. Every agent reads it at the start of ever
 | **SEO specialist**      | `tk-seo`                                | Search intents, landing-page plan, SEO audits, search test matrix and monthly report                                                                                                                                                                                                                                                                            | Promise rankings; use manipulative SEO tactics                                  |
 | **Brand editor**        | `tk-brand`                              | Reviews all customer-facing text and images (brand fit, accuracy, tone, photo quality and theme); drafts `BRAND-VOICE.md`                                                                                                                                                                                                                                       | Write final copy (`tk-content` does); approve AI/stock images as product photos |
 | **Docs keeper**         | `tk-docs`                               | Keeps docs in sync with merged code and decisions; traceability and contradiction checks                                                                                                                                                                                                                                                                        | Create or change decisions                                                      |
+| **Social media manager** | `tk-social` | Instagram/social drafts: reel scripts, captions, carousels, stories, replies, content calendar — facts from `PRODUCT.md`, brand voice, `humanize` | Post, message customers, or invent facts/reviews |
+| **Business analyst** | `tk-analyst` | Business questions: feasibility, pricing, stockists, new lines; sourced recommendation + cheapest next test (`venture-check`) | Decide; give legal/tax advice; write code |
 
 One task = one agent = one branch. The lead may run several agents at once on independent tasks.
 Not every role runs every day: architect, design, security, docs and content agents are called
 when a task needs them. Repeatable procedures are **skills**, not agents
 (`claude-code/skills/`: `write-task-brief`, `board-update`, `release-checklist`,
-`validate-requirement`, `owner-inputs`).
+`validate-requirement`, `owner-inputs`) plus the kit v3 process skills: `brainstorm`, `write-plan`,
+`execute-plan`, `verify`, `review-task`, `receive-review`, `tdd`, `debug`, `design-gates`, `humanize`,
+`bakeoff`, `truth-file`, `capture-lesson`, `improve-skills`, `write-skill`, `compact-checkpoint`,
+`venture-check` (see CLAUDE.md "Gated workflow"). Agents load skills on demand through the `Skill` tool.
 
 **Model policy (owner, 21 Oct — D-72, replaces the 9 Oct "all Opus, high effort" policy D-35):**
 usage limits were blocking work, so models match the job:
@@ -52,7 +60,8 @@ usage limits were blocking work, so models match the job:
 | `tk-architect`                                      | Opus / high                                                                                       | Rare, hardest reasoning (design, contracts)    |
 | `tk-reviewer`, `tk-security`                        | Sonnet / high                                                                                     | Narrow diffs, careful checking                 |
 | `tk-frontend`, `tk-data`, `tk-apps-script`, `tk-qa` | Sonnet / medium                                                                                   | Most code volume; tests catch mistakes         |
-| `tk-design`, `tk-content`, `tk-brand`, `tk-seo`     | Sonnet / medium                                                                                   | Writing and design; images are the costly part |
+| `tk-design`, `tk-content`, `tk-brand`, `tk-seo`, `tk-social`     | Sonnet / medium                                                                                   | Writing and design; images are the costly part |
+| `tk-analyst` | Sonnet / high | Business judgement on evidence |
 | `tk-docs`                                           | Sonnet / low                                                                                      | Mostly checking and updating text              |
 | Lead (main session)                                 | Owner's choice: Sonnet / medium by default; Opus for planning, release and hard-decision sessions | Long-running context costs the most            |
 
@@ -85,13 +94,24 @@ it may write only inside its scope. Shared paths are further limited to the role
 | `tk-docs`                                               | Read, Grep, Glob, Edit, Write, Bash                      | `docs/**` (minus the lead-only and owner-only docs below), root `README.md`                                                                     | read-only |
 | `tk-security`                                           | Read, Grep, Glob, Edit, Write, Bash                      | `docs/v2/standards/SECURITY.md`                                                                                                                 | read-only |
 | `tk-reviewer`                                           | Read, Grep, Glob, Bash                                   | none                                                                                                                                            | read-only |
+| `tk-social` | Read, Grep, Glob, Edit, Write, Bash, Skill | `marketing/**`, `work/<task>/` notes | guarded |
+| `tk-analyst` | Read, Grep, Glob, Edit, Write, Bash, WebSearch, WebFetch, Skill | `docs/v2/analysis/**` | read-only |
 | Built-in agents (Explore, Plan, general-purpose, forks) | as Claude Code gives them                                | none                                                                                                                                            | read-only |
+
+Kit v3 additions: every `tk-*` agent also has the `Skill` tool (skills load on demand); the
+building and writing roles (architect, data, frontend, apps-script, qa, design, content, social)
+may also write `work/<task>/` notes such as `rulings.md` and `handoff.md`. The gate files inside
+`work/` stay lead-only (below).
 
 **Shared paths** (only these roles, even if inside someone's scope):
 
 | Path                                                                                                                    | Roles                                    |
 | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
 | `docs/v2/DECISIONS-LOG.md`, `product/BACKLOG.md`, `product/OWNER-INPUTS.md`, `templates/`, `archive/`, `docs/learning/` | lead                                     |
+| `work/<task>/brief.md`, `spec.md`, `plan.md` (gate files, kit v3) | lead |
+| `work/<task>/verify.md`, `review.md` | lead, QA |
+| `marketing/**` | lead, social |
+| `docs/v2/analysis/**` | lead, analyst, docs |
 | `docs/v2/architecture/**`                                                                                               | lead, architect, docs                    |
 | `docs/v2/standards/SECURITY.md` · `SEO.md` · `MOBILE-UX-STANDARD.md`                                                    | lead, security · seo · design; + docs    |
 | `docs/design/**` · `docs/design/BRAND-VOICE.md`                                                                         | lead, design · brand; + docs             |

@@ -206,3 +206,33 @@ differs). Both folders are owner-only for Claude Code and covered by CODEOWNERS.
 - Agents can edit outside their scope → hooks aren't running: re-check step 3.1 and `/hooks`.
 - Your Claude Code uses the PowerShell tool instead of Bash for agents → tell me; worker tool
   lists name `Bash` only (the hooks already cover both).
+
+## 7. Kit v3 (29 Oct 2026): gated workflow, new skills and agents
+
+What changes: 17 process skills, 2 new agents (`tk-social`, `tk-analyst`), all agents get the
+`Skill` tool, a new `gate-check.mjs` hook, check scripts in `.claude/scripts/`, truth files in
+`docs/truth/`. The permission model is unchanged; new roles follow the same rules (145/145 hook
+cases pass, including the original 113).
+
+```powershell
+git switch v2; git pull
+git switch -c task/S-12-kit-v3
+node C:\Users\suhas\global-workspace\agent-research\builds\tantu-kala-kit-v3\apply.mjs
+node docs/v2/claude-code/install-kit.mjs        # expect 145/145 hook cases passed
+git add -A docs .claude CLAUDE.md AGENTS.md
+git status                                     # no settings.local.json, no docs/learning
+git commit -m "chore(S-12): agent kit v3 — gated workflow, 17 skills, tk-social, tk-analyst"
+git push -u origin task/S-12-kit-v3
+```
+
+Open the PR, squash-merge with the bypass box, `git switch v2; git pull`, then start a new lead
+session. Optional plugin (Instagram skills for `tk-social`), installed by you, **local scope** so
+it isn't written into the shared settings file:
+
+```text
+/plugin marketplace add Jakeschincariol/instagram-agent-skill
+/plugin install instagram-agent@instagram-agent-skill      → choose "local" scope
+```
+
+Its checks are small Python scripts; install Python 3 if you want them (`winget install
+Python.Python.3.12`), otherwise `tk-social` follows the written method.

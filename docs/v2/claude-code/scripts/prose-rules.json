@@ -1,0 +1,23 @@
+{
+  "$comment": "Deterministic prose rules. Word and phrase lists are adapted from blader/humanizer (MIT, patterns 12-17, 22-23) and hardikpandya/stop-slop (MIT, references/phrases.md), plus our own. Projects add brand words in VOICE.md's 'never use' list via --extra.",
+  "errors": {
+    "chat-residue": ["great question", "i hope this helps", "let me know if you", "as an ai", "certainly!", "absolutely!", "happy to help", "i'd be happy to"],
+    "knowledge-disclaimer": ["as of my last update", "as of my knowledge cutoff", "i don't have access to real-time"],
+    "throat-clearing": ["here's the thing", "the truth is", "let me be clear", "it turns out", "make no mistake", "let that sink in", "full stop.", "here's why that matters", "the uncomfortable truth"],
+    "inflated-significance": ["stands as a testament", "a testament to", "pivotal moment", "plays a key role", "plays a crucial role", "setting the stage for", "indelible mark", "enduring legacy", "evolving landscape", "continues to thrive"],
+    "sales-language": ["nestled", "in the heart of", "breathtaking", "must-visit", "a diverse array", "rich tapestry", "unparalleled", "world-class", "game-changer", "game changer", "revolutionary"],
+    "borrowed-authority": ["experts argue", "experts believe", "industry reports suggest", "studies show", "observers have noted"]
+  },
+  "warnings": {
+    "overused-words": ["delve", "tapestry", "pivotal", "crucial", "meticulous", "meticulously", "intricate", "interplay", "landscape", "bolster", "bolstered", "garner", "enhance", "showcase", "showcasing", "underscore", "underscores", "foster", "fostering", "vibrant", "seamless", "seamlessly", "leverage", "elevate", "unlock", "embark", "realm", "navigate", "robust", "holistic", "synergy"],
+    "shallow-ing-riders": [", highlighting", ", underscoring", ", emphasizing", ", ensuring", ", reflecting", ", symbolizing", ", showcasing", ", fostering"],
+    "not-x-but-y": ["it's not just", "it is not just", "not just a", "isn't just", "not only .* but also"],
+    "staged-run-up": ["honestly?", "here's what", "the real question is", "but here's the"],
+    "jargon": ["circle back", "double down", "deep dive", "move the needle", "low-hanging fruit", "lean into", "unpack this"]
+  },
+  "limits": {
+    "emDashPer100Words": 1.0,
+    "exclamationPer100Words": 1.0,
+    "emojiBulletLines": 0
+  }
+}

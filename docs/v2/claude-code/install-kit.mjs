@@ -35,7 +35,7 @@ const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
     e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
   );
-for (const sub of ['agents', 'hooks', 'skills'])
+for (const sub of ['agents', 'hooks', 'skills', 'scripts'])
   for (const f of walk(join(kit, sub)))
     map.set(
       f.replace(/\\/g, '/'),
