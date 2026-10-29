@@ -1,6 +1,6 @@
 # DESIGN: Tantu Kala (truth file)
 
-DRAFT 29 Oct 2026 for Suhas's approval · from `docs/design/DESIGN-SYSTEM.md` (still marked
+Approved by Suhas 29 Oct 2026 (D-87) · from `docs/design/DESIGN-SYSTEM.md` (still marked
 PROPOSAL there; exact hex values and Karla are not yet confirmed) and `MOBILE-UX-STANDARD.md` ·
 the design-gates skill reads this file.
 

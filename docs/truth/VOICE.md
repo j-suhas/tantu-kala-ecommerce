@@ -1,6 +1,6 @@
 # VOICE: Tantu Kala (truth file)
 
-DRAFT 29 Oct 2026 — a placeholder until BR-1 (`docs/design/BRAND-VOICE.md`) is written and
+Approved by Suhas 29 Oct 2026 (D-87) — a placeholder until BR-1 (`docs/design/BRAND-VOICE.md`) is written and
 approved; then this file summarises it. Tone already decided: premium, warm, quiet; never hype
 (agent briefs, D-13, D-45).
 

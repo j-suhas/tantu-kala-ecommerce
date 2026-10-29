@@ -1,6 +1,6 @@
 # PRODUCT: Tantu Kala (truth file)
 
-DRAFT 29 Oct 2026 for Suhas's approval · facts from `docs/v2/DECISIONS-LOG.md` (v2 @ b3cc7c9) ·
+Approved by Suhas 29 Oct 2026 (D-87) · facts from `docs/v2/DECISIONS-LOG.md` (v2 @ b3cc7c9) ·
 ≤ 120 lines · agents read this before whole docs; it never adds a decision.
 
 ## What it is
