@@ -59,7 +59,17 @@
           {
             "type": "command",
             "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-bash.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-bash.mjs"
+            ],
+            "onFailure": "block"
+          },
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/gate-check.mjs"
+            ],
             "onFailure": "block"
           }
         ]
@@ -70,7 +80,17 @@
           {
             "type": "command",
             "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-files.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-files.mjs"
+            ],
+            "onFailure": "block"
+          },
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/gate-check.mjs"
+            ],
             "onFailure": "block"
           }
         ]
@@ -83,7 +103,9 @@
           {
             "type": "command",
             "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/format-file.mjs"]
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/format-file.mjs"
+            ]
           }
         ]
       }
@@ -95,10 +117,13 @@
           {
             "type": "command",
             "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/rules-reminder.mjs"]
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/rules-reminder.mjs"
+            ]
           }
         ]
       }
     ]
-  }
+  },
+  "$comment_gates": "Kit v3: gate-check.mjs runs after the guard on Bash and Edit/Write — process gates (approved plan before worker edits in code; verify PASS + review approve before gh pr create). Permissions themselves are unchanged."
 }

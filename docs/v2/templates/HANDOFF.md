@@ -33,3 +33,11 @@
 - Concept this task illustrates:
 - What a lead should check in this PR:
 - Mistakes made or near-misses (including mine):
+
+## Observation (kit v3, `capture-lesson` — only if something non-obvious happened)
+
+kind: correction | repeated-pattern | judgement-call | check-caught | new-skill-candidate
+skill/agent:
+what happened:
+what should change:
+evidence:

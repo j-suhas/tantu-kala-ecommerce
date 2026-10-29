@@ -35,6 +35,11 @@ export const OWNER_ONLY = [
 
 /** Shared paths: only these roles may edit them (first match wins, most specific first). */
 export const GROUPS = [
+  // Process gate files (kit v3): only the lead writes the brief/spec/plan and their approval line;
+  // verify/review reports come from the lead or QA. Other work/ files (rulings, handoff) follow scopes.
+  { re: /^work\/[^/]+\/(brief|spec|plan)\.md$/, roles: ['lead'] },
+  { re: /^work\/[^/]+\/(verify|review)\.md$/, roles: ['lead', 'tk-qa'] },
+  { re: /^marketing\//, roles: ['lead', 'tk-social'] },
   { re: /^docs\/v2\/DECISIONS-LOG\.md$/, roles: ['lead'] },
   { re: /^docs\/v2\/product\/(BACKLOG|OWNER-INPUTS)\.md$/, roles: ['lead'] },
   { re: /^docs\/v2\/(templates|archive)\//, roles: ['lead'] },
@@ -47,6 +52,7 @@ export const GROUPS = [
     roles: ['lead', 'tk-design', 'tk-docs'],
   },
   { re: /^docs\/v2\/reports\/seo\//, roles: ['lead', 'tk-seo', 'tk-docs'] },
+  { re: /^docs\/v2\/analysis\//, roles: ['lead', 'tk-analyst', 'tk-docs'] },
   { re: /^docs\/design\/BRAND-VOICE\.md$/, roles: ['lead', 'tk-brand', 'tk-docs'] },
   { re: /^docs\/design\//, roles: ['lead', 'tk-design', 'tk-docs'] },
   { re: /^docs\//, roles: ['lead', 'tk-docs'] },
@@ -69,6 +75,7 @@ export const ALLOW_ONLY = {
     /^spikes\//,
     /^public\/_headers$/,
     /^(astro\.config\.mjs|tsconfig\.json)$/,
+    /^work\//,
   ],
   'tk-data': [
     /^src\/(lib|config|data)\//,
@@ -76,14 +83,16 @@ export const ALLOW_ONLY = {
     /^tests\//,
     /^public\/images\/products\//,
     /^package(-lock)?\.json$/,
+    /^work\//,
   ],
   'tk-frontend': [
     /^src\/(pages|components|layouts|islands|scripts|styles)\//,
     /^public\/(?!_headers$|images\/products\/)/,
     /^tests\//,
     /^tailwind\.config\.mjs$/,
+    /^work\//,
   ],
-  'tk-apps-script': [/^apps-script\//, /^tests\//],
+  'tk-apps-script': [/^apps-script\//, /^tests\//, /^work\//],
   'tk-qa': [
     /^tests\//,
     /^e2e\//,
@@ -91,21 +100,26 @@ export const ALLOW_ONLY = {
     /^(playwright|vitest)\.config\.(ts|mts|mjs|js)$/,
     /^lighthouserc(\.json|\.js|\.cjs)?$/,
     /^package(-lock)?\.json$/,
+    /^work\//,
   ],
   'tk-design': [
     /^docs\/design\/(?!BRAND-VOICE\.md$)/,
     /^docs\/v2\/standards\/MOBILE-UX-STANDARD\.md$/,
+    /^work\//,
   ],
   'tk-brand': [/^docs\/design\/BRAND-VOICE\.md$/],
-  'tk-content': [/^src\/data\/products\.json$/, /^src\/content\//],
+  'tk-content': [/^src\/data\/products\.json$/, /^src\/content\//, /^work\//],
   'tk-seo': [/^docs\/v2\/standards\/SEO\.md$/, /^docs\/v2\/reports\/seo\//],
   'tk-docs': [/^docs\/(?!learning\/)/, /^README\.md$/],
   'tk-security': [/^docs\/v2\/standards\/SECURITY\.md$/],
   'tk-reviewer': [],
+  // kit v3 roles — same default-deny model
+  'tk-social': [/^marketing\//, /^work\//],
+  'tk-analyst': [/^docs\/v2\/analysis\//],
 };
 
 /** Roles whose shell is limited to read-only commands (READ_ONLY_COMMANDS). */
-export const READ_ONLY_SHELL = new Set(['tk-reviewer', 'tk-security', 'tk-docs', 'tk-seo']);
+export const READ_ONLY_SHELL = new Set(['tk-reviewer', 'tk-security', 'tk-docs', 'tk-seo', 'tk-analyst']);
 
 /** Every command segment of a read-only role must match one of these. */
 export const READ_ONLY_COMMANDS = [
@@ -121,6 +135,17 @@ export const READ_ONLY_COMMANDS = [
   /^npm\s+(test|run\s+(test|check|lint|typecheck|validate)(:[\w-]+)?)\b/,
   /^npx\s+(tsc\s+--noEmit|prettier\s+--check|astro\s+check)\b/,
   /^node\s+(--version|-v)$/,
+  /^node\s+\.claude\/scripts\/(prose-lint|decision-check)\.mjs\b/, // kit v3 read-only check scripts
 ];
+
+/** Process gates (kit v3), enforced by gate-check.mjs. Task id comes from the branch name;
+ *  lead branches like task/lead-… don't match and aren't gated. */
+export const GATES = {
+  workDir: 'work',
+  branchPattern: /^task\/([A-Za-z0-9]+-\d+[A-Za-z]?)-/,
+  implementationScopes: [/^src\//, /^apps-script\//, /^public\//, /^scripts\//],
+  // Tasks already in flight when the gates arrived (owner may empty this list once they merge).
+  exemptTasks: ['F-1', 'F-6S', 'F-7', 'DZ-1', 'BR-1', 'BR-2', 'PK-1'],
+};
 
 export const KNOWN_ROLES = new Set(['lead', ...Object.keys(ALLOW_ONLY)]);

@@ -49,6 +49,28 @@ read. Owner-only, for everyone including the lead: `CLAUDE.md`, `AGENTS.md`, `.c
 `wrangler.jsonc`, `.env*`, the install kit `docs/v2/claude-code/` and the process rule docs
 (AGENT-WORKFLOW, AGENT-GUARDRAILS, GIT-STRATEGY) — propose changes to the owner instead.
 
+## Gated workflow (kit v3)
+
+Every task moves through gates; each leaves a file in `work/<task-id>/` on the task branch.
+
+| Gate | Skill | Leaves | Enforced |
+| --- | --- | --- | --- |
+| G0 understand | `brainstorm` (money, data, security, brand, or unclear goal) | task brief / `brief.md` | lead |
+| G1 brief | `write-task-brief` (the brief is the spec) | GitHub issue | lead, Suhas approves |
+| G2 plan | `write-plan` | `plan.md` with `Approved:` | **hook:** worker code edits blocked without it |
+| G3 build | `execute-plan`, `tdd`, `debug` | code + `rulings.md` | role scopes |
+| G4 verify | `verify` | `verify.md` → `Result: PASS` | **hook:** `gh pr create` blocked without it |
+| G5 review | `review-task` (+ tk-security when risky), `receive-review` | `review.md` → `Verdict: approve` | **hook:** same |
+| G6 learn | `capture-lesson`, weekly `improve-skills` | observations | lead |
+
+Size the work: a one-line fix may use a one-step plan; anything touching money, customer data,
+security or the brand goes through every gate. Big, hard-to-undo choices: `bakeoff`.
+Only `brief/spec/plan.md` are lead-only; `verify.md`/`review.md` are lead or tk-qa.
+
+**Human quality:** every customer-facing or owner-facing text ends with `humanize` + `prose-lint`;
+every design passes `design-gates` (Floor never ships). Never invent facts, reviews or numbers.
+**Truth files:** agents read `docs/truth/PRODUCT.md`, `DESIGN.md`, `VOICE.md` before whole docs.
+
 ## Token budget (owner, 21 Oct — D-72)
 
 Usage limits block the owner's work, so spend tokens where they buy quality:
@@ -57,6 +79,7 @@ Usage limits block the owner's work, so spend tokens where they buy quality:
   read the section (Grep for the ID or heading), not the whole file. `CLAUDE.md` is already loaded.
 - **Report briefly.** Summaries and failures, not full logs; screenshots only when visual proof is
   needed.
+- **Checkpoints:** use `compact-checkpoint` to suggest `/compact` or `/clear` at breakpoints.
 - **Lead:** use each agent's own model — don't pass a `model` when delegating unless the owner asks
   or the task is on the Opus list in `docs/v2/process/AGENT-WORKFLOW.md` §1. Run at most two agents
   at once. Suggest `/clear` to the owner when switching to unrelated work.
