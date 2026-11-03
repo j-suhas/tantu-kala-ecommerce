@@ -1,0 +1,27 @@
+{
+  "skill": "humanize",
+  "cases": [
+    {
+      "id": "diwali-caption",
+      "prompt": "Use the humanize skill on this Instagram caption for Tantu Kala and return only the rewritten caption: \"I'm thrilled to announce our Diwali collection is finally here! \ud83d\ude80 It's not just a gift, it's a feeling. Each handmade crochet diya stands as a testament to our meticulous craft. Let that sink in. #handmade #crochet #diwali #gifts #love #india #festive\"",
+      "expectations": [
+        {
+          "type": "lint-clean",
+          "tool": "prose-lint"
+        },
+        {
+          "type": "regex-absent",
+          "pattern": "testament|meticulous|not just|sink in|thrilled"
+        },
+        {
+          "type": "judge",
+          "statement": "Keeps the facts (Diwali collection, handmade crochet diya) and invents no new facts, prices, numbers or claims"
+        },
+        {
+          "type": "judge",
+          "statement": "Uses at most 5 hashtags"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Tantu Kala v2 — Agent guardrails: how agents break rules, and how we stop them
 
-Version 0.2 · 12 Oct 2026 · Status: **proposed**
+Version 0.3 · 29 Oct 2026 · Status: **proposed**
 
 Changelog: 0.2 — per-role default-deny scopes and read-only shells (`policy.mjs`); rows #24–#26;
 CODEOWNERS list and paths updated for the docs restructure.
@@ -53,6 +53,8 @@ Every critical rule must have an L4 or L5 backstop. L1–L3 reduce how often it'
 | 26  | Someone turns on `bypassPermissions` to stop prompts                                                                     | Bypass skips permission prompts (hooks still run)                                                                  | `permissions.disableBypassPermissionsMode: "disable"` in project settings                                                                                                                                                                                                                                                                                           |
 | 27  | An agent merges its own PR, or approves it, using the owner's GitHub login                                               | Agents push with the owner's credentials; GitHub can't tell them apart, and a solo owner can't approve his own PRs | Agents use the machine account `tantu-kala-bot` (D-70): no bypass, can't approve its own PRs, so GitHub enforces owner review. Hooks refuse GitHub commands when the bot token isn't loaded (no silent fallback to the owner's login) and block printing the token. Residual: after the owner approves, the bot could technically merge (hook blocks `gh pr merge`) |
 | 28  | A guard hook silently stops working (crash, wrong shell on Windows, missing file) and every action is allowed            | Hook commands in shell form depend on the shell; a failing hook defaults to "continue"                             | Hooks in exec form (`node` + `args`, no shell); guard hooks set `onFailure: "block"` (fail closed); INSTALL §3 step 4 tests that a hook really blocks                                                                                                                                                                                                               |
+| 29  | An agent skips planning or review and goes straight to code or a PR | Instructions alone don't stop it (superpowers: "violating the letter is violating the spirit") | Kit v3 gate hook: worker code edits need `work/<task>/plan.md` with `Approved:` (lead-only file); `gh pr create` needs `verify.md` PASS and `review.md` approve. Fails closed; in-flight tasks listed as exempt |
+| 30  | Agent output reads as AI-generated (copy, reviews, designs) and erodes customer trust | Model defaults | `humanize` + deterministic `prose-lint`; `design-gates` Floor/Reflex; fresh-context review question "would a careful person at this studio have made this?" |
 
 ## 3. Controls to set up (task S-3/S-6)
 

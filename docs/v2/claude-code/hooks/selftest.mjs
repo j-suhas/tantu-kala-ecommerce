@@ -176,6 +176,74 @@ for (const [role, cmd, exp, token] of identityCases)
     token,
   );
 
-const total = fileCases.length + shellCases.length + identityCases.length + 1;
+
+// ---- kit v3: new roles, work/ gate files, check scripts, process gates ----
+const v3Files = [
+  ['tk-social', `${R}/.claude/worktrees/x/marketing/social/2026-11-diwali-reel.md`, 0],
+  ['tk-social', `${R}/.claude/worktrees/x/src/pages/index.astro`, 2],
+  ['tk-social', `${R}/.claude/worktrees/x/work/F-9/rulings.md`, 0],
+  ['tk-social', `${R}/.claude/worktrees/x/work/F-9/plan.md`, 2],
+  ['tk-content', `${R}/.claude/worktrees/x/marketing/social/post.md`, 2],
+  ['tk-analyst', `${R}/.claude/worktrees/x/docs/v2/analysis/stockists.md`, 0],
+  ['tk-analyst', `${R}/.claude/worktrees/x/docs/v2/product/REQUIREMENTS.md`, 2],
+  ['tk-docs', `${R}/.claude/worktrees/x/docs/v2/analysis/stockists.md`, 0],
+  ['tk-frontend', `${R}/.claude/worktrees/x/work/F-9/handoff.md`, 0],
+  ['tk-frontend', `${R}/.claude/worktrees/x/work/F-9/verify.md`, 2],
+  ['tk-qa', `${R}/.claude/worktrees/x/work/F-9/verify.md`, 0],
+  ['tk-qa', `${R}/.claude/worktrees/x/work/F-9/spec.md`, 2],
+  [null, `${R}/work/F-9/plan.md`, 0],
+  ['tk-reviewer', `${R}/work/F-9/review.md`, 2],
+];
+for (const [role, path, exp] of v3Files) check('guard-files.mjs', role, 'Edit', { file_path: path }, exp, path);
+const v3Shell = [
+  ['tk-reviewer', 'node .claude/scripts/prose-lint.mjs marketing/social/post.md', 0],
+  ['tk-analyst', 'node .claude/scripts/decision-check.mjs --register docs/v2/DECISIONS-LOG.md:D', 0],
+  ['tk-analyst', 'node -e "1"', 2],
+  ['tk-analyst', 'echo hi > x.md', 2],
+  ['tk-social', 'python3 skills/ig-human/detect.py draft.txt', 0],
+  ['tk-social', 'git push origin v2', 2],
+];
+for (const [role, cmd, exp] of v3Shell) check('guard-bash.mjs', role, 'Bash', { command: cmd }, exp, cmd);
+
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
+const G = mkdtempSync(join(tmpdir(), 'tk-gate-')).replace(/\\/g, '/');
+const git = (...a) => execFileSync('git', ['-C', G, ...a], { stdio: 'ignore' });
+git('init', '-q'); git('checkout', '-q', '-b', 'task/F-9-cart-badge');
+const W = `${G}/work/F-9`; mkdirSync(W, { recursive: true });
+let gateCount = 0;
+const gate = (label, role, toolName, toolInput, expected) => {
+  gateCount++;
+  const input = { tool_name: toolName, tool_input: toolInput, cwd: G };
+  if (role) input.agent_type = role;
+  const res = spawnSync(process.execPath, [join(here, 'gate-check.mjs')], {
+    input: JSON.stringify(input), encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: G },
+  });
+  if (res.status !== expected) { failed++; console.log(`FAIL gate ${label}: expected ${expected}, got ${res.status} ${res.stderr}`); }
+};
+const ed = (p) => ({ file_path: `${G}/${p}` });
+gate('worker edits code, no plan', 'tk-frontend', 'Edit', ed('src/components/CartBadge.astro'), 2);
+writeFileSync(`${W}/plan.md`, '# Plan\nStatus: draft\n');
+gate('plan not approved', 'tk-frontend', 'Edit', ed('src/components/CartBadge.astro'), 2);
+writeFileSync(`${W}/plan.md`, '# Plan\nApproved: owner 2026-10-29\n');
+gate('plan approved', 'tk-frontend', 'Edit', ed('src/components/CartBadge.astro'), 0);
+gate('lead not gated', null, 'Write', ed('src/lib/x.ts'), 0);
+gate('tests not gated', 'tk-qa', 'Write', ed('tests/badge.test.ts'), 0);
+gate('marketing not gated', 'tk-social', 'Write', ed('marketing/social/a.md'), 0);
+gate('PR without verify', null, 'Bash', { command: 'gh pr create --base v2 --fill' }, 2);
+writeFileSync(`${W}/verify.md`, 'Result: PASS\n');
+gate('PR without review', null, 'Bash', { command: 'gh pr create --base v2 --fill' }, 2);
+writeFileSync(`${W}/review.md`, 'Verdict: request changes\n');
+gate('PR review not approve', null, 'Bash', { command: 'gh pr create --base v2 --fill' }, 2);
+writeFileSync(`${W}/review.md`, 'Verdict: approve\n');
+gate('PR all gates passed', null, 'Bash', { command: 'gh pr create --base v2 --fill' }, 0);
+git('checkout', '-q', '-b', 'task/F-7-test-harness');
+gate('in-flight task exempt', 'tk-qa', 'Bash', { command: 'gh pr create --base v2 --fill' }, 0);
+git('checkout', '-q', '-b', 'task/lead-status-sync');
+gate('lead branch not gated', null, 'Bash', { command: 'gh pr create --base v2 --fill' }, 0);
+rmSync(G, { recursive: true, force: true });
+
+const total = fileCases.length + shellCases.length + identityCases.length + 1 + v3Files.length + v3Shell.length + gateCount;
 console.log(`${total - failed}/${total} hook cases passed`);
 process.exit(failed ? 1 : 0);

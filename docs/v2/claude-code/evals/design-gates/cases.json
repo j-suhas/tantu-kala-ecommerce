@@ -1,0 +1,27 @@
+{
+  "skill": "design-gates",
+  "cases": [
+    {
+      "id": "audit-hero",
+      "prompt": "Use the design-gates skill to review this hero for the Tantu Kala homepage and list Floor and Reflex findings only: a full-screen 100vh hero with a purple-to-blue gradient headline 'Elevate your gifting', three equal feature cards with emoji icons, a 4.9-star rating badge, and an email sign-up as the last section.",
+      "expectations": [
+        {
+          "type": "regex-present",
+          "pattern": "100vh|dvh|svh"
+        },
+        {
+          "type": "regex-present",
+          "pattern": "rating|invented|fake"
+        },
+        {
+          "type": "judge",
+          "statement": "Classifies the invented 4.9-star rating as a Floor failure that cannot be waived"
+        },
+        {
+          "type": "judge",
+          "statement": "Flags the three equal emoji feature cards and the closing email sign-up as Reflex items"
+        }
+      ]
+    }
+  ]
+}

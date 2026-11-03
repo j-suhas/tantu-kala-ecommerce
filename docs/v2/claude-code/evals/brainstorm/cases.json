@@ -1,0 +1,14 @@
+{
+  "skill": "brainstorm",
+  "cases": [
+    {
+      "id": "vague-request",
+      "prompt": "I want a festival landing page for my shop.",
+      "expectations": [
+        { "type": "judge", "statement": "Asks exactly one question, about the goal of the page, and says why it is asking" },
+        { "type": "judge", "statement": "Does not start writing code or a full page" },
+        { "type": "regex-absent", "pattern": "<html|```" }
+      ]
+    }
+  ]
+}

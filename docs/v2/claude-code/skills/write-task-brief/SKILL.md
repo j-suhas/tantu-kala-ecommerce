@@ -17,7 +17,11 @@ description: Turn a Tantu Kala v2 backlog item into a Ready task brief and GitHu
      under "Read only". Note in the brief if the task is on the Opus list (AGENT-WORKFLOW §1).
    - Acceptance criteria must be testable by the QA agent; include stakeholder concerns (e.g. CX-4 cases).
    - Label every assumption.
-3. Definition of Ready check (AGENT-WORKFLOW §5). If anything fails, the task stays in _Inbox_
+3. Definition of Ready check (AGENT-WORKFLOW §5). If anything fails, the task stays in _Backlog_
    with the blocking question listed.
 4. Create/update the GitHub issue (title `[<ID>] <summary>`, labels: role, release, risk) and
    put it in _Ready_ on the project board.
+5. **Kit v3 gates:** this brief is the task's spec (gate G1). Start with `brainstorm` first when the
+   task touches money, customer data, security or the brand and the goal isn't settled. After the
+   owner approves the brief, write `work/<task-id>/plan.md` with `write-plan` — worker agents can't
+   edit code until the plan has an `Approved:` line.
